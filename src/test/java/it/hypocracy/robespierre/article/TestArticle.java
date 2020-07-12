@@ -20,17 +20,21 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
+import it.hypocracy.robespierre.utils.ISO3166;
+
 public class TestArticle {
   
   @Test
   public void shouldInstantiateArticle() {
-    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now());
+    ISO3166 language = new ISO3166("US");
+    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now(), language);
     //Verify constructor
     assertEquals(art.getId().length(), 36);
     assertEquals(art.getTitle(), "foo");
     assertEquals(art.getBrief(), "bar");
     assertEquals(art.getLink(), URI.create("http://news.com/all-dead-all-dead.html"));
     assertEquals(art.getDate().getMonth(), LocalDateTime.now().getMonth());
+    assertEquals(art.getLanguage(), language.toString());
 
     //Topics + subjects should be empty
     assertTrue(! art.iterSubjects().hasNext());
@@ -39,12 +43,13 @@ public class TestArticle {
 
   @Test
   public void shouldAddSubjects() {
-    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now());
+    ISO3166 language = new ISO3166("US");
+    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now(), language);
     Category cat1 = new Category("politician");
-    Subject subject1 = new Subject("foo bar", LocalDate.of(1960, 5, 14), "us", "foo bar is a nice person", "123", cat1);
+    Subject subject1 = new Subject("foo bar", LocalDate.of(1960, 5, 14), new ISO3166("US"), "foo bar is a nice person", "123", cat1);
     art.addSubject(subject1);
     Category cat2 = new Category("influencer");
-    Subject subject2 = new Subject("mr ping", LocalDate.of(1993, 8, 12), "uk", "mr ping has many followers", "444", cat2);
+    Subject subject2 = new Subject("mr ping", LocalDate.of(1993, 8, 12), new ISO3166("GB"), "mr ping has many followers", "444", cat2);
     art.addSubject(subject2);
     assertTrue(art.iterSubjects().hasNext());
     //Iterate
@@ -65,7 +70,8 @@ public class TestArticle {
 
   @Test
   public void shouldAddTopics() {
-    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now());
+    ISO3166 language = new ISO3166("US");
+    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now(), language);
     Topic topic1 = new Topic("test", "this is a test topic");
     art.addTopic(topic1);
     Topic topic2 = new Topic("test 2", "this is a test topic");

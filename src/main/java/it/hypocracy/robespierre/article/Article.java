@@ -10,6 +10,7 @@
 
 package it.hypocracy.robespierre.article;
 
+import it.hypocracy.robespierre.utils.ISO3166;
 import it.hypocracy.robespierre.utils.Uuidv4;
 
 import java.net.URI;
@@ -25,10 +26,10 @@ public class Article {
   protected URI link;
   protected LocalDateTime date;
   protected ArticleState state;
-  protected String language; // e.g. 'it_IT'
+  protected ISO3166 language;
 
-  public ArrayList<Subject> subjects; // Involved subjects
-  public ArrayList<Topic> topics; // Involved topics
+  protected ArrayList<Subject> subjects; // Involved subjects
+  protected ArrayList<Topic> topics; // Involved topics
 
   /**
    * <p>
@@ -41,7 +42,7 @@ public class Article {
    * @param date
    */
 
-  public Article(String title, String brief, URI link, LocalDateTime date) {
+  public Article(String title, String brief, URI link, LocalDateTime date, ISO3166 lang) {
     this.id = new Uuidv4().getUUIDv4();
     this.title = title;
     this.brief = brief;
@@ -49,6 +50,7 @@ public class Article {
     this.date = date;
     this.subjects = new ArrayList<Subject>();
     this.topics = new ArrayList<Topic>();
+    this.language = lang;
   }
 
   public String getId() {
@@ -69,6 +71,10 @@ public class Article {
 
   public LocalDateTime getDate() {
     return this.date;
+  }
+
+  public String getLanguage() {
+    return this.language.toString();
   }
 
   /**

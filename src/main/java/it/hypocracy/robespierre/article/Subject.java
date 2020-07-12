@@ -10,6 +10,7 @@
 
 package it.hypocracy.robespierre.article;
 
+import it.hypocracy.robespierre.utils.ISO3166;
 import it.hypocracy.robespierre.utils.Uuidv4;
 
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ public class Subject {
   private String id; // UUIDv4
   protected String name;
   protected LocalDate birthdate;
-  protected String citizenship; // 2 chars
+  protected ISO3166 citizenship; // 2 chars
   protected String biography;
   private String remoteId; // Access id for metadata receiver
   private LocalDateTime lastUpdate; // Last information update
@@ -41,7 +42,7 @@ public class Subject {
    * @param category
    */
 
-  public Subject(String id, String name, LocalDate birthdate, String citizenship, String bio, String remoteId,
+  public Subject(String id, String name, LocalDate birthdate, ISO3166 citizenship, String bio, String remoteId,
       LocalDateTime lastUpdate, Category category) {
     this.id = id;
     this.name = name;
@@ -66,7 +67,7 @@ public class Subject {
    * @param category
    */
 
-  public Subject(String name, LocalDate birthdate, String citizenship, String bio, String remoteId, Category category) {
+  public Subject(String name, LocalDate birthdate, ISO3166 citizenship, String bio, String remoteId, Category category) {
     this.id = new Uuidv4().getUUIDv4();
     this.name = name;
     this.birthdate = birthdate;
@@ -93,7 +94,7 @@ public class Subject {
   }
 
   public String getCitizenship() {
-    return this.citizenship;
+    return this.citizenship.toString();
   }
 
   public String getBiography() {
