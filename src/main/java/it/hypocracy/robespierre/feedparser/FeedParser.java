@@ -8,21 +8,19 @@
  * Written by Christian Visintin <christian.visintin1997@gmail.com>, 2020
  */
 
-package it.hypocracy.robespierre.feedreceiver;
+package it.hypocracy.robespierre.feedparser;
 
-import java.io.IOException;
+public interface FeedParser<T> {
 
-public interface FeedReceiver<T, Z> {
-  
   /**
    * <p>
-   * Fetch feed source
+   * Parse Feed
    * </p>
    * 
-   * @param source
-   * @return Feed
-   * @throws IOException
+   * @param body
+   * @return Feed[]
    */
-  public Z[] fetchFeed(T source) throws IOException;
 
+  public T[] parse(String body);
+  
 }

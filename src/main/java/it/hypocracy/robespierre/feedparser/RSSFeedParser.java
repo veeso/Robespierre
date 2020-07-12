@@ -1,3 +1,5 @@
+package it.hypocracy.robespierre.feedparser;
+
 /**
  * @author Christian Visintin <christian.visintin1997@gmail.com>
  * @version 0.1.0
@@ -8,21 +10,16 @@
  * Written by Christian Visintin <christian.visintin1997@gmail.com>, 2020
  */
 
-package it.hypocracy.robespierre.feedreceiver;
+import it.hypocracy.robespierre.feed.RSSFeed;
 
-import java.io.IOException;
-
-public interface FeedReceiver<T, Z> {
+public class RSSFeedParser implements FeedParser<RSSFeed> {
   
-  /**
-   * <p>
-   * Fetch feed source
-   * </p>
-   * 
-   * @param source
-   * @return Feed
-   * @throws IOException
-   */
-  public Z[] fetchFeed(T source) throws IOException;
+  public RSSFeedParser() {
+    super();
+  }
+
+  public RSSFeed[] parse(String body) {
+
+  }
 
 }
