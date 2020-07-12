@@ -13,6 +13,8 @@ package it.hypocracy.robespierre.feed;
 import java.net.URI;
 import java.time.LocalDateTime;
 
+import it.hypocracy.robespierre.utils.ISO3166;
+
 public interface Feed {
 
   /**
@@ -54,5 +56,15 @@ public interface Feed {
    */
 
   public LocalDateTime getPublicationDatetime();
+
+  /**
+   * <p>
+   * Return Feed country
+   * </p>
+   * 
+   * @return ISO3166
+   */
+
+  public ISO3166 getCountry();
 
 }

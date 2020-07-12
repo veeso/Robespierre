@@ -24,10 +24,12 @@ public class RSSFeedSource implements FeedSource {
     this.country = country;
   }
 
+  @Override
   public URI getURI() {
     return this.uri;
   }
 
+  @Override
   public ISO3166 getCountry() {
     return this.country;
   }

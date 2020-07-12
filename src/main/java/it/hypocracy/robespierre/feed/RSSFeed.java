@@ -13,12 +13,15 @@ package it.hypocracy.robespierre.feed;
 import java.net.URI;
 import java.time.LocalDateTime;
 
+import it.hypocracy.robespierre.utils.ISO3166;
+
 public class RSSFeed implements Feed {
 
   protected String title;
   protected String brief;
   protected URI link;
   protected LocalDateTime publicationDate;
+  protected ISO3166 country;
 
   /**
    * <p>
@@ -28,13 +31,15 @@ public class RSSFeed implements Feed {
    * @param title
    * @param brief
    * @param link
+   * @param country
    */
 
-  public RSSFeed(String title, String brief, URI link) {
+  public RSSFeed(String title, String brief, URI link, ISO3166 country) {
     this.title = title;
     this.brief = brief;
     this.link = link;
     this.publicationDate = LocalDateTime.now();
+    this.country = country;
   }
 
   /**
@@ -46,13 +51,15 @@ public class RSSFeed implements Feed {
    * @param brief
    * @param link
    * @param publicationTime
+   * @param country
    */
 
-  public RSSFeed(String title, String brief, URI link, LocalDateTime pTime) {
+  public RSSFeed(String title, String brief, URI link, LocalDateTime pTime, ISO3166 country) {
     this.title = title;
     this.brief = brief;
     this.link = link;
     this.publicationDate = pTime;
+    this.country = country;
   }
 
   @Override
@@ -73,6 +80,11 @@ public class RSSFeed implements Feed {
   @Override
   public LocalDateTime getPublicationDatetime() {
     return this.publicationDate;
+  }
+
+  @Override
+  public ISO3166 getCountry() {
+    return this.country;
   }
   
 }
