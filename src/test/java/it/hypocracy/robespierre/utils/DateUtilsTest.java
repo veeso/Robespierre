@@ -22,6 +22,7 @@ public class DateUtilsTest {
   
   @Test
   public void shouldConvertDateToLocalDateTime() {
+    @SuppressWarnings("deprecation")
     Date testDate = new Date(120, 6, 13, 17, 32);
     LocalDateTime convertedTime = DateUtils.dateToLocalDateTime(testDate);
     assertEquals(convertedTime.getDayOfMonth(), 13);
