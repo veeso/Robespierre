@@ -10,8 +10,6 @@
 
 package it.hypocracy.robespierre.feedreceiver;
 
-import java.io.IOException;
-
 public interface FeedReceiver<T, Z> {
   
   /**
@@ -21,8 +19,8 @@ public interface FeedReceiver<T, Z> {
    * 
    * @param source
    * @return Feed
-   * @throws IOException
+   * @throws Exception
    */
-  public Z[] fetchFeed(T source) throws IOException;
+  public Z[] fetchFeed(T source) throws Exception;
 
 }

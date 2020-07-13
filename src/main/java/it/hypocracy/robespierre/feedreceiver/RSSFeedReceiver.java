@@ -12,6 +12,8 @@ package it.hypocracy.robespierre.feedreceiver;
 
 import java.io.IOException;
 
+import com.rometools.rome.io.FeedException;
+
 import it.hypocracy.robespierre.feed.RSSFeed;
 import it.hypocracy.robespierre.feed.RSSFeedSource;
 import it.hypocracy.robespierre.feedparser.RSSFeedParser;
@@ -34,10 +36,17 @@ public class RSSFeedReceiver implements FeedReceiver<RSSFeedSource, RSSFeed> {
     this.parser = new RSSFeedParser();
   }
 
+  /**
+   * @param source
+   * @return RSSFeed[]
+   * @throws IOException
+   * @throws FeedException
+   */
+
   @Override
-  public RSSFeed[] fetchFeed(RSSFeedSource source) throws IOException {
+  public RSSFeed[] fetchFeed(RSSFeedSource source) throws IOException, FeedException {
     HTTPResponse response = this.httpFac.get(source.getURI());
-    return this.parser.parse(response.getStringBody());
+    return this.parser.parse(response.getStringBody(), source.getCountry());
   }
 
 }
