@@ -10,6 +10,8 @@
 
 package it.hypocracy.robespierre.feedparser;
 
+import it.hypocracy.robespierre.utils.ISO3166;
+
 public interface FeedParser<T> {
 
   /**
@@ -18,9 +20,11 @@ public interface FeedParser<T> {
    * </p>
    * 
    * @param body
+   * @param country
    * @return Feed[]
+   * @throws Exception
    */
 
-  public T[] parse(String body);
-  
+  public T[] parse(String body, ISO3166 country) throws Exception;
+
 }
