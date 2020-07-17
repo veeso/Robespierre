@@ -26,7 +26,7 @@ public class HTTPFacadeTest {
     HTTPFacade httpFac = new HTTPFacade();
     //Perform test request
     try {
-      HTTPResponse response = httpFac.get(URI.create("https://www.google.com"));
+      HTTPResponse response = httpFac.get(URI.create("https://www.example.com"));
       assertEquals(response.getStatus(), 200);
       assertTrue(response.getStringBody().startsWith("<!doctype html>"));
     } catch (IOException e) {
@@ -40,7 +40,7 @@ public class HTTPFacadeTest {
     HTTPFacade httpFac = new HTTPFacade();
     //Perform test request
     try {
-      HTTPResponse response = httpFac.get(URI.create("https://www.google.com"));
+      HTTPResponse response = httpFac.get(URI.create("https://www.example.com"));
       assertEquals(response.getStatus(), 200);
       BufferedInputStream stream = response.getBytesBody();
       assertTrue(stream.read() > 0);
