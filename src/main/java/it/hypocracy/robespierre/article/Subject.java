@@ -68,15 +68,7 @@ public class Subject {
    */
 
   public Subject(String name, LocalDate birthdate, ISO3166 citizenship, String bio, String remoteId, Category category) {
-    this.id = new Uuidv4().getUUIDv4();
-    this.name = name;
-    this.birthdate = birthdate;
-    this.citizenship = citizenship;
-    this.biography = bio;
-    this.remoteId = remoteId;
-    this.category = category;
-    // Set last update as now (since subject is new)
-    this.lastUpdate = LocalDateTime.now();
+    this(new Uuidv4().getUUIDv4(), name, birthdate, citizenship, bio, remoteId, LocalDateTime.now(), category);
   }
 
   // Getters

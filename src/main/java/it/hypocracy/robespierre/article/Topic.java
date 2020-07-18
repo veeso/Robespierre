@@ -32,10 +32,7 @@ public class Topic {
    */
 
   public Topic(String name, String description) {
-    // Generate ID
-    this.id = new Uuidv4().getUUIDv4();
-    this.name = name;
-    this.description = description;
+    this(new Uuidv4().getUUIDv4(), name, description);
   }
 
   /**
