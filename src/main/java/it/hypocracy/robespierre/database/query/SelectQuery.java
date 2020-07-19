@@ -23,6 +23,17 @@ public class SelectQuery implements Query {
 
   /**
    * <p>
+   * Create a select all from a table
+   * </p>
+   * @param table
+   */
+
+  public SelectQuery(String table) {
+    this(new String[]{table});
+  }
+
+  /**
+   * <p>
    * Create a select all from tables query
    * </p>
    * 

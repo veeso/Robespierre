@@ -11,6 +11,7 @@
 package it.hypocracy.robespierre.database.driver;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import it.hypocracy.robespierre.database.query.DeleteQuery;
@@ -39,16 +40,6 @@ public interface DatabaseFacade {
    */
 
   public void disconnect() throws SQLException;
-
-  /**
-   * <p>
-   * Create a new statement and begins then a new set of actions
-   * </p>
-   * 
-   * @throws SQLException
-   */
-
-  public void startStatement() throws SQLException;
 
   /**
    * <p>
@@ -98,11 +89,11 @@ public interface DatabaseFacade {
    * </p>
    * 
    * @param query
-   * @return Map
+   * @return ArrayList<Map<String, String>>
    * @throws SQLException
    */
 
-  public Map<String, String> select(SelectQuery query) throws SQLException;
+  public ArrayList<Map<String, String>> select(SelectQuery query) throws SQLException;
 
   /**
    * <p>
@@ -114,5 +105,16 @@ public interface DatabaseFacade {
    */
 
   public void update(UpdateQuery query) throws SQLException;
+
+  /**
+   * <p>
+   * Perform a free form query. This method is unsafe.
+   * </p>
+   * 
+   * @param query
+   * @throws SQLException
+   */
+
+  public void performFreeform(String query) throws SQLException;
 
 }
