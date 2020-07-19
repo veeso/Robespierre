@@ -1,0 +1,22 @@
+{
+  "database": {
+    "engine": "mariadb",
+    "params": {
+      "uri": "jdbc:mariadb://localhost:3306/robespierre",
+      "user": "root",
+      "password": null
+    }
+  },
+  "feed": {
+    "engine": "rss",
+    "sources": [
+      {
+        "uri": "http://example.com/rss",
+        "country": "IT"
+      }
+    ]
+  },
+  "metadata": {
+    "engine": "wikidata"
+  }
+}
