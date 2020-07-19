@@ -20,10 +20,9 @@ Here follows the key description:
 
 - database: contains the database configuration
   - engine: the database engine (e.g. mariadb)
-  - params: Database parameters (specific for database engine)
-    - uri: database uri
-    - user: database user
-    - password: database password
+  - uri: database uri
+  - user: database user
+  - password: database password
 - feed: contains the feed configuration
   - engine: the feed protocol
   - sources: contains the sources array
