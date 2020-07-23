@@ -8,19 +8,12 @@
  * Written by Christian Visintin <christian.visintin1997@gmail.com>, 2020
  */
 
-package it.hypocracy.robespierre.meta;
+package it.hypocracy.robespierre.meta.wikidata.search;
 
-import it.hypocracy.robespierre.article.Article;
-
-public interface MetadataReceiver {
+public class QueryResult {
   
-  /**
-   * <p>
-   * Fetch metadata for a certain article querying the Metadata provider
-   * </p>
-   * @param article
-   */
-
-  public void fetchMetadata(Article article) throws Exception;
+  public String title;
+  public int pageid;
+  public String snippet;
 
 }

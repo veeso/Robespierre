@@ -8,19 +8,12 @@
  * Written by Christian Visintin <christian.visintin1997@gmail.com>, 2020
  */
 
-package it.hypocracy.robespierre.meta;
+package it.hypocracy.robespierre.meta.wikidata.search;
 
-import it.hypocracy.robespierre.article.Article;
+import java.util.List;
 
-public interface MetadataReceiver {
-  
-  /**
-   * <p>
-   * Fetch metadata for a certain article querying the Metadata provider
-   * </p>
-   * @param article
-   */
+public class Query {
 
-  public void fetchMetadata(Article article) throws Exception;
+  public List<QueryResult> search;
 
 }
