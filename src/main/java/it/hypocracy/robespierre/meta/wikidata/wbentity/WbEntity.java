@@ -8,16 +8,16 @@
  * Written by Christian Visintin <christian.visintin1997@gmail.com>, 2020
  */
 
-package it.hypocracy.robespierre.meta.wikidata.search;
+package it.hypocracy.robespierre.meta.wikidata.wbentity;
+
+import java.util.Map;
 
 /**
  * <p>
- * "Entry" point class for search
+ * "Entry" point class for entities
  * </p>
  */
 
-public class Search {
-  
-  public Query query = null;
-
+public class WbEntity {
+  public Map<String, Entity> entities;
 }

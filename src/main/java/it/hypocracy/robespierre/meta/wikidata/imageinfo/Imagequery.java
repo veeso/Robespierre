@@ -8,16 +8,10 @@
  * Written by Christian Visintin <christian.visintin1997@gmail.com>, 2020
  */
 
-package it.hypocracy.robespierre.meta.wikidata.search;
+package it.hypocracy.robespierre.meta.wikidata.imageinfo;
 
-/**
- * <p>
- * "Entry" point class for search
- * </p>
- */
+import java.util.Map;
 
-public class Search {
-  
-  public Query query = null;
-
+public class Imagequery {
+  public Map<String, Image> pages;
 }

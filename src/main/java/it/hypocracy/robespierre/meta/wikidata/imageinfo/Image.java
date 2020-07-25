@@ -8,8 +8,13 @@
  * Written by Christian Visintin <christian.visintin1997@gmail.com>, 2020
  */
 
-package it.hypocracy.robespierre.meta.wikidata.entities;
+package it.hypocracy.robespierre.meta.wikidata.imageinfo;
 
-public class WbEntity {
+import java.util.ArrayList;
+
+public class Image {
   
+  public String title;
+  public ArrayList<ImageInfoUri> imageinfo;
+
 }

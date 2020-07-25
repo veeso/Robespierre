@@ -8,16 +8,11 @@
  * Written by Christian Visintin <christian.visintin1997@gmail.com>, 2020
  */
 
-package it.hypocracy.robespierre.meta.wikidata.search;
+package it.hypocracy.robespierre.meta.wikidata.wbentity;
 
-/**
- * <p>
- * "Entry" point class for search
- * </p>
- */
-
-public class Search {
+public class Datavalue {
   
-  public Query query = null;
+  public DatavalueVal value;
+  public String type; //Value type (string, time, url)
 
 }

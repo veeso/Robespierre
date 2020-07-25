@@ -8,16 +8,10 @@
  * Written by Christian Visintin <christian.visintin1997@gmail.com>, 2020
  */
 
-package it.hypocracy.robespierre.meta.wikidata.search;
+package it.hypocracy.robespierre.meta.wikidata.imageinfo;
 
-/**
- * <p>
- * "Entry" point class for search
- * </p>
- */
-
-public class Search {
-  
-  public Query query = null;
-
+public class ImageInfoUri {
+  public String url;
+  public String descriptionurl;
+  public String descriptionshorturl;
 }
