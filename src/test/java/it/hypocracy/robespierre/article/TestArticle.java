@@ -34,7 +34,7 @@ public class TestArticle {
     assertEquals(art.getBrief(), "bar");
     assertEquals(art.getLink(), URI.create("http://news.com/all-dead-all-dead.html"));
     assertEquals(art.getDate().getMonth(), LocalDateTime.now().getMonth());
-    assertEquals(art.getLanguage(), language.toString());
+    assertEquals(art.getLanguage().toString(), language.toString());
 
     //Topics + subjects should be empty
     assertTrue(! art.iterSubjects().hasNext());

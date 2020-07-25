@@ -73,8 +73,8 @@ public class Article {
     return this.date;
   }
 
-  public String getLanguage() {
-    return this.language.toString();
+  public ISO3166 getLanguage() {
+    return this.language;
   }
 
   /**
