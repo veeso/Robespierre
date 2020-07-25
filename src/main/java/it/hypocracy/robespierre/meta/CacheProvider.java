@@ -12,19 +12,23 @@ package it.hypocracy.robespierre.meta;
 
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.meta.exceptions.CacheException;
-import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
 
-public interface MetadataReceiver {
+/**
+ * <p>
+ * Cache Provider for metadata (e.g. a database)
+ * </p>
+ */
+
+public interface CacheProvider {
   
   /**
    * <p>
-   * Fetch metadata for a certain article querying the Metadata provider
+   * Fetch cached values and fill article if possible
    * </p>
    * @param article
-   * @throws MetadataReceiverException
+   * @return true if what was matched
    * @throws CacheException
    */
-
-  public void fetchMetadata(Article article) throws MetadataReceiverException, CacheException;
+  public boolean fetchCachedValues(Article article, String what) throws CacheException;
 
 }
