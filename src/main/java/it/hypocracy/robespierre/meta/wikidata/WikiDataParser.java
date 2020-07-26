@@ -10,19 +10,25 @@
 
 package it.hypocracy.robespierre.meta.wikidata;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import it.hypocracy.robespierre.article.Article;
+import it.hypocracy.robespierre.article.Occupation;
 import it.hypocracy.robespierre.article.Subject;
 import it.hypocracy.robespierre.article.Topic;
 import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
 import it.hypocracy.robespierre.meta.exceptions.ParserException;
-import it.hypocracy.robespierre.meta.wikidata.wbentity.Category;
+import it.hypocracy.robespierre.meta.wikidata.imageinfo.Image;
+import it.hypocracy.robespierre.meta.wikidata.imageinfo.ImageInfoUri;
+import it.hypocracy.robespierre.meta.wikidata.imageinfo.Imageinfo;
+import it.hypocracy.robespierre.meta.wikidata.wbentity.WbProperty;
 import it.hypocracy.robespierre.meta.wikidata.wbentity.Datavalue;
 import it.hypocracy.robespierre.meta.wikidata.wbentity.DatavalueVal;
+import it.hypocracy.robespierre.meta.wikidata.wbentity.Description;
 import it.hypocracy.robespierre.meta.wikidata.wbentity.Entity;
 import it.hypocracy.robespierre.meta.wikidata.wbentity.Label;
 import it.hypocracy.robespierre.meta.wikidata.wbentity.Mainsnak;
@@ -39,7 +45,9 @@ public class WikiDataParser {
   private static final String properyInstanceOf = "P31";
   private static final String propertyBirthdate = "P569";
   private static final String propertyCitizenship = "P27";
+  private static final String propertyBirthplace = "P19";
   private static final String propertyImage = "P18";
+  private static final String propertyOccupation = "P106";
   private static final String propertyIso3166 = "P297";
 
   // IDs
@@ -84,7 +92,8 @@ public class WikiDataParser {
    * @throws MetadataReceiverException
    */
 
-  public boolean parseWbEntity(WbEntity wbEntity, String id, Article article) throws ParserException, MetadataReceiverException {
+  public boolean parseWbEntity(WbEntity wbEntity, String id, Article article)
+      throws ParserException, MetadataReceiverException {
     // Verify web entity
     Entity entity = wbEntity.entities.get(id);
     if (entity == null) {
@@ -140,11 +149,11 @@ public class WikiDataParser {
     if (!entity.claims.containsKey(properyInstanceOf)) {
       return false;
     }
-    ArrayList<Category> p31 = entity.claims.get(properyInstanceOf);
+    ArrayList<WbProperty> p31 = entity.claims.get(properyInstanceOf);
     // Iterate over p31
-    Iterator<Category> p31Iterator = p31.iterator();
+    Iterator<WbProperty> p31Iterator = p31.iterator();
     while (p31Iterator.hasNext()) {
-      Category category = p31Iterator.next();
+      WbProperty category = p31Iterator.next();
       if (category.mainsnak == null) {
         continue;
       }
@@ -186,9 +195,11 @@ public class WikiDataParser {
     // - name
     // - birthdate
     // - Citizenship
+    // - Birthplace
+    // - Image
     // - Brief
+    // - Occupation
     // - Remote ID (entity.title)
-    // - Category
 
     final String language = country.toString().toLowerCase();
     // Collect name from labels
@@ -197,13 +208,32 @@ public class WikiDataParser {
       throw new ParserException("Label is null");
     }
     String name = label.value;
+    if (name == null) {
+      throw new ParserException("Label value is null");
+    }
+    // Get brief
+    Description description = entity.descriptions.get(language);
+    if (description == null) {
+      throw new ParserException("Description is null");
+    }
+    String brief = description.value;
+    if (brief == null) {
+      throw new ParserException("Description value is null");
+    }
     // Get birthdate
-    LocalDateTime birthdate = getBirthdate(entity);
+    LocalDate birthdate = getBirthdate(entity).toLocalDate();
     // Get citizenship
     ISO3166 citizenship = getCitizenship(entity, country);
+    // Get birthplace
+    String birthplace = getBirthplace(entity, country);
+    // Get image
+    String imageUri = getImage(entity);
+    // occupation
+    Occupation occupation = getOccupation(entity, country);
     // Set remoteid
     String remoteId = entity.title;
-
+    // Return subject
+    return new Subject(name, birthdate, citizenship, birthplace, imageUri, brief, remoteId, occupation);
   }
 
   /**
@@ -213,32 +243,33 @@ public class WikiDataParser {
    * 
    * @param entity
    * @return LocalDateTime or null
+   * @throws ParserException
    */
 
-  private LocalDateTime getBirthdate(Entity entity)  throws ParserException {
+  private LocalDateTime getBirthdate(Entity entity) throws ParserException {
     Datavalue datavalue = getDatavalueFromEntity(entity, propertyBirthdate, 0);
     if (datavalue == null) {
-      return null;
+      throw new ParserException("Property Birthdate has no datavalue");
     }
     if (datavalue.type == null) {
-      return null;
+      throw new ParserException("Property Birthdate has no datavalue type");
     }
     if (datavalue.type.equals("time")) {
       DatavalueVal value = datavalue.value;
       if (value == null) {
-        return null;
+        throw new ParserException("Property Birthdate has no value");
       }
       if (value.time == null) {
-        return null;
+        throw new ParserException("Property Birthdate has no datavalue time");
       }
       // Parse ISO8601
       try {
         return ISO8601.toLocalDateTime(value.time);
       } catch (DateTimeParseException ex) {
-        return null;
+        throw new ParserException("Property Birthdate has invalid ISO8601 value");
       }
     } else {
-      return null;
+      throw new ParserException("Property Birthdate has no datavalue type equal to time");
     }
   }
 
@@ -249,46 +280,190 @@ public class WikiDataParser {
    * 
    * @param entity
    * @param country
-   * @return
+   * @return ISO3166
+   * @throws ParserException
+   * @throws MetadataReceiverException
    */
 
   private ISO3166 getCitizenship(Entity entity, ISO3166 country) throws ParserException, MetadataReceiverException {
     Datavalue datavalue = getDatavalueFromEntity(entity, propertyCitizenship, 0);
     if (datavalue == null) {
-      return null;
+      throw new ParserException("Citizenship has no datavalue");
     }
     if (datavalue.type == null) {
-      return null;
+      throw new ParserException("Citizenship has no datavalue type");
     }
     if (!datavalue.type.equals("wikibase-entityid")) {
-      return null;
+      throw new ParserException("Citizenship has type not equal to wikibase-entityid");
     }
     if (datavalue.value == null) {
-      return null;
+      throw new ParserException("Citizenship has no datavalue value");
     }
     if (datavalue.value.id == null) {
-      return null;
+      throw new ParserException("Citizenship has no datavalue value id");
     }
     // Send wbentity query
     WbEntity countryQuery = this.apiClient.getWebEntity(datavalue.value.id, country);
     Entity countryEntity = countryQuery.entities.get(datavalue.value.id);
     if (countryEntity == null) {
-      return null;
+      throw new ParserException("Country query returned bad object");
     }
     Datavalue countryDatavalue = getDatavalueFromEntity(entity, propertyIso3166, 0);
     if (countryDatavalue == null) {
-      return null;
+      throw new ParserException("Country entity has no datavalue");
     }
     if (countryDatavalue.type == null) {
-      return null;
+      throw new ParserException("Country entity has no datavalue type");
     }
     if (!countryDatavalue.type.equals("string")) {
-    return null;
+      throw new ParserException("Country entity has bad datatype");
     }
     if (countryDatavalue.value == null) {
-      return null;
+      throw new ParserException("Country entity has no value");
     }
-    return new ISO3166(countryDatavalue.value.value);
+    try {
+      return new ISO3166(countryDatavalue.value.value);
+    } catch (IllegalArgumentException ex) {
+      throw new ParserException("Country has bad ISO3166 value");
+    }
+  }
+
+  /**
+   * <p>
+   * Retrieve birthplace from entity
+   * </p>
+   * 
+   * @param entity
+   * @param country
+   * @return ISO3166
+   * @throws ParserException
+   * @throws MetadataReceiverException
+   */
+
+  private String getBirthplace(Entity entity, ISO3166 country) throws ParserException, MetadataReceiverException {
+    Datavalue datavalue = getDatavalueFromEntity(entity, propertyBirthplace, 0);
+    if (datavalue == null) {
+      throw new ParserException("Birthplace has no datavalue");
+    }
+    if (datavalue.type == null) {
+      throw new ParserException("Birthplace has no datavalue type");
+    }
+    if (!datavalue.type.equals("wikibase-entityid")) {
+      throw new ParserException("Birthplace has type not equal to wikibase-entityid");
+    }
+    if (datavalue.value == null) {
+      throw new ParserException("Birthplace has no datavalue value");
+    }
+    if (datavalue.value.id == null) {
+      throw new ParserException("Birthplace has no datavalue value id");
+    }
+    // Send wbentity query
+    WbEntity cityQuery = this.apiClient.getWebEntity(datavalue.value.id, country);
+    Entity cityEntity = cityQuery.entities.get(datavalue.value.id);
+    if (cityEntity == null) {
+      throw new ParserException("City query returned bad object");
+    }
+    // Get label
+    Label cityLabel = cityEntity.labels.get(country.toString().toLowerCase());
+    if (cityLabel == null) {
+      throw new ParserException("City query has no label");
+    }
+    if (cityLabel.value == null) {
+      throw new ParserException("City query has no label value");
+    }
+    return cityLabel.value;
+  }
+
+  /**
+   * <p>
+   * Fetch image from entity querying wikidata api
+   * </p>
+   * 
+   * @param entity
+   * @return String
+   * @throws ParserException
+   * @throws MetadataReceiverException
+   */
+
+  private String getImage(Entity entity) throws ParserException, MetadataReceiverException {
+    Datavalue datavalue = getDatavalueFromEntity(entity, propertyImage, 0);
+    if (datavalue == null) {
+      throw new ParserException("Image has no datavalue");
+    }
+    if (datavalue.type == null) {
+      throw new ParserException("Image has no datavalue type");
+    }
+    if (!datavalue.type.equals("string")) {
+      throw new ParserException("Image has type not equal to string");
+    }
+    if (datavalue.value == null) {
+      throw new ParserException("Image has no datavalue value");
+    }
+    if (datavalue.value.value == null) {
+      throw new ParserException("Image has no datavalue value id");
+    }
+    Imageinfo imginfo = this.apiClient.getImageInfo(datavalue.value.value);
+    if (imginfo.query == null) {
+      throw new ParserException("Imageinfo has no query");
+    }
+    Image page = imginfo.query.pages.get("-1");
+    if (page == null) {
+      throw new ParserException("Imageinfo has no page -1");
+    }
+    if (page.imageinfo.size() == 0) {
+      throw new ParserException("Imageinfo has imageinfo array with size 0");
+    }
+    ImageInfoUri info = page.imageinfo.get(0);
+    if (info.url == null) {
+      throw new ParserException("Imageinfo has no url");
+    }
+    return info.url;
+  }
+
+  /**
+   * <p>
+   * Retrieve category (occupation) from entity
+   * </p>
+   * 
+   * @param entity
+   * @param country
+   * @return Occupation
+   * @throws ParserException
+   * @throws MetadataReceiverException
+   */
+
+  private Occupation getOccupation(Entity entity, ISO3166 country) throws ParserException, MetadataReceiverException {
+    Datavalue datavalue = getDatavalueFromEntity(entity, propertyOccupation, 0);
+    if (datavalue == null) {
+      throw new ParserException("Occupation has no datavalue");
+    }
+    if (datavalue.type == null) {
+      throw new ParserException("Occupation has no datavalue type");
+    }
+    if (!datavalue.type.equals("wikibase-entityid")) {
+      throw new ParserException("Occupation has type not equal to wikibase-entityid");
+    }
+    if (datavalue.value == null) {
+      throw new ParserException("Occupation has no datavalue value");
+    }
+    if (datavalue.value.id == null) {
+      throw new ParserException("Occupation has no datavalue value id");
+    }
+    // Send wbentity query
+    WbEntity occupationQuery = this.apiClient.getWebEntity(datavalue.value.id, country);
+    Entity occupationEntity = occupationQuery.entities.get(datavalue.value.id);
+    if (occupationEntity == null) {
+      throw new ParserException("City query returned bad object");
+    }
+    // Get label
+    Label occupationLabel = occupationEntity.labels.get(country.toString().toLowerCase());
+    if (occupationLabel == null) {
+      throw new ParserException("City query has no label");
+    }
+    if (occupationLabel.value == null) {
+      throw new ParserException("City query has no label value");
+    }
+    return new Occupation(occupationLabel.value);
   }
 
   /**
@@ -320,17 +495,18 @@ public class WikiDataParser {
    * 
    * @param entity
    * @return boolean
+   * @throws ParserException
    */
 
   private boolean isWbEntityTopic(Entity entity) throws ParserException {
     if (!entity.claims.containsKey(properyInstanceOf)) {
       return false;
     }
-    ArrayList<Category> p31 = entity.claims.get(properyInstanceOf);
+    ArrayList<WbProperty> p31 = entity.claims.get(properyInstanceOf);
     // Iterate over p31
-    Iterator<Category> p31Iterator = p31.iterator();
+    Iterator<WbProperty> p31Iterator = p31.iterator();
     while (p31Iterator.hasNext()) {
-      Category category = p31Iterator.next();
+      WbProperty category = p31Iterator.next();
       if (category.mainsnak == null) {
         continue;
       }
@@ -439,7 +615,7 @@ public class WikiDataParser {
 
   /**
    * <p>
-   * Retrieve Datavalue object from entity. The index refers to Category List
+   * Retrieve Datavalue object from entity. The index refers to WbProperty List
    * </p>
    * 
    * @param entity
@@ -449,14 +625,14 @@ public class WikiDataParser {
    */
 
   private Datavalue getDatavalueFromEntity(Entity entity, String property, int index) {
-    ArrayList<Category> categoryEntries = entity.claims.get(property);
+    ArrayList<WbProperty> categoryEntries = entity.claims.get(property);
     if (categoryEntries == null) {
       return null;
     }
     if (categoryEntries.size() == 0) {
       return null;
     }
-    Category cat = categoryEntries.get(index);
+    WbProperty cat = categoryEntries.get(index);
     if (cat == null) {
       return null;
     }
