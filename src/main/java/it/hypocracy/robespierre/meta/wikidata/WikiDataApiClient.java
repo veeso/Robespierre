@@ -34,7 +34,7 @@ public class WikiDataApiClient {
   private HTTPFacade httpcli;
 
   private static String apiUri = "https://www.wikidata.org/w/api.php";
-  private static String searchUri = apiUri + "?format=json&action=query&list=search";
+  private static String searchUri = apiUri + "?format=json&action=query&list=search&srlimit=4";
   private static String wbentityUri = apiUri + "?format=json&action=wbgetentities";
   private static String imageinfoUri = apiUri + "?format=json&action=query&prop=imageinfo&iiprop=url";
 
