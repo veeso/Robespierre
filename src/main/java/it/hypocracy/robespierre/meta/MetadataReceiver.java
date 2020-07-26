@@ -13,6 +13,7 @@ package it.hypocracy.robespierre.meta;
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.meta.exceptions.CacheException;
 import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
+import it.hypocracy.robespierre.meta.exceptions.ParserException;
 
 public interface MetadataReceiver {
   
@@ -23,8 +24,9 @@ public interface MetadataReceiver {
    * @param article
    * @throws MetadataReceiverException
    * @throws CacheException
+   * @throws ParserException
    */
 
-  public void fetchMetadata(Article article) throws MetadataReceiverException, CacheException;
+  public void fetchMetadata(Article article) throws MetadataReceiverException, CacheException, ParserException;
 
 }
