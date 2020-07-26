@@ -46,8 +46,8 @@ public class Subject {
    * @param category
    */
 
-  public Subject(String id, String name, LocalDate birthdate, ISO3166 citizenship, String birthplace, String imageUri, String bio, String remoteId,
-      LocalDateTime lastUpdate, Occupation category) {
+  public Subject(String id, String name, LocalDate birthdate, ISO3166 citizenship, String birthplace, String imageUri,
+      String bio, String remoteId, LocalDateTime lastUpdate, Occupation category) {
     this.id = id;
     this.name = name;
     this.birthdate = birthdate;
@@ -75,8 +75,10 @@ public class Subject {
    * @param category
    */
 
-  public Subject(String name, LocalDate birthdate, ISO3166 citizenship, String birthplace, String imageUri, String bio, String remoteId, Occupation category) {
-    this(new Uuidv4().getUUIDv4(), name, birthdate, citizenship, birthplace, imageUri, bio, remoteId, LocalDateTime.now(), category);
+  public Subject(String name, LocalDate birthdate, ISO3166 citizenship, String birthplace, String imageUri, String bio,
+      String remoteId, Occupation category) {
+    this(new Uuidv4().getUUIDv4(), name, birthdate, citizenship, birthplace, imageUri, bio, remoteId,
+        LocalDateTime.now(), category);
   }
 
   // Getters

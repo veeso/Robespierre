@@ -16,9 +16,9 @@ import java.util.Map;
 public class Entity {
   
   public int pageid;
-  public String title;
+  public String title; // It's wikidata ID (QXXXXXX)
   public Map<String, Label> labels;
   public Map<String, Description> descriptions;
-  public Map<String, ArrayList<Category>> claims;
+  public Map<String, ArrayList<WbProperty>> claims;
 
 }

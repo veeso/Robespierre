@@ -43,7 +43,7 @@ public class WbEntityTest {
     assertNotNull(entity.claims.get("P69"));
     assertNotNull(entity.claims.get("P569"));
     //P69
-    Category p69 = entity.claims.get("P69").get(0);
+    WbProperty p69 = entity.claims.get("P69").get(0);
     assertNotNull(p69);
     assertNotNull(p69.mainsnak);
     Mainsnak mainsnak = p69.mainsnak;
@@ -55,7 +55,7 @@ public class WbEntityTest {
     assertNotNull(datavalueVal);
     assertEquals("Q3831942", datavalueVal.id);
     //P596
-    Category p569 = entity.claims.get("P569").get(0);
+    WbProperty p569 = entity.claims.get("P569").get(0);
     assertNotNull(p569);
     assertNotNull(p569.mainsnak);
     mainsnak = p569.mainsnak;

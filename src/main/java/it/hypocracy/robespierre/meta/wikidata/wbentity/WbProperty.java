@@ -10,7 +10,7 @@
 
 package it.hypocracy.robespierre.meta.wikidata.wbentity;
 
-public class Category {
+public class WbProperty {
   
   public Mainsnak mainsnak;
 
