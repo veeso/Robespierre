@@ -543,7 +543,30 @@ public class WikiDataParser {
    */
 
   private Topic wbEntityToTopic(Entity entity, ISO3166 country) throws ParserException {
-
+    // For topic we need to retrieve
+    // - name
+    // - description
+    final String language = country.toString().toLowerCase();
+    // Collect name from labels
+    Label label = entity.labels.get(language);
+    if (label == null) {
+      throw new ParserException("Label is null");
+    }
+    String name = label.value;
+    if (name == null) {
+      throw new ParserException("Label value is null");
+    }
+    // Get brief
+    Description description = entity.descriptions.get(language);
+    if (description == null) {
+      throw new ParserException("Description is null");
+    }
+    String brief = description.value;
+    if (brief == null) {
+      throw new ParserException("Description value is null");
+    }
+    // Instantiate topic
+    return new Topic(name, brief);
   }
 
   /**
