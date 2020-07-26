@@ -45,11 +45,11 @@ public class TestArticle {
   public void shouldAddSubjects() {
     ISO3166 language = new ISO3166("US");
     Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now(), language);
-    Category cat1 = new Category("politician");
-    Subject subject1 = new Subject("foo bar", LocalDate.of(1960, 5, 14), new ISO3166("US"), "foo bar is a nice person", "123", cat1);
+    Occupation cat1 = new Occupation("politician");
+    Subject subject1 = new Subject("foo bar", LocalDate.of(1960, 5, 14), new ISO3166("US"), "Footown", "myimg.gif", "foo bar is a nice person", "123", cat1);
     art.addSubject(subject1);
-    Category cat2 = new Category("influencer");
-    Subject subject2 = new Subject("mr ping", LocalDate.of(1993, 8, 12), new ISO3166("GB"), "mr ping has many followers", "444", cat2);
+    Occupation cat2 = new Occupation("influencer");
+    Subject subject2 = new Subject("mr ping", LocalDate.of(1993, 8, 12), new ISO3166("GB"), "Footown", "myimg.gif", "mr ping has many followers", "444", cat2);
     art.addSubject(subject2);
     assertTrue(art.iterSubjects().hasNext());
     //Iterate

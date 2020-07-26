@@ -22,10 +22,12 @@ public class Subject {
   protected String name;
   protected LocalDate birthdate;
   protected ISO3166 citizenship; // 2 chars
+  protected String birthplace; // City
+  protected String imageUri;
   protected String biography;
   private String remoteId; // Access id for metadata receiver
   private LocalDateTime lastUpdate; // Last information update
-  public Category category;
+  public Occupation category;
 
   /**
    * <p>
@@ -36,18 +38,22 @@ public class Subject {
    * @param name
    * @param birthdate
    * @param citizenship
+   * @param birthplace
+   * @param imageUri
    * @param bio
    * @param remoteId
    * @param lastUpdate
    * @param category
    */
 
-  public Subject(String id, String name, LocalDate birthdate, ISO3166 citizenship, String bio, String remoteId,
-      LocalDateTime lastUpdate, Category category) {
+  public Subject(String id, String name, LocalDate birthdate, ISO3166 citizenship, String birthplace, String imageUri, String bio, String remoteId,
+      LocalDateTime lastUpdate, Occupation category) {
     this.id = id;
     this.name = name;
     this.birthdate = birthdate;
     this.citizenship = citizenship;
+    this.birthplace = birthplace;
+    this.imageUri = imageUri;
     this.biography = bio;
     this.remoteId = remoteId;
     this.lastUpdate = lastUpdate;
@@ -62,13 +68,15 @@ public class Subject {
    * @param name
    * @param birthdate
    * @param citizenship
+   * @param birthplace
+   * @param imageUri
    * @param bio
    * @param remoteId
    * @param category
    */
 
-  public Subject(String name, LocalDate birthdate, ISO3166 citizenship, String bio, String remoteId, Category category) {
-    this(new Uuidv4().getUUIDv4(), name, birthdate, citizenship, bio, remoteId, LocalDateTime.now(), category);
+  public Subject(String name, LocalDate birthdate, ISO3166 citizenship, String birthplace, String imageUri, String bio, String remoteId, Occupation category) {
+    this(new Uuidv4().getUUIDv4(), name, birthdate, citizenship, birthplace, imageUri, bio, remoteId, LocalDateTime.now(), category);
   }
 
   // Getters
@@ -85,8 +93,16 @@ public class Subject {
     return this.birthdate;
   }
 
-  public String getCitizenship() {
-    return this.citizenship.toString();
+  public ISO3166 getCitizenship() {
+    return this.citizenship;
+  }
+
+  public String getBirthplace() {
+    return this.birthplace;
+  }
+
+  public String getImageUri() {
+    return this.imageUri;
   }
 
   public String getBiography() {

@@ -25,30 +25,32 @@ public class TestSubject {
    */
   @Test
   public void shouldInstantiateCategoryNew() {
-    Category cat = new Category("politician");
+    Occupation cat = new Occupation("politician");
     ISO3166 citizenship = new ISO3166("US");
-    Subject subject = new Subject("foo bar", LocalDate.of(1960, 5, 14), citizenship, "foo bar is a nice person", "123", cat);
-    assertEquals(subject.getId().length(), 36);
-    assertEquals(subject.getName(), "foo bar");
-    assertEquals(subject.getBiography(), "foo bar is a nice person");
-    assertEquals(subject.getBirthdate().getYear(), 1960);
-    assertEquals(subject.getRemoteId(), "123");
-    assertEquals(subject.getLastUpdate().getHour(), LocalDateTime.now().getHour());
-    assertEquals(subject.getCitizenship(), citizenship.toString());
+    Subject subject = new Subject("foo bar", LocalDate.of(1960, 5, 14), citizenship, "footown", "img.gif", "foo bar is a nice person", "123", cat);
+    assertEquals(36, subject.getId().length());
+    assertEquals("foo bar", subject.getName());
+    assertEquals("foo bar is a nice person", subject.getBiography());
+    assertEquals(1960, subject.getBirthdate().getYear());
+    assertEquals("123", subject.getRemoteId());
+    assertEquals("footown", subject.getBirthplace());
+    assertEquals("img.gif", subject.getImageUri());
+    assertEquals(LocalDateTime.now().getHour(), subject.getLastUpdate().getHour());
+    assertEquals(citizenship.toString(), subject.getCitizenship().toString());
   }
 
   @Test
   public void shouldInstantiateCategory() {
     String testId = "995b8b98-2103-4873-8457-c2d7436170c5";
-    Category cat = new Category("politician");
+    Occupation cat = new Occupation("politician");
     ISO3166 citizenship = new ISO3166("US");
-    Subject subject = new Subject(testId, "foo bar", LocalDate.of(1960, 5, 14), citizenship, "foo bar is a nice person", "123", LocalDateTime.of(2020, 6, 28, 12, 45, 54), cat);
-    assertEquals(subject.getId(), testId);
-    assertEquals(subject.getName(), "foo bar");
-    assertEquals(subject.getBiography(), "foo bar is a nice person");
-    assertEquals(subject.getBirthdate().getYear(), 1960);
-    assertEquals(subject.getRemoteId(), "123");
-    assertEquals(subject.getLastUpdate().getMonth(), Month.JUNE);
-    assertEquals(subject.getCitizenship(), citizenship.toString());
+    Subject subject = new Subject(testId, "foo bar", LocalDate.of(1960, 5, 14), citizenship, "footown", "img.gif", "foo bar is a nice person", "123", LocalDateTime.of(2020, 6, 28, 12, 45, 54), cat);
+    assertEquals(testId, subject.getId());
+    assertEquals("foo bar", subject.getName());
+    assertEquals("foo bar is a nice person", subject.getBiography());
+    assertEquals(1960, subject.getBirthdate().getYear());
+    assertEquals("123", subject.getRemoteId());
+    assertEquals(Month.JUNE, subject.getLastUpdate().getMonth());
+    assertEquals(citizenship.toString(), subject.getCitizenship().toString());
   }
 }

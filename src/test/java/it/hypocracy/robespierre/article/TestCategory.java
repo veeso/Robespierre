@@ -14,15 +14,15 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
- * Unit test for Category.
+ * Unit test for WbProperty.
  */
 public class TestCategory {
   /**
    * Check if a category is correctly instantiated
    */
   @Test
-  public void shouldInstantiateCategory() {
-    Category cat = new Category("politician");
+  public void shouldInstantiateWbProperty() {
+    Occupation cat = new Occupation("politician");
     assertEquals(cat.getName(), "politician");
   }
 
