@@ -16,6 +16,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 import it.hypocracy.robespierre.http.HTTPFacade;
@@ -23,6 +24,8 @@ import it.hypocracy.robespierre.http.HTTPResponse;
 import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
 import it.hypocracy.robespierre.meta.wikidata.imageinfo.Imageinfo;
 import it.hypocracy.robespierre.meta.wikidata.search.Search;
+import it.hypocracy.robespierre.meta.wikidata.wbentity.Datavalue;
+import it.hypocracy.robespierre.meta.wikidata.wbentity.DatavalueDeserializer;
 import it.hypocracy.robespierre.meta.wikidata.wbentity.WbEntity;
 import it.hypocracy.robespierre.utils.ISO3166;
 
@@ -104,7 +107,7 @@ public class WikiDataApiClient {
       HTTPResponse response = this.httpcli.get(uri);
       String strResponse = response.getStringBody();
       // Parse JSON
-      Gson jsonParser = new Gson();
+      Gson jsonParser = new GsonBuilder().registerTypeAdapter(Datavalue.class, new DatavalueDeserializer()).create();
       return jsonParser.fromJson(strResponse, WbEntity.class);
     } catch (IOException ex) {
       throw new MetadataReceiverException(ex.getMessage());
