@@ -27,7 +27,7 @@ public class Subject {
   protected String biography;
   private String remoteId; // Access id for metadata receiver
   private LocalDateTime lastUpdate; // Last information update
-  public Occupation category;
+  public Occupation occupation;
 
   /**
    * <p>
@@ -43,11 +43,11 @@ public class Subject {
    * @param bio
    * @param remoteId
    * @param lastUpdate
-   * @param category
+   * @param occupation
    */
 
   public Subject(String id, String name, LocalDate birthdate, ISO3166 citizenship, String birthplace, String imageUri,
-      String bio, String remoteId, LocalDateTime lastUpdate, Occupation category) {
+      String bio, String remoteId, LocalDateTime lastUpdate, Occupation occupation) {
     this.id = id;
     this.name = name;
     this.birthdate = birthdate;
@@ -57,7 +57,7 @@ public class Subject {
     this.biography = bio;
     this.remoteId = remoteId;
     this.lastUpdate = lastUpdate;
-    this.category = category;
+    this.occupation = occupation;
   }
 
   /**
@@ -72,13 +72,13 @@ public class Subject {
    * @param imageUri
    * @param bio
    * @param remoteId
-   * @param category
+   * @param occupation
    */
 
   public Subject(String name, LocalDate birthdate, ISO3166 citizenship, String birthplace, String imageUri, String bio,
-      String remoteId, Occupation category) {
+      String remoteId, Occupation occupation) {
     this(new Uuidv4().getUUIDv4(), name, birthdate, citizenship, birthplace, imageUri, bio, remoteId,
-        LocalDateTime.now(), category);
+        LocalDateTime.now(), occupation);
   }
 
   // Getters

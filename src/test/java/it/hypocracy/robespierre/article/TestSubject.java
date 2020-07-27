@@ -37,6 +37,7 @@ public class TestSubject {
     assertEquals("img.gif", subject.getImageUri());
     assertEquals(LocalDateTime.now().getHour(), subject.getLastUpdate().getHour());
     assertEquals(citizenship.toString(), subject.getCitizenship().toString());
+    assertEquals("politician", subject.occupation.getName());
   }
 
   @Test
@@ -52,5 +53,6 @@ public class TestSubject {
     assertEquals("123", subject.getRemoteId());
     assertEquals(Month.JUNE, subject.getLastUpdate().getMonth());
     assertEquals(citizenship.toString(), subject.getCitizenship().toString());
+    assertEquals("politician", subject.occupation.getName());
   }
 }

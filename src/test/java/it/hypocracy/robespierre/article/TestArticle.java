@@ -59,10 +59,10 @@ public class TestArticle {
       Subject next = it.next();
       if (idx == 0) {
         assertEquals(next.getName(), subject1.getName());
-        assertEquals(next.category.getName(), cat1.getName());
+        assertEquals(next.occupation.getName(), cat1.getName());
       } else {
         assertEquals(next.getName(), subject2.getName());
-        assertEquals(next.category.getName(), cat2.getName());
+        assertEquals(next.occupation.getName(), cat2.getName());
       }
       idx++;
     }
