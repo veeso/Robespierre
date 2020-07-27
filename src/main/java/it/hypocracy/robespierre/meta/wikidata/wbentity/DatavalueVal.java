@@ -13,6 +13,7 @@ package it.hypocracy.robespierre.meta.wikidata.wbentity;
 public class DatavalueVal {
   
   public String id = null;
+  public String text = null;
   public String time = null;
   public String value = null;
   

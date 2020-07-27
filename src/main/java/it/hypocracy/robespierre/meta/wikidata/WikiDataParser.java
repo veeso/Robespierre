@@ -49,6 +49,7 @@ public class WikiDataParser {
   private static final String propertyImage = "P18";
   private static final String propertyOccupation = "P106";
   private static final String propertyIso3166 = "P297";
+  private static final String propertyOfficialName = "P1448";
 
   // IDs
   private static final String idHuman = "Q5";
@@ -207,7 +208,7 @@ public class WikiDataParser {
     if (label == null) {
       throw new ParserException("Label is null");
     }
-    String name = label.value;
+    String name = label.value.toLowerCase();
     if (name == null) {
       throw new ParserException("Label value is null");
     }
@@ -216,7 +217,7 @@ public class WikiDataParser {
     if (description == null) {
       throw new ParserException("Description is null");
     }
-    String brief = description.value;
+    String brief = description.value.toLowerCase();
     if (brief == null) {
       throw new ParserException("Description value is null");
     }
@@ -225,7 +226,7 @@ public class WikiDataParser {
     // Get citizenship
     ISO3166 citizenship = getCitizenship(entity, country);
     // Get birthplace
-    String birthplace = getBirthplace(entity, country);
+    String birthplace = getBirthplace(entity, citizenship);
     // Get image
     String imageUri = getImage(entity);
     // occupation
@@ -303,12 +304,13 @@ public class WikiDataParser {
       throw new ParserException("Citizenship has no datavalue value id");
     }
     // Send wbentity query
-    WbEntity countryQuery = this.apiClient.getWebEntity(datavalue.value.id, country);
-    Entity countryEntity = countryQuery.entities.get(datavalue.value.id);
+    String countryId = datavalue.value.id;
+    WbEntity countryQuery = this.apiClient.getWebEntity(countryId, country);
+    Entity countryEntity = countryQuery.entities.get(countryId);
     if (countryEntity == null) {
       throw new ParserException("Country query returned bad object");
     }
-    Datavalue countryDatavalue = getDatavalueFromEntity(entity, propertyIso3166, 0);
+    Datavalue countryDatavalue = getDatavalueFromEntity(countryEntity, propertyIso3166, 0);
     if (countryDatavalue == null) {
       throw new ParserException("Country entity has no datavalue");
     }
@@ -330,7 +332,8 @@ public class WikiDataParser {
 
   /**
    * <p>
-   * Retrieve birthplace from entity
+   * Retrieve birthplace from entity. The provided country must be the citizenship
+   * of the subject
    * </p>
    * 
    * @param entity
@@ -363,15 +366,27 @@ public class WikiDataParser {
     if (cityEntity == null) {
       throw new ParserException("City query returned bad object");
     }
-    // Get label
-    Label cityLabel = cityEntity.labels.get(country.toString().toLowerCase());
-    if (cityLabel == null) {
-      throw new ParserException("City query has no label");
+    // Try with official name
+    Datavalue officialName = getDatavalueFromEntity(cityEntity, propertyOfficialName, 0);
+    if (officialName != null) {
+      if (officialName.value == null) {
+        throw new ParserException("Birthplace has no officialname value");
+      }
+      if (officialName.value.text == null) {
+        throw new ParserException("Birthplace has no officialname text value");
+      }
+      return officialName.value.text.toLowerCase();
+    } else {
+      // Get label otherwise
+      Label cityLabel = cityEntity.labels.get(country.toString().toLowerCase());
+      if (cityLabel == null) {
+        throw new ParserException("City query has no label");
+      }
+      if (cityLabel.value == null) {
+        throw new ParserException("City query has no label value");
+      }
+      return cityLabel.value.toLowerCase();
     }
-    if (cityLabel.value == null) {
-      throw new ParserException("City query has no label value");
-    }
-    return cityLabel.value;
   }
 
   /**
@@ -463,7 +478,7 @@ public class WikiDataParser {
     if (occupationLabel.value == null) {
       throw new ParserException("City query has no label value");
     }
-    return new Occupation(occupationLabel.value);
+    return new Occupation(occupationLabel.value.toLowerCase());
   }
 
   /**
@@ -552,7 +567,7 @@ public class WikiDataParser {
     if (label == null) {
       throw new ParserException("Label is null");
     }
-    String name = label.value;
+    String name = label.value.toLowerCase();
     if (name == null) {
       throw new ParserException("Label value is null");
     }
@@ -561,7 +576,7 @@ public class WikiDataParser {
     if (description == null) {
       throw new ParserException("Description is null");
     }
-    String brief = description.value;
+    String brief = description.value.toLowerCase();
     if (brief == null) {
       throw new ParserException("Description value is null");
     }
