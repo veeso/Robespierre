@@ -21,9 +21,9 @@ public class Subject {
   private String id; // UUIDv4
   protected String name;
   protected LocalDate birthdate;
-  protected ISO3166 citizenship; // 2 chars
-  protected String birthplace; // City
-  protected String imageUri;
+  protected ISO3166 citizenship; // 2 chars or null
+  protected String birthplace; // City or null
+  protected String imageUri; // Can be null
   protected String biography;
   private String remoteId; // Access id for metadata receiver
   private LocalDateTime lastUpdate; // Last information update

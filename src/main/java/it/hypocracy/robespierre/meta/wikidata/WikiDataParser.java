@@ -226,7 +226,8 @@ public class WikiDataParser {
     // Get citizenship
     ISO3166 citizenship = getCitizenship(entity, country);
     // Get birthplace
-    String birthplace = getBirthplace(entity, citizenship);
+    ISO3166 cityCountry = (citizenship != null) ? citizenship : country;
+    String birthplace = getBirthplace(entity, cityCountry);
     // Get image
     String imageUri = getImage(entity);
     // occupation
@@ -250,7 +251,7 @@ public class WikiDataParser {
   private LocalDateTime getBirthdate(Entity entity) throws ParserException {
     Datavalue datavalue = getDatavalueFromEntity(entity, propertyBirthdate, 0);
     if (datavalue == null) {
-      throw new ParserException("Property Birthdate has no datavalue");
+      return null;
     }
     if (datavalue.type == null) {
       throw new ParserException("Property Birthdate has no datavalue type");
@@ -312,7 +313,7 @@ public class WikiDataParser {
     }
     Datavalue countryDatavalue = getDatavalueFromEntity(countryEntity, propertyIso3166, 0);
     if (countryDatavalue == null) {
-      throw new ParserException("Country entity has no datavalue");
+      return null; // There's no property and could be ok
     }
     if (countryDatavalue.type == null) {
       throw new ParserException("Country entity has no datavalue type");
@@ -346,7 +347,7 @@ public class WikiDataParser {
   private String getBirthplace(Entity entity, ISO3166 country) throws ParserException, MetadataReceiverException {
     Datavalue datavalue = getDatavalueFromEntity(entity, propertyBirthplace, 0);
     if (datavalue == null) {
-      throw new ParserException("Birthplace has no datavalue");
+      return null;
     }
     if (datavalue.type == null) {
       throw new ParserException("Birthplace has no datavalue type");
@@ -380,7 +381,7 @@ public class WikiDataParser {
       // Get label otherwise
       Label cityLabel = cityEntity.labels.get(country.toString().toLowerCase());
       if (cityLabel == null) {
-        throw new ParserException("City query has no label");
+        return null;
       }
       if (cityLabel.value == null) {
         throw new ParserException("City query has no label value");
@@ -403,7 +404,7 @@ public class WikiDataParser {
   private String getImage(Entity entity) throws ParserException, MetadataReceiverException {
     Datavalue datavalue = getDatavalueFromEntity(entity, propertyImage, 0);
     if (datavalue == null) {
-      throw new ParserException("Image has no datavalue");
+      return null;
     }
     if (datavalue.type == null) {
       throw new ParserException("Image has no datavalue type");
