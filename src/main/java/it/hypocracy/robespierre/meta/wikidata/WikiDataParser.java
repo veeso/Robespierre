@@ -11,7 +11,6 @@
 package it.hypocracy.robespierre.meta.wikidata;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,6 +49,7 @@ public class WikiDataParser {
   private static final String propertyOccupation = "P106";
   private static final String propertyIso3166 = "P297";
   private static final String propertyOfficialName = "P1448";
+  private static final String propertyIsDead = "P570";
 
   // IDs
   private static final String idHuman = "Q5";
@@ -202,6 +202,11 @@ public class WikiDataParser {
     // - Occupation
     // - Remote ID (entity.title)
 
+    // First, check if human entity is dead, because if it is, ignore it...
+    if (isHumanDead(entity)) {
+      return null;
+    }
+    // Okay it's alive, let's parse it...
     final String language = country.toString().toLowerCase();
     // Collect name from labels
     Label label = entity.labels.get(language);
@@ -222,7 +227,7 @@ public class WikiDataParser {
       throw new ParserException("Description value is null");
     }
     // Get birthdate
-    LocalDate birthdate = getBirthdate(entity).toLocalDate();
+    LocalDate birthdate = getBirthdate(entity);
     // Get citizenship
     ISO3166 citizenship = getCitizenship(entity, country);
     // Get birthplace
@@ -240,6 +245,18 @@ public class WikiDataParser {
 
   /**
    * <p>
+   * Checks whether a certain human is dead
+   * </p>
+   * @param entity
+   * @return boolean
+   */
+
+  private boolean isHumanDead(Entity entity) {
+    return getDatavalueFromEntity(entity, propertyIsDead, 0) != null;
+  }
+
+  /**
+   * <p>
    * Retrieve birthdate from entity
    * </p>
    * 
@@ -248,7 +265,7 @@ public class WikiDataParser {
    * @throws ParserException
    */
 
-  private LocalDateTime getBirthdate(Entity entity) throws ParserException {
+  private LocalDate getBirthdate(Entity entity) throws ParserException {
     Datavalue datavalue = getDatavalueFromEntity(entity, propertyBirthdate, 0);
     if (datavalue == null) {
       return null;
@@ -266,7 +283,7 @@ public class WikiDataParser {
       }
       // Parse ISO8601
       try {
-        return ISO8601.toLocalDateTime(value.time);
+        return ISO8601.toLocalDateTime(value.time).toLocalDate();
       } catch (DateTimeParseException ex) {
         throw new ParserException("Property Birthdate has invalid ISO8601 value");
       }
