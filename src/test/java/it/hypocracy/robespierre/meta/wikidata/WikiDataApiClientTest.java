@@ -31,7 +31,7 @@ public class WikiDataApiClientTest {
   public void shouldQuery() throws MetadataReceiverException {
     WikiDataApiClient cli = new WikiDataApiClient();
     // Make search
-    Search search = cli.search("alberto angela");
+    Search search = cli.search("alberto angela", 4);
     // Should have query
     assertNotNull(search.query);
     // Query length should be 4

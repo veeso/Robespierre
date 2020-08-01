@@ -34,7 +34,7 @@ public class WikiDataApiClient {
   private HTTPFacade httpcli;
 
   private static String apiUri = "https://www.wikidata.org/w/api.php";
-  private static String searchUri = apiUri + "?format=json&action=query&list=search&srlimit=4";
+  private static String searchUri = apiUri + "?format=json&action=query&list=search";
   private static String wbentityUri = apiUri + "?format=json&action=wbgetentities";
   private static String imageinfoUri = apiUri + "?format=json&action=query&prop=imageinfo&iiprop=url";
 
@@ -55,13 +55,17 @@ public class WikiDataApiClient {
    * </p>
    * 
    * @param what
+   * @param maxResults
    * @return Search
    * @throws MetadataReceiverException
    */
 
-  public Search search(String what) throws MetadataReceiverException {
+  public Search search(String what, int maxResults) throws MetadataReceiverException {
     StringBuilder uriBuilder = new StringBuilder();
     uriBuilder.append(searchUri);
+    // Max results
+    uriBuilder.append("&srlimit=");
+    uriBuilder.append(maxResults);
     // Action query and URL Encode query
     uriBuilder.append("&srsearch=");
     uriBuilder.append(URLEncoder.encode(what, StandardCharsets.UTF_8));
