@@ -12,6 +12,7 @@ package it.hypocracy.robespierre.meta;
 
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.meta.exceptions.CacheException;
+import it.hypocracy.robespierre.meta.search.SearchEntity;
 
 /**
  * <p>
@@ -29,6 +30,6 @@ public interface CacheProvider {
    * @return true if what was matched
    * @throws CacheException
    */
-  public boolean fetchCachedValues(Article article, String what) throws CacheException;
+  public boolean fetchCachedValues(Article article, SearchEntity what) throws CacheException;
 
 }

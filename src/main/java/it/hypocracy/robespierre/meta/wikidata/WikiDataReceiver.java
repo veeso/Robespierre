@@ -10,9 +10,7 @@
 
 package it.hypocracy.robespierre.meta.wikidata;
 
-import java.util.ArrayDeque;
 import java.util.Iterator;
-import java.util.Queue;
 
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.meta.CacheProvider;
@@ -20,6 +18,9 @@ import it.hypocracy.robespierre.meta.MetadataReceiver;
 import it.hypocracy.robespierre.meta.exceptions.CacheException;
 import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
 import it.hypocracy.robespierre.meta.exceptions.ParserException;
+import it.hypocracy.robespierre.meta.search.SearchBuilder;
+import it.hypocracy.robespierre.meta.search.SearchEntity;
+import it.hypocracy.robespierre.meta.search.SearchTarget;
 import it.hypocracy.robespierre.meta.wikidata.search.QueryResult;
 import it.hypocracy.robespierre.meta.wikidata.search.Search;
 import it.hypocracy.robespierre.meta.wikidata.wbentity.WbEntity;
@@ -27,6 +28,7 @@ import it.hypocracy.robespierre.meta.wikidata.wbentity.WbEntity;
 public class WikiDataReceiver implements MetadataReceiver {
 
   private CacheProvider cache;
+  private SearchBuilder searchBuilder;
 
   /**
    * <p>
@@ -38,6 +40,7 @@ public class WikiDataReceiver implements MetadataReceiver {
 
   public WikiDataReceiver(CacheProvider cache) {
     this.cache = cache;
+    this.searchBuilder = new SearchBuilder();
   }
 
   /**
@@ -54,8 +57,8 @@ public class WikiDataReceiver implements MetadataReceiver {
   @Override
   public void fetchMetadata(Article article) throws MetadataReceiverException, CacheException, ParserException {
     // Keep only letters, all to lowercase and split by spaces
-    String[] titleWords = article.getTitle().replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
-    String[] briefWords = article.getBrief().replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+    String[] titleWords = article.getTitle().split("\\s+");
+    String[] briefWords = article.getBrief().split("\\s+");
     // Fetch words collections
     fetchMetadataFromWords(article, titleWords);
     fetchMetadataFromWords(article, briefWords);
@@ -77,34 +80,11 @@ public class WikiDataReceiver implements MetadataReceiver {
 
   private void fetchMetadataFromWords(Article article, String[] words)
       throws MetadataReceiverException, CacheException, ParserException {
+    // Build Search Entity
+    SearchEntity[] searchEntities = searchBuilder.buildSearchForSubjectsAndTopics(words);
     // Iterate over words
-    Queue<String> doubleQueue = new ArrayDeque<>();
-    Queue<String> tripleQueue = new ArrayDeque<>();
-    for (String word : words) {
-      if (doubleQueue.size() >= 2) {
-        doubleQueue.poll();
-      }
-      if (tripleQueue.size() >= 3) {
-        tripleQueue.poll();
-      }
-      doubleQueue.add(word);
-      tripleQueue.add(word);
-      // Search starting from double, then go to single and then to triple
-      if (doubleQueue.size() == 2) {
-        if (fetchMetadataFromText(article, String.join(" ", doubleQueue))) {
-          continue; // Ok
-        }
-      }
-      // Try single word
-      if (fetchMetadataFromText(article, word)) {
-        continue; // Ok
-      }
-      // Try with triple...
-      if (tripleQueue.size() == 3) {
-        if (fetchMetadataFromText(article, String.join(" ", tripleQueue))) {
-          continue; // Ok
-        }
-      }
+    for (SearchEntity search : searchEntities) {
+      fetchMetadataFromText(article, search);
     }
   }
 
@@ -122,15 +102,15 @@ public class WikiDataReceiver implements MetadataReceiver {
    * @throws ParserException
    */
 
-  private boolean fetchMetadataFromText(Article article, String text) throws MetadataReceiverException, CacheException, ParserException {
+  private boolean fetchMetadataFromText(Article article, SearchEntity search) throws MetadataReceiverException, CacheException, ParserException {
     if (this.cache != null) {
       // Search through cache
-      if (this.cache.fetchCachedValues(article, text)) {
+      if (this.cache.fetchCachedValues(article, search)) {
         return true;
       }
     }
     // Search
-    return processWikiDataQuery(article, text);
+    return processWikiDataQuery(article, search);
   }
 
   // @! Processor
@@ -147,10 +127,12 @@ public class WikiDataReceiver implements MetadataReceiver {
    * @throws ParserException
    */
 
-  private boolean processWikiDataQuery(Article article, String query) throws MetadataReceiverException, ParserException {
+  private boolean processWikiDataQuery(Article article, SearchEntity search) throws MetadataReceiverException, ParserException {
     // First search query argument
     WikiDataApiClient apiClient = new WikiDataApiClient();
-    Search searchResult = apiClient.search(query);
+    // Get max resulte from target
+    final int maxResults = search.getTarget() == SearchTarget.SUBJECT ? 4 : 1;
+    Search searchResult = apiClient.search(search.getSearch(), maxResults);
     if (searchResult.query == null) {
       return false;
     }
