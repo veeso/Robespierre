@@ -15,11 +15,15 @@ public class SearchState {
   public boolean lastWordCapital; // Last word began with capital letter
   public boolean wordCapital;
   public boolean endsWithPunctuation;
+  public boolean quoted;
+  public boolean wasQuoted;
 
   public SearchState() {
     this.lastWordCapital = false;
     this.wordCapital = false;
     this.endsWithPunctuation = false;
+    this.quoted = false;
+    this.wasQuoted = false;
   }
 
   /**
@@ -32,6 +36,8 @@ public class SearchState {
     this.lastWordCapital = false;
     this.wordCapital = false;
     this.endsWithPunctuation = false;
+    this.quoted = false;
+    this.wasQuoted = false;
   }
 
   /**

@@ -23,6 +23,8 @@ public class SearchStateTest {
     assertFalse(states.endsWithPunctuation);
     assertFalse(states.lastWordCapital);
     assertFalse(states.wordCapital);
+    assertFalse(states.quoted);
+    assertFalse(states.wasQuoted);
     // Set true
     states.endsWithPunctuation = true;
     states.wordCapital = true;
@@ -30,14 +32,19 @@ public class SearchStateTest {
     assertTrue(states.lastWordCapital);
     assertFalse(states.endsWithPunctuation);
     assertFalse(states.wordCapital);
+    assertFalse(states.wordCapital);
     // Reset states
     states.endsWithPunctuation = true;
     states.wordCapital = true;
     states.lastWordCapital = true;
+    states.quoted = true;
+    states.wasQuoted = true;
     states.resetState();
     assertFalse(states.endsWithPunctuation);
     assertFalse(states.lastWordCapital);
     assertFalse(states.wordCapital);
+    assertFalse(states.quoted);
+    assertFalse(states.wasQuoted);
   }
 
 }
