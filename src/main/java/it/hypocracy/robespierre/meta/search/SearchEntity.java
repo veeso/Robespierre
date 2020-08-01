@@ -13,9 +13,11 @@ package it.hypocracy.robespierre.meta.search;
 public class SearchEntity {
 
   private String search;
+  private SearchTarget target;
 
-  public SearchEntity(String search) {
+  public SearchEntity(String search, SearchTarget target) {
     this.search = search;
+    this.target = target;
   }
 
   /**
@@ -28,6 +30,17 @@ public class SearchEntity {
 
   public String getSearch() {
     return this.search;
+  }
+
+  /**
+   * <p>
+   * Return search target
+   * </p>
+   * @return SearchTarget
+   */
+
+  public SearchTarget getTarget() {
+    return this.target;
   }
 
 }

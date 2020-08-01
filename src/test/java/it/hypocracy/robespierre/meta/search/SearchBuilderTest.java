@@ -33,13 +33,21 @@ public class SearchBuilderTest {
     assertEquals(8, entities.length);
     // Check search
     assertEquals("Elizabeth Woolridge Grant", entities[0].getSearch());
+    assertEquals(SearchTarget.SUBJECT, entities[0].getTarget());
     assertEquals("is", entities[1].getSearch());
+    assertEquals(SearchTarget.TOPIC, entities[1].getTarget());
     assertEquals("known", entities[2].getSearch());
+    assertEquals(SearchTarget.TOPIC, entities[2].getTarget());
     assertEquals("by", entities[3].getSearch());
+    assertEquals(SearchTarget.TOPIC, entities[3].getTarget());
     assertEquals("her", entities[4].getSearch());
+    assertEquals(SearchTarget.TOPIC, entities[4].getTarget());
     assertEquals("stage", entities[5].getSearch());
+    assertEquals(SearchTarget.TOPIC, entities[5].getTarget());
     assertEquals("name", entities[6].getSearch());
+    assertEquals(SearchTarget.TOPIC, entities[6].getTarget());
     assertEquals("Lana Del Rey", entities[7].getSearch());
+    assertEquals(SearchTarget.SUBJECT, entities[7].getTarget());
   }
 
   @Test

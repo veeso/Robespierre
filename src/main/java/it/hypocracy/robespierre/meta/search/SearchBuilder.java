@@ -88,7 +88,7 @@ public class SearchBuilder {
       if (! states.wasQuoted && ! states.quoted) {
         if (states.lastWordCapital && !states.wordCapital) { // Rule 2 (Subject)
           // First create entitiy
-          entities.push(new SearchEntity(bufferToString(buffer)));
+          entities.push(new SearchEntity(bufferToString(buffer), SearchTarget.SUBJECT));
           // Reset buffer
           buffer.clear();
           // Reset state
@@ -99,7 +99,8 @@ public class SearchBuilder {
           // Push word to buffer
           buffer.push(word);
           // First create entitiy
-          entities.push(new SearchEntity(bufferToString(buffer)));
+          SearchTarget target = states.wordCapital ? SearchTarget.SUBJECT : SearchTarget.TOPIC;
+          entities.push(new SearchEntity(bufferToString(buffer), target));
           // Reset buffer
           buffer.clear();
           // Reset state
@@ -109,8 +110,9 @@ public class SearchBuilder {
         } else if (states.endsWithPunctuation || idx + 1 == words.length) { // Rule 1
           // Push word to buffer
           buffer.push(word);
-          // First create entitiy
-          entities.push(new SearchEntity(bufferToString(buffer)));
+          // Create entity
+          SearchTarget target = states.wordCapital ? SearchTarget.SUBJECT : SearchTarget.TOPIC;
+          entities.push(new SearchEntity(bufferToString(buffer), target));
           // Reset buffer
           buffer.clear();
           // Reset state
@@ -121,7 +123,7 @@ public class SearchBuilder {
           // Push word to buffer
           buffer.push(word);
           // First create entitiy
-          entities.push(new SearchEntity(bufferToString(buffer)));
+          entities.push(new SearchEntity(bufferToString(buffer), SearchTarget.TOPIC));
           // Reset buffer
           buffer.clear();
           // Reset state
@@ -141,7 +143,7 @@ public class SearchBuilder {
         // Push word to buffer
         buffer.push(word);
         // First create entitiy
-        entities.push(new SearchEntity(bufferToString(buffer)));
+        entities.push(new SearchEntity(bufferToString(buffer), SearchTarget.TOPIC));
         // Reset buffer
         buffer.clear();
         // Reset state
