@@ -10,11 +10,15 @@
     "sources": [
       {
         "uri": "http://example.com/rss",
-        "country": "IT"
+        "country": "IT",
+        "interval": 360
       }
     ]
   },
   "metadata": {
-    "engine": "wikidata"
+    "engine": "wikidata",
+    "cache": {
+      "duration": 180
+    }
   }
 }

@@ -25,9 +25,9 @@ import it.hypocracy.robespierre.config.exceptions.BadConfigException;
 
 public class ConfigParserTest {
 
-  public static String configTest = "{\"database\":{\"engine\":\"mariadb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"engine\":\"rss\",\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\"},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\"}]},\"metadata\":{\"engine\":\"wikidata\"}}";
+  public static String configTest = "{\"database\":{\"engine\":\"mariadb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"engine\":\"rss\",\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\",\"interval\":360},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\",\"interval\":240}]},\"metadata\":{\"engine\":\"wikidata\",\"cache\":{\"duration\":180}}}";
   public static String filePath = null;
-  public static String badConfigTest = "{\"database\":{\"engine\":\"nodb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"engine\":\"rss\",\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\"},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\"}]},\"metadata\":{\"engine\":\"wikidata\"}}";
+  public static String badConfigTest = "{\"database\":{\"engine\":\"nodb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"engine\":\"rss\",\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\",\"interval\":360},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\",\"interval\":240}]},\"metadata\":{\"engine\":\"wikidata\",\"cache\":{\"duration\":180}}}";
   public static String badFilePath = null;
 
   @BeforeClass
@@ -62,19 +62,22 @@ public class ConfigParserTest {
     Config config = parser.parse(filePath);
     // Verify configuration parameter
     // Database
-    assertEquals(config.database.engine, "mariadb");
-    assertEquals(config.database.uri, "jdbc:mariadb://localhost:3306/robespierre");
-    assertEquals(config.database.user, "root");
+    assertEquals("mariadb", config.database.engine);
+    assertEquals("jdbc:mariadb://localhost:3306/robespierre", config.database.uri);
+    assertEquals("root", config.database.user);
     assertTrue(config.database.password == null);
     // Feed
-    assertEquals(config.feed.engine, "rss");
-    assertEquals(config.feed.sources.size(), 2);
-    assertEquals(config.feed.sources.get(0).uri, "http://example.com/rss");
-    assertEquals(config.feed.sources.get(0).country, "IT");
-    assertEquals(config.feed.sources.get(1).uri, "http://news.com/rss");
-    assertEquals(config.feed.sources.get(1).country, "EN");
+    assertEquals("rss", config.feed.engine);
+    assertEquals(2, config.feed.sources.size());
+    assertEquals("http://example.com/rss", config.feed.sources.get(0).uri);
+    assertEquals("IT", config.feed.sources.get(0).country);
+    assertEquals(360, config.feed.sources.get(0).interval);
+    assertEquals("http://news.com/rss", config.feed.sources.get(1).uri);
+    assertEquals("EN", config.feed.sources.get(1).country);
+    assertEquals(240, config.feed.sources.get(1).interval);
     // Metadata
-    assertEquals(config.metadata.engine, "wikidata");
+    assertEquals("wikidata", config.metadata.engine);
+    assertEquals(180, config.metadata.cache.duration);
   }
 
   @Test

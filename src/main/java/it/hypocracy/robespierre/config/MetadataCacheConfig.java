@@ -12,21 +12,14 @@ package it.hypocracy.robespierre.config;
 
 import it.hypocracy.robespierre.config.exceptions.BadConfigException;
 
-public class MetadataConfig implements BaseConfig {
+public class MetadataCacheConfig implements BaseConfig {
 
-  public String engine;
-  public MetadataCacheConfig cache;
+  public int duration = 0; // Days
 
   @Override
   public void check() throws BadConfigException {
-    if (engine == null) {
-      throw new BadConfigException("metadata 'engine' is null");
-    }
-    if (cache == null) {
-      throw new BadConfigException("metadata 'cache' is null");
-    }
-    if (!engine.equals("wikidata")) {
-      throw new BadConfigException("Unknown metadata engine");
+    if (duration <= 0) {
+      throw new BadConfigException("metadata cache 'duration' is invalid");
     }
   }
 

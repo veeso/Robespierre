@@ -16,6 +16,7 @@ public class FeedSourceConfig implements BaseConfig {
 
   public String uri;
   public String country;
+  public int interval = 0; // Minutes
 
   @Override
   public void check() throws BadConfigException {
@@ -24,6 +25,9 @@ public class FeedSourceConfig implements BaseConfig {
     }
     if (country == null) {
       throw new BadConfigException("feed source 'country' is null");
+    }
+    if (interval <= 0) {
+      throw new BadConfigException("feed source 'interval' is invalid");
     }
   }
 
