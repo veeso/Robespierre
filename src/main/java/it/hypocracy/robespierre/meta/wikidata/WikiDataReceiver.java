@@ -146,7 +146,7 @@ public class WikiDataReceiver implements MetadataReceiver {
         continue;
       }
       String wikimediaId = queryResultEntry.title;
-      WbEntity wbEntity = apiClient.getWebEntity(wikimediaId, article.getLanguage());
+      WbEntity wbEntity = apiClient.getWebEntity(wikimediaId, article.getCountry());
       if (parser.parseWbEntity(wbEntity, wikimediaId, article)) {
         return true;
       } else {

@@ -26,7 +26,7 @@ public class Article {
   protected URI link;
   protected LocalDateTime date;
   protected ArticleState state;
-  protected ISO3166 language;
+  protected ISO3166 country;
 
   protected ArrayList<Subject> subjects; // Involved subjects
   protected ArrayList<Topic> topics; // Involved topics
@@ -50,7 +50,7 @@ public class Article {
     this.date = date;
     this.subjects = new ArrayList<Subject>();
     this.topics = new ArrayList<Topic>();
-    this.language = lang;
+    this.country = lang;
   }
 
   public String getId() {
@@ -73,8 +73,8 @@ public class Article {
     return this.date;
   }
 
-  public ISO3166 getLanguage() {
-    return this.language;
+  public ISO3166 getCountry() {
+    return this.country;
   }
 
   /**

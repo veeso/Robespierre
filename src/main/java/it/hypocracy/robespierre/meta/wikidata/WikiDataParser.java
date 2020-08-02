@@ -103,7 +103,7 @@ public class WikiDataParser {
     // Check if it is human
     if (isWbEntityHuman(entity)) {
       // Instantiate a subject from Human
-      Subject articleSubject = wbEntityToSubject(entity, article.getLanguage());
+      Subject articleSubject = wbEntityToSubject(entity, article.getCountry());
       // If subject is null, return false
       if (articleSubject == null) {
         return false;
@@ -117,7 +117,7 @@ public class WikiDataParser {
       return true; // Return true anyway
     } else if (isWbEntityTopic(entity)) {
       // Retrieve topic parameters
-      Topic articleTopic = wbEntityToTopic(entity, article.getLanguage());
+      Topic articleTopic = wbEntityToTopic(entity, article.getCountry());
       // If topic is null, return false
       if (articleTopic == null) {
         return false;

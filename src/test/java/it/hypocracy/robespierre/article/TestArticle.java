@@ -26,15 +26,15 @@ public class TestArticle {
   
   @Test
   public void shouldInstantiateArticle() {
-    ISO3166 language = new ISO3166("US");
-    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now(), language);
+    ISO3166 country = new ISO3166("US");
+    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now(), country);
     //Verify constructor
     assertEquals(36, art.getId().length());
     assertEquals("foo", art.getTitle());
     assertEquals("bar", art.getBrief());
     assertEquals(URI.create("http://news.com/all-dead-all-dead.html"), art.getLink());
     assertEquals(LocalDateTime.now().getMonth(), art.getDate().getMonth());
-    assertEquals(language.toString(), art.getLanguage().toString());
+    assertEquals(country.toString(), art.getCountry().toString());
 
     //Topics + subjects should be empty
     assertTrue(! art.iterSubjects().hasNext());
@@ -43,8 +43,8 @@ public class TestArticle {
 
   @Test
   public void shouldAddSubjects() {
-    ISO3166 language = new ISO3166("US");
-    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now(), language);
+    ISO3166 country = new ISO3166("US");
+    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now(), country);
     Occupation cat1 = new Occupation("politician");
     Subject subject1 = new Subject("foo bar", LocalDate.of(1960, 5, 14), new ISO3166("US"), "Footown", "myimg.gif", "foo bar is a nice person", "123", cat1);
     art.addSubject(subject1);
@@ -70,8 +70,8 @@ public class TestArticle {
 
   @Test
   public void shouldAddTopics() {
-    ISO3166 language = new ISO3166("US");
-    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now(), language);
+    ISO3166 country = new ISO3166("US");
+    Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now(), country);
     Topic topic1 = new Topic("test", "this is a test topic");
     art.addTopic(topic1);
     Topic topic2 = new Topic("test 2", "this is a test topic");

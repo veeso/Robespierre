@@ -61,7 +61,7 @@ public class ArticleAssemblerTest {
     assertEquals(26, article.getDate().getMinute());
     assertEquals(32, article.getDate().getSecond());
     assertEquals(URI.create("https://example.com/news/alberto_angela_vegan"), article.getLink());
-    assertEquals("IT", article.getLanguage().toString());
+    assertEquals("IT", article.getCountry().toString());
     // Verify subjects
     // Verify article subjects
     Iterator<Subject> subjects = article.iterSubjects();
