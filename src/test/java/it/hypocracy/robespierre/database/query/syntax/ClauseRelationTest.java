@@ -18,8 +18,8 @@ public class ClauseRelationTest {
 
   @Test
   public void shouldReturnCorrectString() {
-    assertEquals(ClauseRelation.AND.toString(), "AND");
-    assertEquals(ClauseRelation.OR.toString(), "OR");
+    assertEquals("AND", ClauseRelation.AND.toString());
+    assertEquals("OR", ClauseRelation.OR.toString());
   }
   
 }

@@ -24,7 +24,7 @@ public class InsertQueryTest {
     values[2] = "3";
     values[3] = "True";
     InsertQuery query = new InsertQuery("user", values);
-    assertEquals(query.toSQL(), "INSERT INTO user VALUES (\"admin\",\"password1\",3,True);");
+    assertEquals("INSERT INTO user VALUES (\"admin\",\"password1\",3,True);", query.toSQL());
   }
 
   @Test
@@ -36,7 +36,7 @@ public class InsertQueryTest {
     columns[0] = "username";
     columns[1] = "password";
     InsertQuery query = new InsertQuery("user", columns, values);
-    assertEquals(query.toSQL(), "INSERT INTO user (username,password) VALUES (\"admin\",\"password1\");");
+    assertEquals("INSERT INTO user (username,password) VALUES (\"admin\",\"password1\");", query.toSQL());
   }
 
 }

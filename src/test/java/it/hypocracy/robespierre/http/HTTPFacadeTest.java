@@ -24,10 +24,10 @@ public class HTTPFacadeTest {
   @Test
   public void shouldSucceedInGetRequestAsString() {
     HTTPFacade httpFac = new HTTPFacade();
-    //Perform test request
+    // Perform test request
     try {
       HTTPResponse response = httpFac.get(URI.create("https://www.example.com"));
-      assertEquals(response.getStatus(), 200);
+      assertEquals(200, response.getStatus());
       assertTrue(response.getStringBody().startsWith("<!doctype html>"));
     } catch (IOException e) {
       e.printStackTrace();
@@ -38,10 +38,10 @@ public class HTTPFacadeTest {
   @Test
   public void shouldSucceedInGetRequestAsBytes() {
     HTTPFacade httpFac = new HTTPFacade();
-    //Perform test request
+    // Perform test request
     try {
       HTTPResponse response = httpFac.get(URI.create("https://www.example.com"));
-      assertEquals(response.getStatus(), 200);
+      assertEquals(200, response.getStatus());
       BufferedInputStream stream = response.getBytesBody();
       assertTrue(stream.read() > 0);
     } catch (IOException e) {

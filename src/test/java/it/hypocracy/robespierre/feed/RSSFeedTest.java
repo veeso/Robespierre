@@ -30,11 +30,11 @@ public class RSSFeedTest {
     URI link = URI.create("https://health24.news");
     ISO3166 country = new ISO3166("GB");
     RSSFeed feed = new RSSFeed(title, brief, link, country);
-    assertEquals(feed.getTitle(), title);
-    assertEquals(feed.getBrief(), brief);
-    assertEquals(feed.getLink(), link);
-    assertEquals(feed.getCountry().toString(), "GB");
-    assertEquals(feed.getPublicationDatetime().getMonth(), LocalDateTime.now().getMonth());
+    assertEquals(title, feed.getTitle());
+    assertEquals(brief, feed.getBrief());
+    assertEquals(link, feed.getLink());
+    assertEquals("GB", feed.getCountry().toString());
+    assertEquals(LocalDateTime.now().getMonth(), feed.getPublicationDatetime().getMonth());
   }
 
   @Test
@@ -45,11 +45,11 @@ public class RSSFeedTest {
     ISO3166 country = new ISO3166("GB");
     LocalDateTime tm = LocalDateTime.of(2020, Month.JUNE, 28, 16, 32);
     RSSFeed feed = new RSSFeed(title, brief, link, tm, country);
-    assertEquals(feed.getTitle(), title);
-    assertEquals(feed.getBrief(), brief);
-    assertEquals(feed.getLink(), link);
-    assertEquals(feed.getCountry().toString(), "GB");
-    assertEquals(feed.getPublicationDatetime(), tm);
+    assertEquals(title, feed.getTitle());
+    assertEquals(brief, feed.getBrief());
+    assertEquals(link, feed.getLink());
+    assertEquals("GB", feed.getCountry().toString());
+    assertEquals(tm, feed.getPublicationDatetime());
   }
 
 }

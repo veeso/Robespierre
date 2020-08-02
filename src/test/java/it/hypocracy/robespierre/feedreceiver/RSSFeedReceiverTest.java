@@ -33,17 +33,17 @@ public class RSSFeedReceiverTest {
   public void shouldReceiveAndParseFeed() throws IOException, FeedException {
     RSSFeedReceiver receiver = new RSSFeedReceiver();
     RSSFeedSource testSource = new RSSFeedSource(URI.create(testRssSource), new ISO3166("IT"));
-    //Receive
+    // Receive
     RSSFeed[] feeds = receiver.fetchFeed(testSource);
-    //Should have 10 entries
-    assertEquals(feeds.length, 10);
-    //Iterate over feeds
+    // Should have 10 entries
+    assertEquals(10, feeds.length);
+    // Iterate over feeds
     LocalDateTime now = LocalDateTime.now();
     for (RSSFeed feed : feeds) {
-      //Verify that title begins with 'Lorem ipsum'
+      // Verify that title begins with 'Lorem ipsum'
       assertTrue(feed.getTitle().startsWith("Lorem ipsum"));
       assertTrue(feed.getBrief().length() > 0);
-      assertEquals(feed.getPublicationDatetime().getMonth(), now.getMonth());
+      assertEquals(now.getMonth(), feed.getPublicationDatetime().getMonth());
       assertTrue(feed.getLink().toString().startsWith("http://example.com"));
     }
   }

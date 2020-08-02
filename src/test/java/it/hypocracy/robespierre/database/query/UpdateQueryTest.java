@@ -27,7 +27,7 @@ public class UpdateQueryTest {
     columns.put("role", "\"administrator\"");
     columns.put("username", "\"omar\"");
     UpdateQuery query = new UpdateQuery("user", columns);
-    assertEquals(query.toSQL(), "UPDATE user SET role = \"administrator\",username = \"omar\";");
+    assertEquals("UPDATE user SET role = \"administrator\",username = \"omar\";", query.toSQL());
   }
 
   @Test
@@ -37,7 +37,7 @@ public class UpdateQueryTest {
     columns.put("username", "\"omar\"");
     Clause clause = new Clause("username", "\"pippo\"", ClauseOperator.EQUAL);
     UpdateQuery query = new UpdateQuery("user", columns, clause);
-    assertEquals(query.toSQL(), "UPDATE user SET role = \"administrator\",username = \"omar\" WHERE username = \"pippo\";");
+    assertEquals("UPDATE user SET role = \"administrator\",username = \"omar\" WHERE username = \"pippo\";", query.toSQL());
   }
 
 }

@@ -23,7 +23,7 @@ public class TestCategory {
   @Test
   public void shouldInstantiateWbProperty() {
     Occupation cat = new Occupation("politician");
-    assertEquals(cat.getName(), "politician");
+    assertEquals("politician", cat.getName());
   }
 
 }

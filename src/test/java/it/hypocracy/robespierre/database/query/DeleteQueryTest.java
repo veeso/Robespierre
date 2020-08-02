@@ -11,6 +11,7 @@
 package it.hypocracy.robespierre.database.query;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -23,16 +24,16 @@ public class DeleteQueryTest {
   @Test
   public void shouldBuildSimpleDeleteQuery() {
     DeleteQuery query = new DeleteQuery("user");
-    assertEquals(query.toSQL(), "DELETE FROM user;");
+    assertEquals("DELETE FROM user;", query.toSQL());
   }
 
   @Test
   public void shouldBuildDeleteQueryWithClause() {
     Clause clause = new Clause("role", "\"banned\"", ClauseOperator.EQUAL);
-    assertEquals(clause.getNext(), null);
+    assertNull(clause.getNext());
     clause.setNext(new Clause("username", "\"pizza88\"", ClauseOperator.EQUAL), ClauseRelation.OR);
     DeleteQuery query = new DeleteQuery("user", clause);
-    assertEquals(query.toSQL(), "DELETE FROM user WHERE role = \"banned\" OR username = \"pizza88\";");
+    assertEquals("DELETE FROM user WHERE role = \"banned\" OR username = \"pizza88\";", query.toSQL());
   }
 
 }

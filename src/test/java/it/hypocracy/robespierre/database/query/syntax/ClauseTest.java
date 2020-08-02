@@ -11,30 +11,31 @@
 package it.hypocracy.robespierre.database.query.syntax;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
 public class ClauseTest {
-  
+
   @Test
   public void shouldInstantiateClause() {
     Clause clause = new Clause("name", "\"omar\"", ClauseOperator.EQUAL);
-    assertEquals(clause.getLvalue(), "name");
-    assertEquals(clause.getRvalue(), "\"omar\"");
-    assertEquals(clause.getOperator().toString(), "=");
-    assertEquals(clause.getNext(), null);
-    assertEquals(clause.getNextRelation(), null);
+    assertEquals("name", clause.getLvalue());
+    assertEquals("\"omar\"", clause.getRvalue());
+    assertEquals("=", clause.getOperator().toString());
+    assertNull(clause.getNext());
+    assertNull(clause.getNextRelation());
   }
 
   @Test
   public void shouldAddClauseToNext() {
     Clause clause = new Clause("name", "\"omar\"", ClauseOperator.EQUAL);
-    assertEquals(clause.getNext(), null);
+    assertNull(clause.getNext());
     Clause secondClause = new Clause("surname", "\"thickchest\"", ClauseOperator.EQUAL);
     clause.setNext(secondClause, ClauseRelation.AND);
-    assertEquals(clause.getNext(), secondClause);
-    assertEquals(clause.getNextRelation(), ClauseRelation.AND);
-    assertEquals(secondClause.getNext(), null);
+    assertEquals(secondClause, clause.getNext());
+    assertEquals(ClauseRelation.AND, clause.getNextRelation());
+    assertNull(secondClause.getNext());
   }
 
 }

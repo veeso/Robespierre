@@ -23,7 +23,7 @@ public class Uuidv4Test {
    */
   @Test
   public void shouldGenerateUUID() {
-    //UUIDv4 has length 36
-    assertEquals(new Uuidv4().getUUIDv4().length(), 36);
+    // UUIDv4 has length 36
+    assertEquals(36, new Uuidv4().getUUIDv4().length());
   }
 }

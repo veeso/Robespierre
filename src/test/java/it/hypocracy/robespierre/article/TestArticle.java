@@ -29,12 +29,12 @@ public class TestArticle {
     ISO3166 language = new ISO3166("US");
     Article art = new Article("foo", "bar", URI.create("http://news.com/all-dead-all-dead.html"), LocalDateTime.now(), language);
     //Verify constructor
-    assertEquals(art.getId().length(), 36);
-    assertEquals(art.getTitle(), "foo");
-    assertEquals(art.getBrief(), "bar");
-    assertEquals(art.getLink(), URI.create("http://news.com/all-dead-all-dead.html"));
-    assertEquals(art.getDate().getMonth(), LocalDateTime.now().getMonth());
-    assertEquals(art.getLanguage().toString(), language.toString());
+    assertEquals(36, art.getId().length());
+    assertEquals("foo", art.getTitle());
+    assertEquals("bar", art.getBrief());
+    assertEquals(URI.create("http://news.com/all-dead-all-dead.html"), art.getLink());
+    assertEquals(LocalDateTime.now().getMonth(), art.getDate().getMonth());
+    assertEquals(language.toString(), art.getLanguage().toString());
 
     //Topics + subjects should be empty
     assertTrue(! art.iterSubjects().hasNext());
@@ -58,11 +58,11 @@ public class TestArticle {
     while(it.hasNext()) {
       Subject next = it.next();
       if (idx == 0) {
-        assertEquals(next.getName(), subject1.getName());
-        assertEquals(next.occupation.getName(), cat1.getName());
+        assertEquals(subject1.getName(), next.getName());
+        assertEquals(cat1.getName(), next.occupation.getName());
       } else {
-        assertEquals(next.getName(), subject2.getName());
-        assertEquals(next.occupation.getName(), cat2.getName());
+        assertEquals(subject2.getName(), next.getName());
+        assertEquals(cat2.getName(), next.occupation.getName());
       }
       idx++;
     }
@@ -84,9 +84,9 @@ public class TestArticle {
     while(it.hasNext()) {
       Topic next = it.next();
       if (idx == 0) {
-        assertEquals(next.getName(), topic1.getName());
+        assertEquals(topic1.getName(), next.getName());
       } else {
-        assertEquals(next.getName(), topic2.getName());
+        assertEquals(topic2.getName(), next.getName());
       }
       idx++;
     }

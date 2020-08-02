@@ -22,8 +22,8 @@ public class OrderTest {
     what[0] = "age";
     what[1] = "postal_code";
     Order orderby = new Order(what, OrderType.ASC);
-    assertEquals(orderby.getWhat().length, 2);
-    assertEquals(orderby.getType(), OrderType.ASC);
+    assertEquals(2, orderby.getWhat().length);
+    assertEquals(OrderType.ASC, orderby.getType());
   }
   
 }

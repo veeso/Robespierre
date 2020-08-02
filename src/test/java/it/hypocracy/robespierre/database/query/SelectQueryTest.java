@@ -28,7 +28,7 @@ public class SelectQueryTest {
     tables[0] = "user";
     SelectQuery query = new SelectQuery(tables);
     //Verify string
-    assertEquals(query.toSQL(), "SELECT * FROM user;");
+    assertEquals("SELECT * FROM user;", query.toSQL());
   }
 
   @Test
@@ -38,7 +38,7 @@ public class SelectQueryTest {
     tables[1] = "user_group";
     SelectQuery query = new SelectQuery(tables);
     //Verify string
-    assertEquals(query.toSQL(), "SELECT * FROM user,user_group;");
+    assertEquals("SELECT * FROM user,user_group;", query.toSQL());
   }
 
   @Test
@@ -49,7 +49,7 @@ public class SelectQueryTest {
     columns[0] = "username";
     columns[1] = "password";
     SelectQuery query = new SelectQuery(columns, tables);
-    assertEquals(query.toSQL(), "SELECT username,password FROM user;");
+    assertEquals("SELECT username,password FROM user;", query.toSQL());
   }
 
   @Test
@@ -64,7 +64,7 @@ public class SelectQueryTest {
     columns[0] = "username";
     columns[1] = "password";
     SelectQuery query = new SelectQuery(columns, tables, clause);
-    assertEquals(query.toSQL(), "SELECT username,password FROM user WHERE role = \"administrator\" AND disabled != \"TRUE\";");
+    assertEquals("SELECT username,password FROM user WHERE role = \"administrator\" AND disabled != \"TRUE\";", query.toSQL());
   }
 
   @Test
@@ -82,7 +82,7 @@ public class SelectQueryTest {
     orderColumns[0] = "registration_date";
     orderColumns[1] = "last_activity";
     SelectQuery query = new SelectQuery(columns, tables, clause, new Order(orderColumns, OrderType.DESC));
-    assertEquals(query.toSQL(), "SELECT username,password FROM user WHERE role = \"administrator\" AND disabled != \"TRUE\" ORDER BY registration_date,last_activity DESC;");
+    assertEquals("SELECT username,password FROM user WHERE role = \"administrator\" AND disabled != \"TRUE\" ORDER BY registration_date,last_activity DESC;", query.toSQL());
   }
 
   @Test
@@ -100,7 +100,7 @@ public class SelectQueryTest {
     orderColumns[0] = "registration_date";
     orderColumns[1] = "last_activity";
     SelectQuery query = new SelectQuery(columns, tables, clause, new Order(orderColumns, OrderType.DESC), 8);
-    assertEquals(query.toSQL(), "SELECT username,password FROM user WHERE role = \"administrator\" AND disabled != \"TRUE\" ORDER BY registration_date,last_activity DESC LIMIT 8;");
+    assertEquals("SELECT username,password FROM user WHERE role = \"administrator\" AND disabled != \"TRUE\" ORDER BY registration_date,last_activity DESC LIMIT 8;", query.toSQL());
   }
 
   @Test
@@ -114,7 +114,7 @@ public class SelectQueryTest {
     orderColumns[0] = "registration_date";
     orderColumns[1] = "last_activity";
     SelectQuery query = new SelectQuery(columns, tables, null, new Order(orderColumns, OrderType.DESC), 8);
-    assertEquals(query.toSQL(), "SELECT username,password FROM user ORDER BY registration_date,last_activity DESC LIMIT 8;");
+    assertEquals("SELECT username,password FROM user ORDER BY registration_date,last_activity DESC LIMIT 8;", query.toSQL());
   }
 
 }

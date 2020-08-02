@@ -18,8 +18,8 @@ public class OrderTypeTest {
 
   @Test
   public void shouldReturnCorrectString() {
-    assertEquals(OrderType.ASC.toString(), "ASC");
-    assertEquals(OrderType.DESC.toString(), "DESC");
+    assertEquals("ASC", OrderType.ASC.toString());
+    assertEquals("DESC", OrderType.DESC.toString());
   }
   
 }

@@ -23,9 +23,9 @@ public class TestTopic {
   @Test
   public void shouldInstantiateTopicWithAutoId() {
     Topic topic = new Topic("test", "this is a test topic");
-    assertEquals(topic.getId().length(), 36);
-    assertEquals(topic.getName(), "test");
-    assertEquals(topic.getDescription(), "this is a test topic");
+    assertEquals(36, topic.getId().length());
+    assertEquals("test", topic.getName());
+    assertEquals("this is a test topic", topic.getDescription());
   }
 
   /**
@@ -35,8 +35,8 @@ public class TestTopic {
   public void shouldInstantiateTopic() {
     String testId = "995b8b98-2103-4873-8457-c2d7436170c5";
     Topic topic = new Topic(testId, "test", "this is a test topic");
-    assertEquals(topic.getId(), testId);
-    assertEquals(topic.getName(), "test");
-    assertEquals(topic.getDescription(), "this is a test topic");
+    assertEquals(testId, topic.getId());
+    assertEquals("test", topic.getName());
+    assertEquals("this is a test topic", topic.getDescription());
   }
 }

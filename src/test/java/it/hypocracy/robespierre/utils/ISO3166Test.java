@@ -21,14 +21,14 @@ public class ISO3166Test {
   public void shouldInstantiateISO3166() {
     String code = "IT";
     ISO3166 iso = new ISO3166(code);
-    assertEquals(iso.toString(), code);
+    assertEquals(code, iso.toString());
   }
 
   @Test
   public void shouldInstantiateISO3166LowerCase() {
     String code = "it";
     ISO3166 iso = new ISO3166(code);
-    assertEquals(iso.toString(), code.toUpperCase());
+    assertEquals(code.toUpperCase(), iso.toString());
   }
 
   @Test

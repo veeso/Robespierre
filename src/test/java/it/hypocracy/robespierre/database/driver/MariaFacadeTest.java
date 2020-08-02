@@ -104,13 +104,13 @@ public class MariaFacadeTest {
       Map<String, String> row = rowsIt.next();
       // Verify columns
       if (rowIndex == 0) {
-        assertEquals(row.get("email"), "foobar@gmail.com");
-        assertEquals(row.get("username"), "foobar");
-        assertEquals(row.get("password"), "c6803282ef40a056b6d9240158c5d8bf4c3054139d47bcd8d3be4d1ab4679b22");
+        assertEquals("foobar@gmail.com", row.get("email"));
+        assertEquals("foobar", row.get("username"));
+        assertEquals("c6803282ef40a056b6d9240158c5d8bf4c3054139d47bcd8d3be4d1ab4679b22", row.get("password"));
       } else if (rowIndex == 1) {
-        assertEquals(row.get("email"), "omar@gmail.com");
-        assertEquals(row.get("username"), "omar");
-        assertEquals(row.get("password"), "52a38b1bdfbf93a345d206cc701b94ce0ed1b1e683978aaa2c4e63676d868970");
+        assertEquals("omar@gmail.com", row.get("email"));
+        assertEquals("omar", row.get("username"));
+        assertEquals("52a38b1bdfbf93a345d206cc701b94ce0ed1b1e683978aaa2c4e63676d868970", row.get("password"));
       }
       rowIndex++;
     }

@@ -19,17 +19,17 @@ import java.util.Date;
 import org.junit.Test;
 
 public class DateUtilsTest {
-  
+
   @Test
   public void shouldConvertDateToLocalDateTime() {
     @SuppressWarnings("deprecation")
     Date testDate = new Date(120, 6, 13, 17, 32);
     LocalDateTime convertedTime = DateUtils.dateToLocalDateTime(testDate);
-    assertEquals(convertedTime.getDayOfMonth(), 13);
-    assertEquals(convertedTime.getMonth(), Month.JULY);
-    assertEquals(convertedTime.getYear(), 2020);
-    assertEquals(convertedTime.getHour(), 17);
-    assertEquals(convertedTime.getMinute(), 32);
+    assertEquals(13, convertedTime.getDayOfMonth());
+    assertEquals(Month.JULY, convertedTime.getMonth());
+    assertEquals(2020, convertedTime.getYear());
+    assertEquals(17, convertedTime.getHour());
+    assertEquals(32, convertedTime.getMinute());
   }
 
 }

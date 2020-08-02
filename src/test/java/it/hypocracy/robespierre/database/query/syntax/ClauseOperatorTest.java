@@ -18,13 +18,13 @@ public class ClauseOperatorTest {
   
   @Test
   public void shouldBeCorrectStringValue() {
-    assertEquals(ClauseOperator.BIGGER_EQUAL.toString(), ">=");
-    assertEquals(ClauseOperator.BIGGER_THAN.toString(), ">");
-    assertEquals(ClauseOperator.EQUAL.toString(), "=");
-    assertEquals(ClauseOperator.LESS_EQUAL.toString(), "<=");
-    assertEquals(ClauseOperator.LESS_THAN.toString(), "<");
-    assertEquals(ClauseOperator.LIKE.toString(), "LIKE");
-    assertEquals(ClauseOperator.NOT_EQUAL.toString(), "!=");
+    assertEquals(">=", ClauseOperator.BIGGER_EQUAL.toString());
+    assertEquals(">", ClauseOperator.BIGGER_THAN.toString());
+    assertEquals("=", ClauseOperator.EQUAL.toString());
+    assertEquals("<=", ClauseOperator.LESS_EQUAL.toString());
+    assertEquals("<", ClauseOperator.LESS_THAN.toString());
+    assertEquals("LIKE", ClauseOperator.LIKE.toString());
+    assertEquals("!=", ClauseOperator.NOT_EQUAL.toString());
   }
 
 }
