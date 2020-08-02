@@ -25,9 +25,9 @@ import it.hypocracy.robespierre.config.exceptions.BadConfigException;
 
 public class ConfigParserTest {
 
-  public static String configTest = "{\"database\":{\"engine\":\"mariadb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"engine\":\"rss\",\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\",\"interval\":360},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\",\"interval\":240}]},\"metadata\":{\"engine\":\"wikidata\",\"cache\":{\"duration\":180}}}";
+  public static String configTest = "{\"database\":{\"engine\":\"mariadb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\",\"engine\":\"rss\",\"interval\":360},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\",\"engine\":\"rss\",\"interval\":240}]},\"metadata\":{\"engine\":\"wikidata\",\"cache\":{\"duration\":180}}}";
   public static String filePath = null;
-  public static String badConfigTest = "{\"database\":{\"engine\":\"nodb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"engine\":\"rss\",\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\",\"interval\":360},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\",\"interval\":240}]},\"metadata\":{\"engine\":\"wikidata\",\"cache\":{\"duration\":180}}}";
+  public static String badConfigTest = "{\"database\":{\"engine\":\"nodb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\",\"engine\":\"rss\",\"interval\":360},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\",\"engine\":\"rss\",\"interval\":240}]},\"metadata\":{\"engine\":\"wikidata\",\"cache\":{\"duration\":180}}}";
   public static String badFilePath = null;
 
   @BeforeClass
@@ -67,13 +67,14 @@ public class ConfigParserTest {
     assertEquals("root", config.database.user);
     assertTrue(config.database.password == null);
     // Feed
-    assertEquals("rss", config.feed.engine);
     assertEquals(2, config.feed.sources.size());
     assertEquals("http://example.com/rss", config.feed.sources.get(0).uri);
     assertEquals("IT", config.feed.sources.get(0).country);
+    assertEquals("rss", config.feed.sources.get(0).engine);
     assertEquals(360, config.feed.sources.get(0).interval);
     assertEquals("http://news.com/rss", config.feed.sources.get(1).uri);
     assertEquals("EN", config.feed.sources.get(1).country);
+    assertEquals("rss", config.feed.sources.get(1).engine);
     assertEquals(240, config.feed.sources.get(1).interval);
     // Metadata
     assertEquals("wikidata", config.metadata.engine);

@@ -6,12 +6,12 @@
     "password": null
   },
   "feed": {
-    "engine": "rss",
     "sources": [
       {
         "uri": "http://example.com/rss",
         "country": "IT",
-        "interval": 360
+        "interval": 360,
+        "engine": "rss"
       }
     ]
   },

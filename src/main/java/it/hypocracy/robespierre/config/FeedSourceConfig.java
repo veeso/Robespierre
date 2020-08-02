@@ -16,7 +16,9 @@ public class FeedSourceConfig implements BaseConfig {
 
   public String uri;
   public String country;
+  public String engine;
   public int interval = 0; // Minutes
+
 
   @Override
   public void check() throws BadConfigException {
@@ -25,6 +27,12 @@ public class FeedSourceConfig implements BaseConfig {
     }
     if (country == null) {
       throw new BadConfigException("feed source 'country' is null");
+    }
+    if (engine == null) {
+      throw new BadConfigException("feed source 'engine' is null");
+    }
+    if (!engine.equals("rss")) {
+      throw new BadConfigException("Unknown feed engine");
     }
     if (interval <= 0) {
       throw new BadConfigException("feed source 'interval' is invalid");

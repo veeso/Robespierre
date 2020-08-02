@@ -17,17 +17,10 @@ import it.hypocracy.robespierre.config.exceptions.BadConfigException;
 
 public class FeedConfig implements BaseConfig {
 
-  public String engine;
   public List<FeedSourceConfig> sources;
 
   @Override
   public void check() throws BadConfigException {
-    if (engine == null) {
-      throw new BadConfigException("feed 'engine' is null");
-    }
-    if (!engine.equals("rss")) {
-      throw new BadConfigException("Unknown feed engine");
-    }
     // Iterate over sources
     Iterator<FeedSourceConfig> it = sources.iterator();
     while (it.hasNext()) {
