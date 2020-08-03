@@ -207,7 +207,7 @@ public class WikiDataParser {
       return null;
     }
     // Okay it's alive, let's parse it...
-    final String language = country.toString().toLowerCase();
+    final String language = country.toISO639().toString();
     // Collect name from labels
     Label label = entity.labels.get(language);
     if (label == null) {
@@ -579,7 +579,7 @@ public class WikiDataParser {
     // For topic we need to retrieve
     // - name
     // - description
-    final String language = country.toString().toLowerCase();
+    final String language = country.toISO639().toString();
     // Collect name from labels
     Label label = entity.labels.get(language);
     if (label == null) {

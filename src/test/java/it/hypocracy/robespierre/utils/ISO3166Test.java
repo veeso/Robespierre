@@ -32,6 +32,20 @@ public class ISO3166Test {
   }
 
   @Test
+  public void shouldConvertToIso639() {
+    String code = "AD";
+    ISO3166 iso = new ISO3166(code);
+    assertEquals("ca", iso.toISO639().toString());
+  }
+
+  @Test
+  public void shouldConvertToIso639Default() {
+    String code = "BV"; // <https://it.wikipedia.org/wiki/Isola_Bouvet>
+    ISO3166 iso = new ISO3166(code);
+    assertEquals("en", iso.toISO639().toString());
+  }
+
+  @Test
   public void shouldFailISO3166() {
     String code = "XX";
     assertThrows(IllegalArgumentException.class, () -> new ISO3166(code));

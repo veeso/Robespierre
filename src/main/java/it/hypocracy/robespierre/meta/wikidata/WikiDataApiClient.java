@@ -96,7 +96,7 @@ public class WikiDataApiClient {
    */
 
   public WbEntity getWebEntity(String wikidataId, ISO3166 country) throws MetadataReceiverException {
-    final String language = country.toString().toLowerCase();
+    final String language = country.toISO639().toString();
     StringBuilder uriBuilder = new StringBuilder();
     uriBuilder.append(wbentityUri);
     // Set id
