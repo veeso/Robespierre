@@ -81,6 +81,18 @@ public class Subject {
         LocalDateTime.now(), occupation);
   }
 
+  /**
+   * <p>
+   * Set id
+   * </p>
+   * 
+   * @param id
+   */
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
   // Getters
 
   public String getId() {

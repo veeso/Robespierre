@@ -55,4 +55,16 @@ public class TestSubject {
     assertEquals(citizenship.toString(), subject.getCitizenship().toString());
     assertEquals("politician", subject.occupation.getName());
   }
+
+  @Test
+  public void shouldSetId() {
+    Occupation cat = new Occupation("politician");
+    ISO3166 citizenship = new ISO3166("US");
+    String testId = "995b8b98-2103-4873-8457-c2d7436170c5";
+    Subject subject = new Subject(testId, "foo bar", LocalDate.of(1960, 5, 14), citizenship, "footown", "img.gif", "foo bar is a nice person", "123", LocalDateTime.of(2020, 6, 28, 12, 45, 54), cat);
+    assertEquals(testId, subject.getId());
+    String newId = "0a3e7b1d-9cd5-46e3-8609-1bddcbd78f54";
+    subject.setId(newId);
+    assertEquals(newId, subject.getId());
+  }
 }

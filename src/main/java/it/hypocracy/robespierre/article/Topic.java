@@ -53,6 +53,18 @@ public class Topic {
 
   /**
    * <p>
+   * Set topic id
+   * </p>
+   * 
+   * @param id
+   */
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  /**
+   * <p>
    * Returns the topic id
    * </p>
    * 

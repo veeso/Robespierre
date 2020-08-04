@@ -39,4 +39,14 @@ public class TestTopic {
     assertEquals("test", topic.getName());
     assertEquals("this is a test topic", topic.getDescription());
   }
+
+  @Test
+  public void shouldSetId() {
+    String testId = "995b8b98-2103-4873-8457-c2d7436170c5";
+    Topic topic = new Topic(testId, "test", "this is a test topic");
+    assertEquals(testId, topic.getId());
+    String newId = "d3cd6886-2b03-437f-bacf-73a6ac590dbf";
+    topic.setId(newId);
+    assertEquals(newId, topic.getId());
+  }
 }
