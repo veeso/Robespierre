@@ -100,510 +100,763 @@ public class ISO3166 {
     languages = new HashMap<>();
     // Fill languages
     for (String code : codes) {
-      if (code.equals("AD")) {
-        languages.put(code, "ca");
-      } else if (code.equals("AE")) {
-        languages.put(code, "ar");
-      } else if (code.equals("AF")) {
-        languages.put(code, "fa");
-      } else if (code.equals("AG")) {
-        languages.put(code, "en");
-      } else if (code.equals("AI")) {
-        languages.put(code, "en");
-      } else if (code.equals("AL")) {
-        languages.put(code, "sq");
-      } else if (code.equals("AM")) {
-        languages.put(code, "hy");
-      } else if (code.equals("AO")) {
-        languages.put(code, "pt");
-      } else if (code.equals("AQ")) {
-        languages.put(code, "");
-      } else if (code.equals("AR")) {
-        languages.put(code, "es");
-      } else if (code.equals("AS")) {
-        languages.put(code, "en");
-      } else if (code.equals("AT")) {
-        languages.put(code, "de");
-      } else if (code.equals("AU")) {
-        languages.put(code, "en");
-      } else if (code.equals("AW")) {
-        languages.put(code, "nl");
-      } else if (code.equals("AX")) {
-        languages.put(code, "sv");
-      } else if (code.equals("AZ")) {
-        languages.put(code, "az");
-      } else if (code.equals("BA")) {
-        languages.put(code, "bs");
-      } else if (code.equals("BB")) {
-        languages.put(code, "en");
-      } else if (code.equals("BD")) {
-        languages.put(code, "bn");
-      } else if (code.equals("BE")) {
-        languages.put(code, "nl");
-      } else if (code.equals("BF")) {
-        languages.put(code, "fr");
-      } else if (code.equals("BG")) {
-        languages.put(code, "bg");
-      } else if (code.equals("BH")) {
-        languages.put(code, "ar");
-      } else if (code.equals("BI")) {
-        languages.put(code, "fr");
-      } else if (code.equals("BJ")) {
-        languages.put(code, "fr");
-      } else if (code.equals("BL")) {
-        languages.put(code, "fr");
-      } else if (code.equals("BM")) {
-        languages.put(code, "en");
-      } else if (code.equals("BN")) {
-        languages.put(code, "ms");
-      } else if (code.equals("BO")) {
-        languages.put(code, "es");
-      } else if (code.equals("BQ")) {
-        languages.put(code, "nl");
-      } else if (code.equals("BR")) {
-        languages.put(code, "pt");
-      } else if (code.equals("BS")) {
-        languages.put(code, "en");
-      } else if (code.equals("BT")) {
-        languages.put(code, "dz");
-      } else if (code.equals("BV")) {
-        languages.put(code, "");
-      } else if (code.equals("BW")) {
-        languages.put(code, "en");
-      } else if (code.equals("BY")) {
-        languages.put(code, "be");
-      } else if (code.equals("BZ")) {
-        languages.put(code, "en");
-      } else if (code.equals("CA")) {
-        languages.put(code, "en");
-      } else if (code.equals("CC")) {
-        languages.put(code, "ms");
-      } else if (code.equals("CD")) {
-        languages.put(code, "fr");
-      } else if (code.equals("CF")) {
-        languages.put(code, "fr");
-      } else if (code.equals("CG")) {
-        languages.put(code, "fr");
-      } else if (code.equals("CH")) {
-        languages.put(code, "de");
-      } else if (code.equals("CI")) {
-        languages.put(code, "fr");
-      } else if (code.equals("CK")) {
-        languages.put(code, "en");
-      } else if (code.equals("CL")) {
-        languages.put(code, "es");
-      } else if (code.equals("CM")) {
-        languages.put(code, "en");
-      } else if (code.equals("CN")) {
-        languages.put(code, "zh");
-      } else if (code.equals("CO")) {
-        languages.put(code, "es");
-      } else if (code.equals("CR")) {
-        languages.put(code, "es");
-      } else if (code.equals("CU")) {
-        languages.put(code, "es");
-      } else if (code.equals("CV")) {
-        languages.put(code, "pt");
-      } else if (code.equals("CW")) {
-        languages.put(code, "nl");
-      } else if (code.equals("CX")) {
-        languages.put(code, "en");
-      } else if (code.equals("CY")) {
-        languages.put(code, "el");
-      } else if (code.equals("CZ")) {
-        languages.put(code, "cs");
-      } else if (code.equals("DE")) {
-        languages.put(code, "de");
-      } else if (code.equals("DJ")) {
-        languages.put(code, "fr");
-      } else if (code.equals("DK")) {
-        languages.put(code, "da");
-      } else if (code.equals("DM")) {
-        languages.put(code, "en");
-      } else if (code.equals("DO")) {
-        languages.put(code, "es");
-      } else if (code.equals("DZ")) {
-        languages.put(code, "ar");
-      } else if (code.equals("EC")) {
-        languages.put(code, "es");
-      } else if (code.equals("EE")) {
-        languages.put(code, "et");
-      } else if (code.equals("EG")) {
-        languages.put(code, "ar");
-      } else if (code.equals("EH")) {
-        languages.put(code, "ar");
-      } else if (code.equals("ER")) {
-        languages.put(code, "aa");
-      } else if (code.equals("ES")) {
-        languages.put(code, "es");
-      } else if (code.equals("ET")) {
-        languages.put(code, "am");
-      } else if (code.equals("FI")) {
-        languages.put(code, "fi");
-      } else if (code.equals("FJ")) {
-        languages.put(code, "en");
-      } else if (code.equals("FK")) {
-        languages.put(code, "en");
-      } else if (code.equals("FM")) {
-        languages.put(code, "en");
-      } else if (code.equals("FO")) {
-        languages.put(code, "fo");
-      } else if (code.equals("FR")) {
-        languages.put(code, "fr");
-      } else if (code.equals("GA")) {
-        languages.put(code, "fr");
-      } else if (code.equals("GB")) {
-        languages.put(code, "en");
-      } else if (code.equals("GD")) {
-        languages.put(code, "en");
-      } else if (code.equals("GE")) {
-        languages.put(code, "ka");
-      } else if (code.equals("GF")) {
-        languages.put(code, "fr");
-      } else if (code.equals("GG")) {
-        languages.put(code, "en");
-      } else if (code.equals("GH")) {
-        languages.put(code, "en");
-      } else if (code.equals("GI")) {
-        languages.put(code, "en");
-      } else if (code.equals("GL")) {
-        languages.put(code, "kl");
-      } else if (code.equals("GM")) {
-        languages.put(code, "en");
-      } else if (code.equals("GN")) {
-        languages.put(code, "fr");
-      } else if (code.equals("GP")) {
-        languages.put(code, "fr");
-      } else if (code.equals("GQ")) {
-        languages.put(code, "es");
-      } else if (code.equals("GR")) {
-        languages.put(code, "el");
-      } else if (code.equals("GS")) {
-        languages.put(code, "en");
-      } else if (code.equals("GT")) {
-        languages.put(code, "es");
-      } else if (code.equals("GU")) {
-        languages.put(code, "en");
-      } else if (code.equals("GW")) {
-        languages.put(code, "pt");
-      } else if (code.equals("GY")) {
-        languages.put(code, "en");
-      } else if (code.equals("HK")) {
-        languages.put(code, "zh");
-      } else if (code.equals("HM")) {
-        languages.put(code, "");
-      } else if (code.equals("HN")) {
-        languages.put(code, "es");
-      } else if (code.equals("HR")) {
-        languages.put(code, "hr");
-      } else if (code.equals("HT")) {
-        languages.put(code, "ht");
-      } else if (code.equals("HU")) {
-        languages.put(code, "hu");
-      } else if (code.equals("ID")) {
-        languages.put(code, "id");
-      } else if (code.equals("IE")) {
-        languages.put(code, "en");
-      } else if (code.equals("IL")) {
-        languages.put(code, "he");
-      } else if (code.equals("IM")) {
-        languages.put(code, "en");
-      } else if (code.equals("IN")) {
-        languages.put(code, "en");
-      } else if (code.equals("IO")) {
-        languages.put(code, "en");
-      } else if (code.equals("IQ")) {
-        languages.put(code, "ar");
-      } else if (code.equals("IR")) {
-        languages.put(code, "fa");
-      } else if (code.equals("IS")) {
-        languages.put(code, "is");
-      } else if (code.equals("IT")) {
-        languages.put(code, "it");
-      } else if (code.equals("JE")) {
-        languages.put(code, "en");
-      } else if (code.equals("JM")) {
-        languages.put(code, "en");
-      } else if (code.equals("JO")) {
-        languages.put(code, "ar");
-      } else if (code.equals("JP")) {
-        languages.put(code, "ja");
-      } else if (code.equals("KE")) {
-        languages.put(code, "en");
-      } else if (code.equals("KG")) {
-        languages.put(code, "ky");
-      } else if (code.equals("KH")) {
-        languages.put(code, "km");
-      } else if (code.equals("KI")) {
-        languages.put(code, "en");
-      } else if (code.equals("KM")) {
-        languages.put(code, "ar");
-      } else if (code.equals("KN")) {
-        languages.put(code, "en");
-      } else if (code.equals("KP")) {
-        languages.put(code, "ko");
-      } else if (code.equals("KR")) {
-        languages.put(code, "ko");
-      } else if (code.equals("XK")) {
-        languages.put(code, "sq");
-      } else if (code.equals("KW")) {
-        languages.put(code, "ar");
-      } else if (code.equals("KY")) {
-        languages.put(code, "en");
-      } else if (code.equals("KZ")) {
-        languages.put(code, "kk");
-      } else if (code.equals("LA")) {
-        languages.put(code, "lo");
-      } else if (code.equals("LB")) {
-        languages.put(code, "ar");
-      } else if (code.equals("LC")) {
-        languages.put(code, "en");
-      } else if (code.equals("LI")) {
-        languages.put(code, "de");
-      } else if (code.equals("LK")) {
-        languages.put(code, "si");
-      } else if (code.equals("LR")) {
-        languages.put(code, "en");
-      } else if (code.equals("LS")) {
-        languages.put(code, "en");
-      } else if (code.equals("LT")) {
-        languages.put(code, "lt");
-      } else if (code.equals("LU")) {
-        languages.put(code, "lb");
-      } else if (code.equals("LV")) {
-        languages.put(code, "lv");
-      } else if (code.equals("LY")) {
-        languages.put(code, "ar");
-      } else if (code.equals("MA")) {
-        languages.put(code, "ar");
-      } else if (code.equals("MC")) {
-        languages.put(code, "fr");
-      } else if (code.equals("MD")) {
-        languages.put(code, "ro");
-      } else if (code.equals("ME")) {
-        languages.put(code, "sr");
-      } else if (code.equals("MF")) {
-        languages.put(code, "fr");
-      } else if (code.equals("MG")) {
-        languages.put(code, "fr");
-      } else if (code.equals("MH")) {
-        languages.put(code, "mh");
-      } else if (code.equals("MK")) {
-        languages.put(code, "mk");
-      } else if (code.equals("ML")) {
-        languages.put(code, "fr");
-      } else if (code.equals("MM")) {
-        languages.put(code, "my");
-      } else if (code.equals("MN")) {
-        languages.put(code, "mn");
-      } else if (code.equals("MO")) {
-        languages.put(code, "zh");
-      } else if (code.equals("MP")) {
-        languages.put(code, "fil");
-      } else if (code.equals("MQ")) {
-        languages.put(code, "fr");
-      } else if (code.equals("MR")) {
-        languages.put(code, "ar");
-      } else if (code.equals("MS")) {
-        languages.put(code, "en");
-      } else if (code.equals("MT")) {
-        languages.put(code, "mt");
-      } else if (code.equals("MU")) {
-        languages.put(code, "en");
-      } else if (code.equals("MV")) {
-        languages.put(code, "dv");
-      } else if (code.equals("MW")) {
-        languages.put(code, "ny");
-      } else if (code.equals("MX")) {
-        languages.put(code, "es");
-      } else if (code.equals("MY")) {
-        languages.put(code, "ms");
-      } else if (code.equals("MZ")) {
-        languages.put(code, "pt");
-      } else if (code.equals("NA")) {
-        languages.put(code, "en");
-      } else if (code.equals("NC")) {
-        languages.put(code, "fr");
-      } else if (code.equals("NE")) {
-        languages.put(code, "fr");
-      } else if (code.equals("NF")) {
-        languages.put(code, "en");
-      } else if (code.equals("NG")) {
-        languages.put(code, "en");
-      } else if (code.equals("NI")) {
-        languages.put(code, "es");
-      } else if (code.equals("NL")) {
-        languages.put(code, "nl");
-      } else if (code.equals("NO")) {
-        languages.put(code, "no");
-      } else if (code.equals("NP")) {
-        languages.put(code, "ne");
-      } else if (code.equals("NR")) {
-        languages.put(code, "na");
-      } else if (code.equals("NU")) {
-        languages.put(code, "niu");
-      } else if (code.equals("NZ")) {
-        languages.put(code, "en");
-      } else if (code.equals("OM")) {
-        languages.put(code, "ar");
-      } else if (code.equals("PA")) {
-        languages.put(code, "es");
-      } else if (code.equals("PE")) {
-        languages.put(code, "es");
-      } else if (code.equals("PF")) {
-        languages.put(code, "fr");
-      } else if (code.equals("PG")) {
-        languages.put(code, "en");
-      } else if (code.equals("PH")) {
-        languages.put(code, "tl");
-      } else if (code.equals("PK")) {
-        languages.put(code, "ur");
-      } else if (code.equals("PL")) {
-        languages.put(code, "pl");
-      } else if (code.equals("PM")) {
-        languages.put(code, "fr");
-      } else if (code.equals("PN")) {
-        languages.put(code, "en");
-      } else if (code.equals("PR")) {
-        languages.put(code, "en");
-      } else if (code.equals("PS")) {
-        languages.put(code, "ar");
-      } else if (code.equals("PT")) {
-        languages.put(code, "pt");
-      } else if (code.equals("PW")) {
-        languages.put(code, "pau");
-      } else if (code.equals("PY")) {
-        languages.put(code, "es");
-      } else if (code.equals("QA")) {
-        languages.put(code, "ar");
-      } else if (code.equals("RE")) {
-        languages.put(code, "fr");
-      } else if (code.equals("RO")) {
-        languages.put(code, "ro");
-      } else if (code.equals("RS")) {
-        languages.put(code, "sr");
-      } else if (code.equals("RU")) {
-        languages.put(code, "ru");
-      } else if (code.equals("RW")) {
-        languages.put(code, "rw");
-      } else if (code.equals("SA")) {
-        languages.put(code, "ar");
-      } else if (code.equals("SB")) {
-        languages.put(code, "en");
-      } else if (code.equals("SC")) {
-        languages.put(code, "en");
-      } else if (code.equals("SD")) {
-        languages.put(code, "ar");
-      } else if (code.equals("SS")) {
-        languages.put(code, "en");
-      } else if (code.equals("SE")) {
-        languages.put(code, "sv");
-      } else if (code.equals("SG")) {
-        languages.put(code, "cmn");
-      } else if (code.equals("SH")) {
-        languages.put(code, "en");
-      } else if (code.equals("SI")) {
-        languages.put(code, "sl");
-      } else if (code.equals("SJ")) {
-        languages.put(code, "no");
-      } else if (code.equals("SK")) {
-        languages.put(code, "sk");
-      } else if (code.equals("SL")) {
-        languages.put(code, "en");
-      } else if (code.equals("SM")) {
-        languages.put(code, "it");
-      } else if (code.equals("SN")) {
-        languages.put(code, "fr");
-      } else if (code.equals("SO")) {
-        languages.put(code, "so");
-      } else if (code.equals("SR")) {
-        languages.put(code, "nl");
-      } else if (code.equals("ST")) {
-        languages.put(code, "pt");
-      } else if (code.equals("SV")) {
-        languages.put(code, "es");
-      } else if (code.equals("SX")) {
-        languages.put(code, "nl");
-      } else if (code.equals("SY")) {
-        languages.put(code, "ar");
-      } else if (code.equals("SZ")) {
-        languages.put(code, "en");
-      } else if (code.equals("TC")) {
-        languages.put(code, "en");
-      } else if (code.equals("TD")) {
-        languages.put(code, "fr");
-      } else if (code.equals("TF")) {
-        languages.put(code, "fr");
-      } else if (code.equals("TG")) {
-        languages.put(code, "fr");
-      } else if (code.equals("TH")) {
-        languages.put(code, "th");
-      } else if (code.equals("TJ")) {
-        languages.put(code, "tg");
-      } else if (code.equals("TK")) {
-        languages.put(code, "tkl");
-      } else if (code.equals("TL")) {
-        languages.put(code, "tet");
-      } else if (code.equals("TM")) {
-        languages.put(code, "tk");
-      } else if (code.equals("TN")) {
-        languages.put(code, "ar");
-      } else if (code.equals("TO")) {
-        languages.put(code, "to");
-      } else if (code.equals("TR")) {
-        languages.put(code, "tr");
-      } else if (code.equals("TT")) {
-        languages.put(code, "en");
-      } else if (code.equals("TV")) {
-        languages.put(code, "tvl");
-      } else if (code.equals("TW")) {
-        languages.put(code, "zh");
-      } else if (code.equals("TZ")) {
-        languages.put(code, "sw");
-      } else if (code.equals("UA")) {
-        languages.put(code, "uk");
-      } else if (code.equals("UG")) {
-        languages.put(code, "en");
-      } else if (code.equals("UM")) {
-        languages.put(code, "en");
-      } else if (code.equals("US")) {
-        languages.put(code, "en");
-      } else if (code.equals("UY")) {
-        languages.put(code, "es");
-      } else if (code.equals("UZ")) {
-        languages.put(code, "uz");
-      } else if (code.equals("VA")) {
-        languages.put(code, "la");
-      } else if (code.equals("VC")) {
-        languages.put(code, "en");
-      } else if (code.equals("VE")) {
-        languages.put(code, "es");
-      } else if (code.equals("VG")) {
-        languages.put(code, "en");
-      } else if (code.equals("VI")) {
-        languages.put(code, "en");
-      } else if (code.equals("VN")) {
-        languages.put(code, "vi");
-      } else if (code.equals("VU")) {
-        languages.put(code, "bi");
-      } else if (code.equals("WF")) {
-        languages.put(code, "wls");
-      } else if (code.equals("WS")) {
-        languages.put(code, "sm");
-      } else if (code.equals("YE")) {
-        languages.put(code, "ar");
-      } else if (code.equals("YT")) {
-        languages.put(code, "fr");
-      } else if (code.equals("ZA")) {
-        languages.put(code, "zu");
-      } else if (code.equals("ZM")) {
-        languages.put(code, "en");
-      } else if (code.equals("ZW")) {
-        languages.put(code, "en");
-      } else if (code.equals("CS")) {
-        languages.put(code, "cu");
-      } else if (code.equals("AN")) {
-        languages.put(code, "nl");
+      switch (code) {
+        case "AD":
+          languages.put(code, "ca");
+          break;
+        case "AE":
+          languages.put(code, "ar");
+          break;
+        case "AF":
+          languages.put(code, "fa");
+          break;
+        case "AG":
+          languages.put(code, "en");
+          break;
+        case "AI":
+          languages.put(code, "en");
+          break;
+        case "AL":
+          languages.put(code, "sq");
+          break;
+        case "AM":
+          languages.put(code, "hy");
+          break;
+        case "AO":
+          languages.put(code, "pt");
+          break;
+        case "AQ":
+          languages.put(code, "");
+          break;
+        case "AR":
+          languages.put(code, "es");
+          break;
+        case "AS":
+          languages.put(code, "en");
+          break;
+        case "AT":
+          languages.put(code, "de");
+          break;
+        case "AU":
+          languages.put(code, "en");
+          break;
+        case "AW":
+          languages.put(code, "nl");
+          break;
+        case "AX":
+          languages.put(code, "sv");
+          break;
+        case "AZ":
+          languages.put(code, "az");
+          break;
+        case "BA":
+          languages.put(code, "bs");
+          break;
+        case "BB":
+          languages.put(code, "en");
+          break;
+        case "BD":
+          languages.put(code, "bn");
+          break;
+        case "BE":
+          languages.put(code, "nl");
+          break;
+        case "BF":
+          languages.put(code, "fr");
+          break;
+        case "BG":
+          languages.put(code, "bg");
+          break;
+        case "BH":
+          languages.put(code, "ar");
+          break;
+        case "BI":
+          languages.put(code, "fr");
+          break;
+        case "BJ":
+          languages.put(code, "fr");
+          break;
+        case "BL":
+          languages.put(code, "fr");
+          break;
+        case "BM":
+          languages.put(code, "en");
+          break;
+        case "BN":
+          languages.put(code, "ms");
+          break;
+        case "BO":
+          languages.put(code, "es");
+          break;
+        case "BQ":
+          languages.put(code, "nl");
+          break;
+        case "BR":
+          languages.put(code, "pt");
+          break;
+        case "BS":
+          languages.put(code, "en");
+          break;
+        case "BT":
+          languages.put(code, "dz");
+          break;
+        case "BV":
+          languages.put(code, "");
+          break;
+        case "BW":
+          languages.put(code, "en");
+          break;
+        case "BY":
+          languages.put(code, "be");
+          break;
+        case "BZ":
+          languages.put(code, "en");
+          break;
+        case "CA":
+          languages.put(code, "en");
+          break;
+        case "CC":
+          languages.put(code, "ms");
+          break;
+        case "CD":
+          languages.put(code, "fr");
+          break;
+        case "CF":
+          languages.put(code, "fr");
+          break;
+        case "CG":
+          languages.put(code, "fr");
+          break;
+        case "CH":
+          languages.put(code, "de");
+          break;
+        case "CI":
+          languages.put(code, "fr");
+          break;
+        case "CK":
+          languages.put(code, "en");
+          break;
+        case "CL":
+          languages.put(code, "es");
+          break;
+        case "CM":
+          languages.put(code, "en");
+          break;
+        case "CN":
+          languages.put(code, "zh");
+          break;
+        case "CO":
+          languages.put(code, "es");
+          break;
+        case "CR":
+          languages.put(code, "es");
+          break;
+        case "CU":
+          languages.put(code, "es");
+          break;
+        case "CV":
+          languages.put(code, "pt");
+          break;
+        case "CW":
+          languages.put(code, "nl");
+          break;
+        case "CX":
+          languages.put(code, "en");
+          break;
+        case "CY":
+          languages.put(code, "el");
+          break;
+        case "CZ":
+          languages.put(code, "cs");
+          break;
+        case "DE":
+          languages.put(code, "de");
+          break;
+        case "DJ":
+          languages.put(code, "fr");
+          break;
+        case "DK":
+          languages.put(code, "da");
+          break;
+        case "DM":
+          languages.put(code, "en");
+          break;
+        case "DO":
+          languages.put(code, "es");
+          break;
+        case "DZ":
+          languages.put(code, "ar");
+          break;
+        case "EC":
+          languages.put(code, "es");
+          break;
+        case "EE":
+          languages.put(code, "et");
+          break;
+        case "EG":
+          languages.put(code, "ar");
+          break;
+        case "EH":
+          languages.put(code, "ar");
+          break;
+        case "ER":
+          languages.put(code, "aa");
+          break;
+        case "ES":
+          languages.put(code, "es");
+          break;
+        case "ET":
+          languages.put(code, "am");
+          break;
+        case "FI":
+          languages.put(code, "fi");
+          break;
+        case "FJ":
+          languages.put(code, "en");
+          break;
+        case "FK":
+          languages.put(code, "en");
+          break;
+        case "FM":
+          languages.put(code, "en");
+          break;
+        case "FO":
+          languages.put(code, "fo");
+          break;
+        case "FR":
+          languages.put(code, "fr");
+          break;
+        case "GA":
+          languages.put(code, "fr");
+          break;
+        case "GB":
+          languages.put(code, "en");
+          break;
+        case "GD":
+          languages.put(code, "en");
+          break;
+        case "GE":
+          languages.put(code, "ka");
+          break;
+        case "GF":
+          languages.put(code, "fr");
+          break;
+        case "GG":
+          languages.put(code, "en");
+          break;
+        case "GH":
+          languages.put(code, "en");
+          break;
+        case "GI":
+          languages.put(code, "en");
+          break;
+        case "GL":
+          languages.put(code, "kl");
+          break;
+        case "GM":
+          languages.put(code, "en");
+          break;
+        case "GN":
+          languages.put(code, "fr");
+          break;
+        case "GP":
+          languages.put(code, "fr");
+          break;
+        case "GQ":
+          languages.put(code, "es");
+          break;
+        case "GR":
+          languages.put(code, "el");
+          break;
+        case "GS":
+          languages.put(code, "en");
+          break;
+        case "GT":
+          languages.put(code, "es");
+          break;
+        case "GU":
+          languages.put(code, "en");
+          break;
+        case "GW":
+          languages.put(code, "pt");
+          break;
+        case "GY":
+          languages.put(code, "en");
+          break;
+        case "HK":
+          languages.put(code, "zh");
+          break;
+        case "HM":
+          languages.put(code, "");
+          break;
+        case "HN":
+          languages.put(code, "es");
+          break;
+        case "HR":
+          languages.put(code, "hr");
+          break;
+        case "HT":
+          languages.put(code, "ht");
+          break;
+        case "HU":
+          languages.put(code, "hu");
+          break;
+        case "ID":
+          languages.put(code, "id");
+          break;
+        case "IE":
+          languages.put(code, "en");
+          break;
+        case "IL":
+          languages.put(code, "he");
+          break;
+        case "IM":
+          languages.put(code, "en");
+          break;
+        case "IN":
+          languages.put(code, "en");
+          break;
+        case "IO":
+          languages.put(code, "en");
+          break;
+        case "IQ":
+          languages.put(code, "ar");
+          break;
+        case "IR":
+          languages.put(code, "fa");
+          break;
+        case "IS":
+          languages.put(code, "is");
+          break;
+        case "IT":
+          languages.put(code, "it");
+          break;
+        case "JE":
+          languages.put(code, "en");
+          break;
+        case "JM":
+          languages.put(code, "en");
+          break;
+        case "JO":
+          languages.put(code, "ar");
+          break;
+        case "JP":
+          languages.put(code, "ja");
+          break;
+        case "KE":
+          languages.put(code, "en");
+          break;
+        case "KG":
+          languages.put(code, "ky");
+          break;
+        case "KH":
+          languages.put(code, "km");
+          break;
+        case "KI":
+          languages.put(code, "en");
+          break;
+        case "KM":
+          languages.put(code, "ar");
+          break;
+        case "KN":
+          languages.put(code, "en");
+          break;
+        case "KP":
+          languages.put(code, "ko");
+          break;
+        case "KR":
+          languages.put(code, "ko");
+          break;
+        case "XK":
+          languages.put(code, "sq");
+          break;
+        case "KW":
+          languages.put(code, "ar");
+          break;
+        case "KY":
+          languages.put(code, "en");
+          break;
+        case "KZ":
+          languages.put(code, "kk");
+          break;
+        case "LA":
+          languages.put(code, "lo");
+          break;
+        case "LB":
+          languages.put(code, "ar");
+          break;
+        case "LC":
+          languages.put(code, "en");
+          break;
+        case "LI":
+          languages.put(code, "de");
+          break;
+        case "LK":
+          languages.put(code, "si");
+          break;
+        case "LR":
+          languages.put(code, "en");
+          break;
+        case "LS":
+          languages.put(code, "en");
+          break;
+        case "LT":
+          languages.put(code, "lt");
+          break;
+        case "LU":
+          languages.put(code, "lb");
+          break;
+        case "LV":
+          languages.put(code, "lv");
+          break;
+        case "LY":
+          languages.put(code, "ar");
+          break;
+        case "MA":
+          languages.put(code, "ar");
+          break;
+        case "MC":
+          languages.put(code, "fr");
+          break;
+        case "MD":
+          languages.put(code, "ro");
+          break;
+        case "ME":
+          languages.put(code, "sr");
+          break;
+        case "MF":
+          languages.put(code, "fr");
+          break;
+        case "MG":
+          languages.put(code, "fr");
+          break;
+        case "MH":
+          languages.put(code, "mh");
+          break;
+        case "MK":
+          languages.put(code, "mk");
+          break;
+        case "ML":
+          languages.put(code, "fr");
+          break;
+        case "MM":
+          languages.put(code, "my");
+          break;
+        case "MN":
+          languages.put(code, "mn");
+          break;
+        case "MO":
+          languages.put(code, "zh");
+          break;
+        case "MP":
+          languages.put(code, "fil");
+          break;
+        case "MQ":
+          languages.put(code, "fr");
+          break;
+        case "MR":
+          languages.put(code, "ar");
+          break;
+        case "MS":
+          languages.put(code, "en");
+          break;
+        case "MT":
+          languages.put(code, "mt");
+          break;
+        case "MU":
+          languages.put(code, "en");
+          break;
+        case "MV":
+          languages.put(code, "dv");
+          break;
+        case "MW":
+          languages.put(code, "ny");
+          break;
+        case "MX":
+          languages.put(code, "es");
+          break;
+        case "MY":
+          languages.put(code, "ms");
+          break;
+        case "MZ":
+          languages.put(code, "pt");
+          break;
+        case "NA":
+          languages.put(code, "en");
+          break;
+        case "NC":
+          languages.put(code, "fr");
+          break;
+        case "NE":
+          languages.put(code, "fr");
+          break;
+        case "NF":
+          languages.put(code, "en");
+          break;
+        case "NG":
+          languages.put(code, "en");
+          break;
+        case "NI":
+          languages.put(code, "es");
+          break;
+        case "NL":
+          languages.put(code, "nl");
+          break;
+        case "NO":
+          languages.put(code, "no");
+          break;
+        case "NP":
+          languages.put(code, "ne");
+          break;
+        case "NR":
+          languages.put(code, "na");
+          break;
+        case "NU":
+          languages.put(code, "niu");
+          break;
+        case "NZ":
+          languages.put(code, "en");
+          break;
+        case "OM":
+          languages.put(code, "ar");
+          break;
+        case "PA":
+          languages.put(code, "es");
+          break;
+        case "PE":
+          languages.put(code, "es");
+          break;
+        case "PF":
+          languages.put(code, "fr");
+          break;
+        case "PG":
+          languages.put(code, "en");
+          break;
+        case "PH":
+          languages.put(code, "tl");
+          break;
+        case "PK":
+          languages.put(code, "ur");
+          break;
+        case "PL":
+          languages.put(code, "pl");
+          break;
+        case "PM":
+          languages.put(code, "fr");
+          break;
+        case "PN":
+          languages.put(code, "en");
+          break;
+        case "PR":
+          languages.put(code, "en");
+          break;
+        case "PS":
+          languages.put(code, "ar");
+          break;
+        case "PT":
+          languages.put(code, "pt");
+          break;
+        case "PW":
+          languages.put(code, "pau");
+          break;
+        case "PY":
+          languages.put(code, "es");
+          break;
+        case "QA":
+          languages.put(code, "ar");
+          break;
+        case "RE":
+          languages.put(code, "fr");
+          break;
+        case "RO":
+          languages.put(code, "ro");
+          break;
+        case "RS":
+          languages.put(code, "sr");
+          break;
+        case "RU":
+          languages.put(code, "ru");
+          break;
+        case "RW":
+          languages.put(code, "rw");
+          break;
+        case "SA":
+          languages.put(code, "ar");
+          break;
+        case "SB":
+          languages.put(code, "en");
+          break;
+        case "SC":
+          languages.put(code, "en");
+          break;
+        case "SD":
+          languages.put(code, "ar");
+          break;
+        case "SS":
+          languages.put(code, "en");
+          break;
+        case "SE":
+          languages.put(code, "sv");
+          break;
+        case "SG":
+          languages.put(code, "cmn");
+          break;
+        case "SH":
+          languages.put(code, "en");
+          break;
+        case "SI":
+          languages.put(code, "sl");
+          break;
+        case "SJ":
+          languages.put(code, "no");
+          break;
+        case "SK":
+          languages.put(code, "sk");
+          break;
+        case "SL":
+          languages.put(code, "en");
+          break;
+        case "SM":
+          languages.put(code, "it");
+          break;
+        case "SN":
+          languages.put(code, "fr");
+          break;
+        case "SO":
+          languages.put(code, "so");
+          break;
+        case "SR":
+          languages.put(code, "nl");
+          break;
+        case "ST":
+          languages.put(code, "pt");
+          break;
+        case "SV":
+          languages.put(code, "es");
+          break;
+        case "SX":
+          languages.put(code, "nl");
+          break;
+        case "SY":
+          languages.put(code, "ar");
+          break;
+        case "SZ":
+          languages.put(code, "en");
+          break;
+        case "TC":
+          languages.put(code, "en");
+          break;
+        case "TD":
+          languages.put(code, "fr");
+          break;
+        case "TF":
+          languages.put(code, "fr");
+          break;
+        case "TG":
+          languages.put(code, "fr");
+          break;
+        case "TH":
+          languages.put(code, "th");
+          break;
+        case "TJ":
+          languages.put(code, "tg");
+          break;
+        case "TK":
+          languages.put(code, "tkl");
+          break;
+        case "TL":
+          languages.put(code, "tet");
+          break;
+        case "TM":
+          languages.put(code, "tk");
+          break;
+        case "TN":
+          languages.put(code, "ar");
+          break;
+        case "TO":
+          languages.put(code, "to");
+          break;
+        case "TR":
+          languages.put(code, "tr");
+          break;
+        case "TT":
+          languages.put(code, "en");
+          break;
+        case "TV":
+          languages.put(code, "tvl");
+          break;
+        case "TW":
+          languages.put(code, "zh");
+          break;
+        case "TZ":
+          languages.put(code, "sw");
+          break;
+        case "UA":
+          languages.put(code, "uk");
+          break;
+        case "UG":
+          languages.put(code, "en");
+          break;
+        case "UM":
+          languages.put(code, "en");
+          break;
+        case "US":
+          languages.put(code, "en");
+          break;
+        case "UY":
+          languages.put(code, "es");
+          break;
+        case "UZ":
+          languages.put(code, "uz");
+          break;
+        case "VA":
+          languages.put(code, "la");
+          break;
+        case "VC":
+          languages.put(code, "en");
+          break;
+        case "VE":
+          languages.put(code, "es");
+          break;
+        case "VG":
+          languages.put(code, "en");
+          break;
+        case "VI":
+          languages.put(code, "en");
+          break;
+        case "VN":
+          languages.put(code, "vi");
+          break;
+        case "VU":
+          languages.put(code, "bi");
+          break;
+        case "WF":
+          languages.put(code, "wls");
+          break;
+        case "WS":
+          languages.put(code, "sm");
+          break;
+        case "YE":
+          languages.put(code, "ar");
+          break;
+        case "YT":
+          languages.put(code, "fr");
+          break;
+        case "ZA":
+          languages.put(code, "zu");
+          break;
+        case "ZM":
+          languages.put(code, "en");
+          break;
+        case "ZW":
+          languages.put(code, "en");
+          break;
+        case "CS":
+          languages.put(code, "cu");
+          break;
+        case "AN":
+          languages.put(code, "nl");
+          break;
       }
     }
   }
