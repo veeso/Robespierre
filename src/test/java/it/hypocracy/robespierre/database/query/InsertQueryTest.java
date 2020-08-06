@@ -39,4 +39,16 @@ public class InsertQueryTest {
     assertEquals("INSERT INTO user (username,password) VALUES (\"admin\",\"password1\");", query.toSQL());
   }
 
+  @Test
+  public void shouldBuildDeleteQueryWithColumnsAndNullValues() {
+    String[] values = new String[2];
+    values[0] = "\"admin\"";
+    values[1] = null;
+    String[] columns = new String[2];
+    columns[0] = "username";
+    columns[1] = "password";
+    InsertQuery query = new InsertQuery("user", columns, values);
+    assertEquals("INSERT INTO user (username) VALUES (\"admin\");", query.toSQL());
+  }
+
 }

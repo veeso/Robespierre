@@ -49,13 +49,16 @@ public class InsertQuery implements Query {
     // Table
     queryStream.append(table);
     // If columns is set, set columns
+    int colIdx = 0;
     if (columns != null) {
       // Open columns
       queryStream.append(" (");
       // Iterate over columns
       for (String col : columns) {
-        queryStream.append(col);
-        queryStream.append(",");
+        if (values[colIdx++] != null) { // Ignore null values
+          queryStream.append(col);
+          queryStream.append(",");
+        }
       }
       // Remove last comma
       queryStream.deleteCharAt(queryStream.length() - 1);
@@ -65,8 +68,10 @@ public class InsertQuery implements Query {
     // Values
     queryStream.append(" VALUES (");
     for (String value : values) {
-      queryStream.append(value);
-      queryStream.append(",");
+      if (value != null) { // Ignore null values
+        queryStream.append(value);
+        queryStream.append(",");
+      }
     }
     // Remove last comma
     queryStream.deleteCharAt(queryStream.length() - 1);

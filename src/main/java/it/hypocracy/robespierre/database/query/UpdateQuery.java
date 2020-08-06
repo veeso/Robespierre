@@ -58,10 +58,12 @@ public class UpdateQuery implements Query {
     Iterator<Map.Entry<String, String>> valuesIterator = columns.entrySet().iterator();
     while (valuesIterator.hasNext()) {
       Map.Entry<String, String> entry = valuesIterator.next();
-      queryStream.append(entry.getKey());
-      queryStream.append(" = ");
-      queryStream.append(entry.getValue());
-      queryStream.append(",");
+      if (entry.getValue() != null) { // Ignore null values
+        queryStream.append(entry.getKey());
+        queryStream.append(" = ");
+        queryStream.append(entry.getValue());
+        queryStream.append(",");
+      }
     }
     // Remove last comma
     queryStream.deleteCharAt(queryStream.length() - 1);

@@ -40,4 +40,14 @@ public class UpdateQueryTest {
     assertEquals("UPDATE user SET role = \"administrator\",username = \"omar\" WHERE username = \"pippo\";", query.toSQL());
   }
 
+  @Test
+  public void shouldBuildDeleteQueryWithColumnsAndNullValues() {
+    HashMap<String, String> columns = new HashMap<String, String>();
+    columns.put("role", "\"administrator\"");
+    columns.put("username", null);
+    Clause clause = new Clause("username", "\"pippo\"", ClauseOperator.EQUAL);
+    UpdateQuery query = new UpdateQuery("user", columns, clause);
+    assertEquals("UPDATE user SET role = \"administrator\" WHERE username = \"pippo\";", query.toSQL());
+  }
+
 }
