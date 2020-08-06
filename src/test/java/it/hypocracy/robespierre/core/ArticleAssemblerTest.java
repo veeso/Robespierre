@@ -68,7 +68,7 @@ public class ArticleAssemblerTest {
     assertTrue(subjects.hasNext());
     Subject subject = subjects.next();
     assertEquals("alberto angela", subject.getName());
-    assertEquals("paleontologo, divulgatore scientifico e giornalista italiano", subject.getBiography());
+    assertEquals("paleontologo, divulgatore scientifico e giornalista italiano", subject.biography.getBrief());
     assertEquals("IT", subject.getCitizenship().toString());
     assertEquals(1962, subject.getBirthdate().getYear());
     assertEquals(Month.APRIL, subject.getBirthdate().getMonth());

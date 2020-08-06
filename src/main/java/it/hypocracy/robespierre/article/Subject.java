@@ -24,7 +24,7 @@ public class Subject {
   protected ISO3166 citizenship; // 2 chars or null
   protected String birthplace; // City or null
   protected String imageUri; // Can be null
-  protected String biography;
+  public SubjectBio biography;
   private String remoteId; // Access id for metadata receiver
   private LocalDateTime lastUpdate; // Last information update
   public Occupation occupation;
@@ -54,7 +54,7 @@ public class Subject {
     this.citizenship = citizenship;
     this.birthplace = birthplace;
     this.imageUri = imageUri;
-    this.biography = bio;
+    this.biography = new SubjectBio(bio);
     this.remoteId = remoteId;
     this.lastUpdate = lastUpdate;
     this.occupation = occupation;
@@ -117,10 +117,6 @@ public class Subject {
 
   public String getImageUri() {
     return this.imageUri;
-  }
-
-  public String getBiography() {
-    return this.biography;
   }
 
   public String getRemoteId() {

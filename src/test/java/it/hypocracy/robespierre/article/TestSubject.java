@@ -30,7 +30,8 @@ public class TestSubject {
     Subject subject = new Subject("foo bar", LocalDate.of(1960, 5, 14), citizenship, "footown", "img.gif", "foo bar is a nice person", "123", cat);
     assertEquals(36, subject.getId().length());
     assertEquals("foo bar", subject.getName());
-    assertEquals("foo bar is a nice person", subject.getBiography());
+    assertEquals("foo bar is a nice person", subject.biography.getBrief());
+    assertEquals(36, subject.biography.getId().length());
     assertEquals(1960, subject.getBirthdate().getYear());
     assertEquals("123", subject.getRemoteId());
     assertEquals("footown", subject.getBirthplace());
@@ -38,6 +39,7 @@ public class TestSubject {
     assertEquals(LocalDateTime.now().getHour(), subject.getLastUpdate().getHour());
     assertEquals(citizenship.toString(), subject.getCitizenship().toString());
     assertEquals("politician", subject.occupation.getName());
+    assertEquals(36, subject.occupation.getId().length());
   }
 
   @Test
@@ -48,7 +50,7 @@ public class TestSubject {
     Subject subject = new Subject(testId, "foo bar", LocalDate.of(1960, 5, 14), citizenship, "footown", "img.gif", "foo bar is a nice person", "123", LocalDateTime.of(2020, 6, 28, 12, 45, 54), cat);
     assertEquals(testId, subject.getId());
     assertEquals("foo bar", subject.getName());
-    assertEquals("foo bar is a nice person", subject.getBiography());
+    assertEquals("foo bar is a nice person", subject.biography.getBrief());
     assertEquals(1960, subject.getBirthdate().getYear());
     assertEquals("123", subject.getRemoteId());
     assertEquals(Month.JUNE, subject.getLastUpdate().getMonth());

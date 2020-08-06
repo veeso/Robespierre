@@ -12,54 +12,29 @@ package it.hypocracy.robespierre.article;
 
 import it.hypocracy.robespierre.utils.Uuidv4;
 
-public class Occupation {
-  
+public class SubjectBio {
+
   private String id;
-  private String name;
+  private String brief;
 
-  /**
-   * <p>
-   * Instantiates a new Category
-   * </p>
-   * 
-   * @param id
-   * @param name
-   */
-
-  public Occupation(String id, String name) {
+  public SubjectBio(String id, String brief) {
     this.id = id;
-    this.name = name;
+    this.brief = brief;
   }
 
-  /**
-   * <p>
-   * Instantiates a new Category
-   * </p>
-   * 
-   * @param name
-   */
-
-  public Occupation(String name) {
-    this(null, name);
+  public SubjectBio(String brief) {
+    this(null, brief);
     // Generate UUID
     Uuidv4 uuid = new Uuidv4();
     this.id = uuid.getUUIDv4();
   }
 
-  /**
-   * <p>
-   * Returns category name
-   * </p>
-   * 
-   * @return name
-   */
-
-  public String getName() {
-    return this.name;
-  }
-
   public String getId() {
     return this.id;
+  }
+
+  public String getBrief() {
+    return this.brief;
   }
 
   public void setId(String id) {
