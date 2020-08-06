@@ -490,7 +490,7 @@ public class FeedDatabase {
     final String descColumn = topicDataFieldDesc + "_" + language;
     String[] columns = new String[] { topicDataFieldId, nameColumn, descColumn };
     String[] values = new String[] { escapeString(uuid), escapeString(name), escapeString(description) };
-    InsertQuery query = new InsertQuery(topicTable, columns, values);
+    InsertQuery query = new InsertQuery(topicDataTable, columns, values);
     dbFac.insert(query);
     return uuid;
   }
@@ -514,7 +514,7 @@ public class FeedDatabase {
     fields.put(nameColumn, escapeString(name));
     fields.put(descColumn, escapeString(description));
     Clause where = new Clause(topicDataFieldId, escapeString(id), ClauseOperator.EQUAL);
-    UpdateQuery query = new UpdateQuery(topicTable, fields, where);
+    UpdateQuery query = new UpdateQuery(topicDataTable, fields, where);
     dbFac.update(query);
   }
 
