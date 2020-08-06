@@ -65,6 +65,7 @@ public class FeedDatabase {
   // Topic
   private final static String topicFieldId = "id";
   private final static String topicFieldDataId = "topic_data_id";
+  private final static String topicDataFieldId = "id";
   private final static String topicDataFieldName = "name"; // NOTE: _COUNTRY must be added
   private final static String topicDataFieldDesc = "desc"; // NOTE: _COUNTRY must be added
   // Subject
@@ -123,7 +124,10 @@ public class FeedDatabase {
         commitSubject(sIt.next(), article.getId(), language);
       }
       // Insert topics
-      // TODO:
+      Iterator<Topic> tIt = article.iterTopics();
+      while (tIt.hasNext()) {
+        commitTopic(tIt.next(), article.getId(), language);
+      }
       // Commit changes
       dbFac.commit();
     } finally { // Disconnect in finally statement is mandatory
@@ -211,7 +215,17 @@ public class FeedDatabase {
   private void commitSubject(Subject subject, String articleId, String language) throws SQLException {
     // Check if subject already exists
     if (subjectExists(subject)) {
-      // TODO: update subject
+      // Update subject (update: image, last_update)
+      HashMap<String, String> fields = new HashMap<>();
+      fields.put(subjectFieldImage, escapeString(subject.getImageUri()));
+      fields.put(subjectFieldLastUpdate, escapeString(subject.getLastUpdate().toString()));
+      Clause where = new Clause(subjectFieldId, escapeString(subject.getId()), ClauseOperator.EQUAL);
+      UpdateQuery query = new UpdateQuery(subjectTable, fields, where);
+      dbFac.update(query);
+      // Update bio record
+      updateBiography(subject.biography.getId(), subject.biography.getBrief(), language);
+      // Update occupation id
+      updateOccupation(subject.occupation.getId(), subject.occupation.getName(), language);
     } else {
       // Insert a new subject...
       // Start with checking if the occupation record already exists
@@ -221,12 +235,10 @@ public class FeedDatabase {
         occupationId = genUUID();
         // Insert occupation data
         insertOccupation(occupationId, subject.occupation.getName(), language);
-      } else {
-        // Update occupation data
-        updateOccupation(occupationId, subject.occupation.getName(), language);
-      }
+      } // NOTE: no need to update occupation here. It's data is already correct for
+        // sure (in occupationExists, we searched it by text)
       // insert bio
-      final String bioId = insertBiography(subject.getBiography(), language);
+      final String bioId = insertBiography(subject.biography.getBrief(), language);
       // Insert subject
       String[] columns = new String[] { subjectFieldId, subjectFieldName, subjectFieldBirthdate,
           subjectFieldCitizenship, subjectFieldBirthplace, subjectFieldImage, subjectFieldRemoteId,
@@ -241,7 +253,7 @@ public class FeedDatabase {
     }
     // Add association between subject and article
     final String assocId = genUUID();
-    String[] columns = new String[] { articleSubjectFieldArticleId, articleSubjectFieldArticleId,
+    String[] columns = new String[] { articleSubjectFieldId, articleSubjectFieldArticleId,
         articleSubjectFieldSubjectId };
     String[] values = new String[] { escapeString(assocId), escapeString(articleId), escapeString(subject.getId()) };
     InsertQuery query = new InsertQuery(articleSubjectTable, columns, values);
@@ -251,7 +263,7 @@ public class FeedDatabase {
   /**
    * <p>
    * Checks if subject already exists. If exists updates its uuid with the one
-   * found in the database.
+   * found in the database. It also updates bio ID and Occupation ID
    * </p>
    * 
    * @param subject
@@ -262,7 +274,7 @@ public class FeedDatabase {
   private boolean subjectExists(Subject subject) throws SQLException {
     // Prepare query (select same name and birthdate (good enough to guarantee no
     // homonyms))
-    String[] fields = new String[] { subjectFieldId };
+    String[] fields = new String[] { subjectFieldId, subjectFieldBioId, subjectFieldOccupationId };
     String[] tables = new String[] { subjectTable };
     Clause where = new Clause(subjectFieldName, escapeString(subject.getName()), ClauseOperator.EQUAL);
     where.setNext(
@@ -272,8 +284,10 @@ public class FeedDatabase {
     // Perform query
     ArrayList<Map<String, String>> result = this.dbFac.select(query);
     if (result.size() > 0) { // At least one result, duped.
-      // Set id
+      // Set ids
       subject.setId(result.get(0).get(subjectFieldId));
+      subject.biography.setId(result.get(0).get(subjectFieldBioId));
+      subject.occupation.setId(result.get(0).get(subjectFieldOccupationId));
       return true;
     }
     return false;
@@ -368,6 +382,140 @@ public class FeedDatabase {
     InsertQuery query = new InsertQuery(biographyTable, columns, values);
     dbFac.insert(query);
     return uuid;
+  }
+
+  /**
+   * <p>
+   * Update existing biography for a certain subject in the database biography
+   * </p>
+   * 
+   * @param id
+   * @param brief
+   * @param language
+   * @throws SQLException
+   */
+
+  private void updateBiography(String id, String brief, String language) throws SQLException {
+    HashMap<String, String> fields = new HashMap<>();
+    fields.put(language, escapeString(brief));
+    Clause where = new Clause(biographyFieldId, escapeString(id), ClauseOperator.EQUAL);
+    UpdateQuery query = new UpdateQuery(biographyTable, fields, where);
+    dbFac.update(query);
+  }
+
+  // @! Topics
+
+  /**
+   * <p>
+   * Insert topic and all its associated tables into the database. Adds also the
+   * association between the topic and the article
+   * </p>
+   * 
+   * @param topic
+   * @param articleId
+   * @param language
+   * @throws SQLException
+   */
+
+  private void commitTopic(Topic topic, String articleId, String language) throws SQLException {
+    // Check if topic exists
+    if (topicExists(topic)) {
+      // Update topic data
+      updateTopicData(topic.getDescriptionId(), topic.getName(), topic.getDescription(), language);
+    } else {
+      // Create topic data
+      final String topicDataId = insertTopicData(topic.getName(), topic.getDescription(), language);
+      // Insert topic
+      String[] columns = new String[] { topicFieldId, topicFieldDataId };
+      topic.setDescriptionId(topicDataId);
+      String[] values = new String[] { escapeString(topic.getId()), escapeString(topic.getDescriptionId()) };
+      InsertQuery query = new InsertQuery(topicTable, columns, values);
+      dbFac.insert(query);
+    }
+    // Add association between topic and article
+    final String assocId = genUUID();
+    String[] columns = new String[] { articleTopicFieldId, articleTopicFieldArticleId, articleTopicFieldTopicId };
+    String[] values = new String[] { escapeString(assocId), escapeString(articleId), escapeString(topic.getId()) };
+    InsertQuery query = new InsertQuery(articleTopicTable, columns, values);
+    dbFac.insert(query);
+  }
+
+  /**
+   * <p>
+   * Checks if topic already exists. If exists updates its uuid with the one found
+   * in the database. It also updates the description ID
+   * </p>
+   * 
+   * @param topic
+   * @throws SQLException
+   * @return boolean
+   */
+
+  private boolean topicExists(Topic topic) throws SQLException {
+    // Prepare query (select same name)
+    String[] fields = new String[] { topicFieldId, topicFieldDataId };
+    String[] tables = new String[] { topicTable };
+    Clause where = new Clause(subjectFieldName, escapeString(topic.getName()), ClauseOperator.EQUAL);
+    ;
+    SelectQuery query = new SelectQuery(fields, tables, where);
+    // Perform query
+    ArrayList<Map<String, String>> result = this.dbFac.select(query);
+    if (result.size() > 0) { // At least one result, duped.
+      // Set ids
+      topic.setId(result.get(0).get(topicFieldId));
+      topic.setDescriptionId(result.get(0).get(topicFieldId));
+      return true;
+    }
+    return false;
+  }
+
+  // @! Topic Data
+
+  /**
+   * <p>
+   * Insert a new topic data in the database. Returns the UUID of the generated
+   * topic data
+   * </p>
+   * 
+   * @param description
+   * @param language
+   * @throws SQLException
+   * @return biography uuid
+   */
+
+  private String insertTopicData(String name, String description, String language) throws SQLException {
+    // Generate UUID
+    final String uuid = genUUID();
+    final String nameColumn = topicDataFieldName + "_" + language;
+    final String descColumn = topicDataFieldDesc + "_" + language;
+    String[] columns = new String[] { topicDataFieldId, nameColumn, descColumn };
+    String[] values = new String[] { escapeString(uuid), escapeString(name), escapeString(description) };
+    InsertQuery query = new InsertQuery(topicTable, columns, values);
+    dbFac.insert(query);
+    return uuid;
+  }
+
+  /**
+   * <p>
+   * Update existing topic data for a certain subject in the database biography
+   * </p>
+   * 
+   * @param id
+   * @param name
+   * @param description
+   * @param language
+   * @throws SQLException
+   */
+
+  private void updateTopicData(String id, String name, String description, String language) throws SQLException {
+    final String nameColumn = topicDataFieldName + "_" + language;
+    final String descColumn = topicDataFieldDesc + "_" + language;
+    HashMap<String, String> fields = new HashMap<>();
+    fields.put(nameColumn, escapeString(name));
+    fields.put(descColumn, escapeString(description));
+    Clause where = new Clause(topicDataFieldId, escapeString(id), ClauseOperator.EQUAL);
+    UpdateQuery query = new UpdateQuery(topicTable, fields, where);
+    dbFac.update(query);
   }
 
   // @! SQL
