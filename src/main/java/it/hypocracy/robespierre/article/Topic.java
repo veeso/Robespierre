@@ -21,6 +21,7 @@ public class Topic {
   private String id;
   private String name;
   private String description;
+  private String descriptionId;
 
   /**
    * <p>
@@ -46,9 +47,25 @@ public class Topic {
    */
 
   public Topic(String id, String name, String description) {
+    this(id, name, description, new Uuidv4().getUUIDv4());
+  }
+
+  /**
+   * <p>
+   * Instantiates a new Topic
+   * </p>
+   * 
+   * @param id          topic id
+   * @param name        topic name
+   * @param description topic description
+   * @param descriptionId
+   */
+
+  public Topic(String id, String name, String description, String descriptionId) {
     this.id = id;
     this.name = name;
     this.description = description;
+    this.descriptionId = descriptionId;
   }
 
   /**
@@ -97,6 +114,14 @@ public class Topic {
 
   public String getDescription() {
     return this.description;
+  }
+
+  public void setDescriptionId(String id) {
+    this.descriptionId = id;
+  }
+
+  public String getDescriptionId() {
+    return this.descriptionId;
   }
 
 }
