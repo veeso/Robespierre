@@ -534,10 +534,9 @@ public class FeedDatabase {
       updateTopicData(topic.getDescriptionId(), topic.getName(), topic.getDescription(), language);
     } else {
       // Create topic data
-      final String topicDataId = insertTopicData(topic.getName(), topic.getDescription(), language);
+      insertTopicData(topic.getDescriptionId(), topic.getName(), topic.getDescription(), language);
       // Insert topic
       String[] columns = new String[] { topicFieldId, topicFieldDataId };
-      topic.setDescriptionId(topicDataId);
       String[] values = new String[] { escapeString(topic.getId()), escapeString(topic.getDescriptionId()) };
       InsertQuery query = new InsertQuery(topicTable, columns, values);
       dbFac.insert(query);
@@ -601,23 +600,25 @@ public class FeedDatabase {
       dbFac.connect();
       // Prepare Where statement
       // Where subject name is exactly match
-      Clause where = new Clause(subjectFieldName, escapeString(match), ClauseOperator.EQUAL);
-      // Prepare Columns
-      String[] columns = new String[] { topicFieldId, topicFieldDataId };
-      String[] tables = new String[] { topicTable };
-      // Select
-      SelectQuery query = new SelectQuery(columns, tables, where);
+      final String nameColumn = topicDataFieldName + "_" + language;
+      final String descColumn = topicDataFieldDesc + "_" + language;
+      final String topicIdCol = topicTable + "." + topicFieldId;
+      final String topicTopicDataIdCol = topicTable + "." + topicFieldDataId;
+      final String topicDataIdCol = topicDataTable + "." + topicDataFieldId;
+      String[] fields = new String[] { topicIdCol, topicFieldDataId, nameColumn, descColumn };
+      String[] tables = new String[] { topicTable, topicDataTable };
+      Clause where = new Clause(nameColumn, escapeString(match), ClauseOperator.EQUAL);
+      where.setNext(new Clause(topicTopicDataIdCol, topicDataIdCol, ClauseOperator.EQUAL), ClauseRelation.AND);
+      SelectQuery query = new SelectQuery(fields, tables, where);
       ArrayList<Map<String, String>> rows = dbFac.select(query);
       // Prepare topics
       topics = new Topic[rows.size()];
       // Iterate over rows
-      Iterator<Map<String, String>> subjectIt = rows.iterator();
+      Iterator<Map<String, String>> topicIt = rows.iterator();
       int topIdx = 0;
-      while (subjectIt.hasNext()) {
-        Map<String, String> row = subjectIt.next();
-        // Get topic data
-        String[] topicData = getTopicData(row.get(topicFieldId), language);
-        topics[topIdx] = new Topic(row.get(topicFieldId), topicData[0], topicData[1], row.get(topicFieldDataId));
+      while (topicIt.hasNext()) {
+        Map<String, String> row = topicIt.next();
+        topics[topIdx] = new Topic(row.get(topicFieldId), row.get(nameColumn), row.get(descColumn), row.get(topicFieldDataId));
         topIdx++; // Increment topic index
       }
     } finally { // Disconnect in finally statement is mandatory
@@ -630,7 +631,7 @@ public class FeedDatabase {
 
   /**
    * <p>
-   * Insert a new topic data in the database. Returns the UUID of the generated
+   * Insert a new topic data in the database
    * topic data
    * </p>
    * 
@@ -640,16 +641,13 @@ public class FeedDatabase {
    * @return biography uuid
    */
 
-  private String insertTopicData(String name, String description, String language) throws SQLException {
-    // Generate UUID
-    final String uuid = genUUID();
+  private void insertTopicData(String uuid, String name, String description, String language) throws SQLException {
     final String nameColumn = topicDataFieldName + "_" + language;
     final String descColumn = topicDataFieldDesc + "_" + language;
     String[] columns = new String[] { topicDataFieldId, nameColumn, descColumn };
     String[] values = new String[] { escapeString(uuid), escapeString(name), escapeString(description) };
     InsertQuery query = new InsertQuery(topicDataTable, columns, values);
     dbFac.insert(query);
-    return uuid;
   }
 
   /**
@@ -673,37 +671,6 @@ public class FeedDatabase {
     Clause where = new Clause(topicDataFieldId, escapeString(id), ClauseOperator.EQUAL);
     UpdateQuery query = new UpdateQuery(topicDataTable, fields, where);
     dbFac.update(query);
-  }
-
-  /**
-   * <p>
-   * Retrieves the name and the description of the topic associated to the UUID
-   * </p>
-   * 
-   * @param uuid
-   * @param language
-   * @return string [name, description]
-   * @throws SQLException
-   */
-
-  private String[] getTopicData(String uuid, String language) throws SQLException {
-    final String nameColumn = topicDataFieldName + "_" + language;
-    final String descColumn = topicDataFieldDesc + "_" + language;
-    String[] columns = new String[] { nameColumn, descColumn };
-    String[] table = new String[] { topicDataTable };
-    Clause where = new Clause(topicDataFieldId, escapeString(uuid), ClauseOperator.EQUAL);
-    SelectQuery query = new SelectQuery(columns, table, where);
-    ArrayList<Map<String, String>> rows = dbFac.select(query);
-    Iterator<Map<String, String>> it = rows.iterator();
-    if (it.hasNext()) {
-      Map<String, String> row = it.next();
-      String[] result = new String[2];
-      result[0] = row.get(nameColumn);
-      result[1] = row.get(descColumn);
-      return result;
-    } else {
-      return null;
-    }
   }
 
   // @! SQL
