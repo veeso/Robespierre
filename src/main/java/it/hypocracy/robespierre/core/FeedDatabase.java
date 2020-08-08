@@ -309,25 +309,29 @@ public class FeedDatabase {
    * @throws IllegalArgumentException
    */
 
-  public Subject[] searchSubject(String match, LocalDateTime expiration, String language) throws SQLException, IllegalArgumentException {
+  public Subject[] searchSubject(String match, LocalDateTime expiration, String language)
+      throws SQLException, IllegalArgumentException {
     // Connect to database
     Subject[] subjects = null;
     try {
       dbFac.connect();
       // Prepare Where statement
       StringBuilder matchBuilder = new StringBuilder();
-      if (! match.startsWith("%")) { // Add '%' if missing
+      if (!match.startsWith("%")) { // Add '%' if missing
         matchBuilder.append("%");
       }
       matchBuilder.append(match);
-      if (! match.endsWith("%")) { // Add '%' if missing
+      if (!match.endsWith("%")) { // Add '%' if missing
         matchBuilder.append("%");
       }
       // Where subject name likes match and expiration date is in the future
       Clause where = new Clause(subjectFieldName, escapeString(matchBuilder.toString()), ClauseOperator.LIKE);
-      where.setNext(new Clause(subjectFieldLastUpdate, expiration.toString(), ClauseOperator.LESS_THAN), ClauseRelation.AND);
+      where.setNext(new Clause(subjectFieldLastUpdate, expiration.toString(), ClauseOperator.LESS_THAN),
+          ClauseRelation.AND);
       // Prepare Columns
-      String[] columns = new String[] { subjectFieldId, subjectFieldName, subjectFieldBirthdate, subjectFieldBirthplace, subjectFieldCitizenship, subjectFieldImage, subjectFieldRemoteId, subjectFieldLastUpdate, subjectFieldOccupationId, subjectFieldBioId };
+      String[] columns = new String[] { subjectFieldId, subjectFieldName, subjectFieldBirthdate, subjectFieldBirthplace,
+          subjectFieldCitizenship, subjectFieldImage, subjectFieldRemoteId, subjectFieldLastUpdate,
+          subjectFieldOccupationId, subjectFieldBioId };
       String[] tables = new String[] { subjectTable };
       // Select
       SelectQuery query = new SelectQuery(columns, tables, where);
@@ -344,7 +348,10 @@ public class FeedDatabase {
         String biography = getBiography(row.get(subjectFieldBioId), language);
         // Instantiate subject
         Occupation occupation = new Occupation(row.get(subjectFieldOccupationId), occupationStr);
-        subjects[subjIdx] = new Subject(row.get(subjectFieldId), row.get(subjectFieldName), LocalDate.parse(row.get(subjectFieldBirthdate)), new ISO3166(row.get(subjectFieldCitizenship)), row.get(subjectFieldBirthplace), row.get(subjectFieldImage), biography, row.get(subjectFieldRemoteId), ISO8601.toLocalDateTime(row.get(subjectFieldLastUpdate)), occupation);
+        subjects[subjIdx] = new Subject(row.get(subjectFieldId), row.get(subjectFieldName),
+            LocalDate.parse(row.get(subjectFieldBirthdate)), new ISO3166(row.get(subjectFieldCitizenship)),
+            row.get(subjectFieldBirthplace), row.get(subjectFieldImage), biography, row.get(subjectFieldRemoteId),
+            ISO8601.toLocalDateTime(row.get(subjectFieldLastUpdate)), occupation);
         subjIdx++; // Increment subject index
       }
     } finally { // Disconnect in finally statement is mandatory
