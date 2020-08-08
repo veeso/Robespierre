@@ -33,14 +33,14 @@ import it.hypocracy.robespierre.database.query.syntax.ClauseOperator;
 public class MariaFacadeTest {
 
   // Queries
-  private static String createDatabaseQuery = "CREATE DATABASE IF NOT EXISTS junit;";
-  private static String useDatabaseQuery = "USE junit;";
+  private static String createDatabaseQuery = "CREATE DATABASE IF NOT EXISTS maria_test;";
+  private static String useDatabaseQuery = "USE maria_test;";
   private static String createTableQuery = "CREATE TABLE IF NOT EXISTS user (id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,email VARCHAR(64) NOT NULL,username VARCHAR(32) NOT NULL,password CHAR(64) NOT NULL);";
   private static String dropTableQuery = "DROP TABLE user;";
-  private static String dropDatabaseQuery = "DROP DATABASE junit;";
+  private static String dropDatabaseQuery = "DROP DATABASE maria_test;";
 
   private static String baseUrl = "jdbc:mariadb://localhost:3306/";
-  private static String databaseName = "junit";
+  private static String databaseName = "maria_test";
   private static String dbUrl = baseUrl + databaseName;
 
   // @! Run first
