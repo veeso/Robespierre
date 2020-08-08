@@ -40,9 +40,10 @@ public class Article {
    * @param brief
    * @param link
    * @param date
+   * @param country
    */
 
-  public Article(String title, String brief, URI link, LocalDateTime date, ISO3166 lang) {
+  public Article(String title, String brief, URI link, LocalDateTime date, ISO3166 country) {
     this.id = new Uuidv4().getUUIDv4();
     this.title = title;
     this.brief = brief;
@@ -50,7 +51,7 @@ public class Article {
     this.date = date;
     this.subjects = new ArrayList<Subject>();
     this.topics = new ArrayList<Topic>();
-    this.country = lang;
+    this.country = country;
   }
 
   public String getId() {
