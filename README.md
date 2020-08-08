@@ -24,10 +24,12 @@ Here follows the key description:
   - user: database user
   - password: database password
 - feed: contains the feed configuration
-  - engine: the feed protocol
+  - maxWorkers: maximum amount of workers instantiated to fetch sources
   - sources: contains the sources array
+    - engine: the feed protocol
     - uri: feed uri
     - country: feed country
+    - interval: interval in minutes for fetching source
 - metadata: contains the metadata configuration
   - engine: the engine to be used (e.g. wikidata)
 

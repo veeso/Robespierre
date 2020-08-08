@@ -17,11 +17,15 @@ import it.hypocracy.robespierre.config.exceptions.BadConfigException;
 
 public class FeedConfig implements BaseConfig {
 
+  public int maxWorkers;
   public List<FeedSourceConfig> sources;
 
   @Override
   public void check() throws BadConfigException {
     // Iterate over sources
+    if (maxWorkers <= 0) {
+      throw new BadConfigException("Invalid maxWorkers for FeedConfig");
+    }
     Iterator<FeedSourceConfig> it = sources.iterator();
     while (it.hasNext()) {
       FeedSourceConfig source = it.next();

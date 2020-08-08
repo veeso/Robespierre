@@ -6,6 +6,7 @@
     "password": null
   },
   "feed": {
+    "maxWorkers": 16,
     "sources": [
       {
         "uri": "http://example.com/rss",
