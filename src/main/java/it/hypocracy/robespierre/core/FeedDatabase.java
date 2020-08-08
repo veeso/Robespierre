@@ -586,6 +586,50 @@ public class FeedDatabase {
     return false;
   }
 
+  /**
+   * <p>
+   * Search topic into the database by name
+   * </p>
+   * 
+   * @param match
+   * @param language
+   * @return Topic
+   * @throws SQLException
+   * @throws IllegalArgumentException
+   */
+
+  public Topic[] searchTopic(String match, String language) throws SQLException, IllegalArgumentException {
+    // Connect to database
+    Topic[] topics = null;
+    try {
+      dbFac.connect();
+      // Prepare Where statement
+      // Where subject name is exactly match
+      Clause where = new Clause(subjectFieldName, escapeString(match), ClauseOperator.EQUAL);
+      // Prepare Columns
+      String[] columns = new String[] { topicFieldId, topicFieldDataId };
+      String[] tables = new String[] { topicTable };
+      // Select
+      SelectQuery query = new SelectQuery(columns, tables, where);
+      ArrayList<Map<String, String>> rows = dbFac.select(query);
+      // Prepare topics
+      topics = new Topic[rows.size()];
+      // Iterate over rows
+      Iterator<Map<String, String>> subjectIt = rows.iterator();
+      int topIdx = 0;
+      while (subjectIt.hasNext()) {
+        Map<String, String> row = subjectIt.next();
+        // Get topic data
+        String[] topicData = getTopicData(row.get(topicFieldId), language);
+        topics[topIdx] = new Topic(row.get(topicFieldId), topicData[0], topicData[1], row.get(topicFieldDataId));
+        topIdx++; // Increment topic index
+      }
+    } finally { // Disconnect in finally statement is mandatory
+      dbFac.disconnect();
+    }
+    return topics;
+  }
+
   // @! Topic Data
 
   /**
@@ -633,6 +677,37 @@ public class FeedDatabase {
     Clause where = new Clause(topicDataFieldId, escapeString(id), ClauseOperator.EQUAL);
     UpdateQuery query = new UpdateQuery(topicDataTable, fields, where);
     dbFac.update(query);
+  }
+
+  /**
+   * <p>
+   * Retrieves the name and the description of the topic associated to the UUID
+   * </p>
+   * 
+   * @param uuid
+   * @param language
+   * @return string [name, description]
+   * @throws SQLException
+   */
+
+  private String[] getTopicData(String uuid, String language) throws SQLException {
+    final String nameColumn = topicDataFieldName + "_" + language;
+    final String descColumn = topicDataFieldDesc + "_" + language;
+    String[] columns = new String[] { nameColumn, descColumn };
+    String[] table = new String[] { topicDataTable };
+    Clause where = new Clause(topicDataFieldId, escapeString(uuid), ClauseOperator.EQUAL);
+    SelectQuery query = new SelectQuery(columns, table, where);
+    ArrayList<Map<String, String>> rows = dbFac.select(query);
+    Iterator<Map<String, String>> it = rows.iterator();
+    if (it.hasNext()) {
+      Map<String, String> row = it.next();
+      String[] result = new String[2];
+      result[0] = row.get(nameColumn);
+      result[1] = row.get(descColumn);
+      return result;
+    } else {
+      return null;
+    }
   }
 
   // @! SQL
