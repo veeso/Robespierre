@@ -11,6 +11,7 @@
 package it.hypocracy.robespierre.core;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import it.hypocracy.robespierre.article.Article;
+import it.hypocracy.robespierre.article.Occupation;
 import it.hypocracy.robespierre.article.Subject;
 import it.hypocracy.robespierre.article.Topic;
 import it.hypocracy.robespierre.core.errors.DupedRecordException;
@@ -29,6 +31,8 @@ import it.hypocracy.robespierre.database.query.UpdateQuery;
 import it.hypocracy.robespierre.database.query.syntax.Clause;
 import it.hypocracy.robespierre.database.query.syntax.ClauseOperator;
 import it.hypocracy.robespierre.database.query.syntax.ClauseRelation;
+import it.hypocracy.robespierre.utils.ISO3166;
+import it.hypocracy.robespierre.utils.ISO8601;
 import it.hypocracy.robespierre.utils.Uuidv4;
 
 public class FeedDatabase {
@@ -293,6 +297,62 @@ public class FeedDatabase {
     return false;
   }
 
+  /**
+   * <p>
+   * Search subject into the database by name
+   * </p>
+   * 
+   * @param match
+   * @param language
+   * @return Subjects
+   * @throws SQLException
+   * @throws IllegalArgumentException
+   */
+
+  public Subject[] searchSubject(String match, LocalDateTime expiration, String language) throws SQLException, IllegalArgumentException {
+    // Connect to database
+    Subject[] subjects = null;
+    try {
+      dbFac.connect();
+      // Prepare Where statement
+      StringBuilder matchBuilder = new StringBuilder();
+      if (! match.startsWith("%")) { // Add '%' if missing
+        matchBuilder.append("%");
+      }
+      matchBuilder.append(match);
+      if (! match.endsWith("%")) { // Add '%' if missing
+        matchBuilder.append("%");
+      }
+      // Where subject name likes match and expiration date is in the future
+      Clause where = new Clause(subjectFieldName, escapeString(matchBuilder.toString()), ClauseOperator.LIKE);
+      where.setNext(new Clause(subjectFieldLastUpdate, expiration.toString(), ClauseOperator.LESS_THAN), ClauseRelation.AND);
+      // Prepare Columns
+      String[] columns = new String[] { subjectFieldId, subjectFieldName, subjectFieldBirthdate, subjectFieldBirthplace, subjectFieldCitizenship, subjectFieldImage, subjectFieldRemoteId, subjectFieldLastUpdate, subjectFieldOccupationId, subjectFieldBioId };
+      String[] tables = new String[] { subjectTable };
+      // Select
+      SelectQuery query = new SelectQuery(columns, tables, where);
+      ArrayList<Map<String, String>> rows = dbFac.select(query);
+      // Prepare subjects
+      subjects = new Subject[rows.size()];
+      // Iterate over rows
+      Iterator<Map<String, String>> subjectIt = rows.iterator();
+      int subjIdx = 0;
+      while (subjectIt.hasNext()) {
+        // Get occupation
+        Map<String, String> row = subjectIt.next();
+        String occupationStr = getOccupation(row.get(subjectFieldOccupationId), language);
+        String biography = getBiography(row.get(subjectFieldBioId), language);
+        // Instantiate subject
+        Occupation occupation = new Occupation(row.get(subjectFieldOccupationId), occupationStr);
+        subjects[subjIdx] = new Subject(row.get(subjectFieldId), row.get(subjectFieldName), LocalDate.parse(row.get(subjectFieldBirthdate)), new ISO3166(row.get(subjectFieldCitizenship)), row.get(subjectFieldBirthplace), row.get(subjectFieldImage), biography, row.get(subjectFieldRemoteId), ISO8601.toLocalDateTime(row.get(subjectFieldLastUpdate)), occupation);
+        subjIdx++; // Increment subject index
+      }
+    } finally { // Disconnect in finally statement is mandatory
+      dbFac.disconnect();
+    }
+    return subjects;
+  }
+
   // @! Occupation
 
   /**
@@ -360,6 +420,31 @@ public class FeedDatabase {
     dbFac.update(query);
   }
 
+  /**
+   * <p>
+   * Retrieves the name of the occupation associated to the UUID
+   * </p>
+   * 
+   * @param uuid
+   * @param language
+   * @return string
+   * @throws SQLException
+   */
+
+  private String getOccupation(String uuid, String language) throws SQLException {
+    String[] columns = new String[] { language };
+    String[] table = new String[] { occupationTable };
+    Clause where = new Clause(occupationFieldId, escapeString(uuid), ClauseOperator.EQUAL);
+    SelectQuery query = new SelectQuery(columns, table, where);
+    ArrayList<Map<String, String>> rows = dbFac.select(query);
+    Iterator<Map<String, String>> it = rows.iterator();
+    if (it.hasNext()) {
+      return it.next().get(language);
+    } else {
+      return null;
+    }
+  }
+
   // @! Bio
 
   /**
@@ -401,6 +486,31 @@ public class FeedDatabase {
     Clause where = new Clause(biographyFieldId, escapeString(id), ClauseOperator.EQUAL);
     UpdateQuery query = new UpdateQuery(biographyTable, fields, where);
     dbFac.update(query);
+  }
+
+  /**
+   * <p>
+   * Retrieves the text of the biography associated to the UUID
+   * </p>
+   * 
+   * @param uuid
+   * @param language
+   * @return string
+   * @throws SQLException
+   */
+
+  private String getBiography(String uuid, String language) throws SQLException {
+    String[] columns = new String[] { language };
+    String[] table = new String[] { biographyTable };
+    Clause where = new Clause(biographyFieldId, escapeString(uuid), ClauseOperator.EQUAL);
+    SelectQuery query = new SelectQuery(columns, table, where);
+    ArrayList<Map<String, String>> rows = dbFac.select(query);
+    Iterator<Map<String, String>> it = rows.iterator();
+    if (it.hasNext()) {
+      return it.next().get(language);
+    } else {
+      return null;
+    }
   }
 
   // @! Topics
