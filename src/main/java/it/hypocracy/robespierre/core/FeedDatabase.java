@@ -565,7 +565,7 @@ public class FeedDatabase {
     final String nameColumn = topicDataFieldName + "_" + language;
     final String topicIdCol = topicTable + "." + topicFieldId;
     final String topicDataIdCol = topicDataTable + "." + topicDataFieldId;
-    String[] fields = new String[] { topicIdCol, topicDataIdCol };
+    String[] fields = new String[] { topicIdCol, topicFieldDataId };
     String[] tables = new String[] { topicTable, topicDataTable };
     Clause where = new Clause(nameColumn, escapeString(topic.getName()), ClauseOperator.EQUAL);
     where.setNext(new Clause(topicFieldDataId, topicDataIdCol, ClauseOperator.EQUAL), ClauseRelation.AND);
@@ -574,8 +574,8 @@ public class FeedDatabase {
     ArrayList<Map<String, String>> result = this.dbFac.select(query);
     if (result.size() > 0) { // At least one result, duped.
       // Set ids
-      topic.setId(result.get(0).get(topicIdCol));
-      topic.setDescriptionId(result.get(0).get(topicDataIdCol));
+      topic.setId(result.get(0).get(topicFieldId));
+      topic.setDescriptionId(result.get(0).get(topicFieldDataId));
       return true;
     }
     return false;
