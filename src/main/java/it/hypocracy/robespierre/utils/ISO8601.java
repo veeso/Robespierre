@@ -27,7 +27,7 @@ public class ISO8601 {
    * @throws DateTimeParseException
    */
 
-  public static LocalDateTime toLocalDateTime(String dateStr) throws DateTimeParseException {
+  public static LocalDateTime parse(String dateStr) throws DateTimeParseException {
     DateTimeFormatter formatter = new DateTimeFormatterBuilder().optionalStart().appendPattern("'+'").optionalEnd()
         // date/time
         .append(DateTimeFormatter.ISO_LOCAL_DATE_TIME)

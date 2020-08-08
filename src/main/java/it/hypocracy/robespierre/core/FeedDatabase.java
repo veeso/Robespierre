@@ -351,7 +351,7 @@ public class FeedDatabase {
         subjects[subjIdx] = new Subject(row.get(subjectFieldId), row.get(subjectFieldName),
             LocalDate.parse(row.get(subjectFieldBirthdate)), new ISO3166(row.get(subjectFieldCitizenship)),
             row.get(subjectFieldBirthplace), row.get(subjectFieldImage), biography, row.get(subjectFieldRemoteId),
-            ISO8601.toLocalDateTime(row.get(subjectFieldLastUpdate)), occupation);
+            ISO8601.parse(row.get(subjectFieldLastUpdate)), occupation);
         subjIdx++; // Increment subject index
       }
     } finally { // Disconnect in finally statement is mandatory

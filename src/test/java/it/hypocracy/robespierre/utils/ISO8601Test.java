@@ -24,7 +24,7 @@ public class ISO8601Test {
   @Test
   public void shouldParseIso8601AcBc() {
     String dateStr = "+1896-09-25T04:30:10Z";
-    LocalDateTime tm = ISO8601.toLocalDateTime(dateStr);
+    LocalDateTime tm = ISO8601.parse(dateStr);
     assertEquals(1896, tm.getYear());
     assertEquals(Month.SEPTEMBER, tm.getMonth());
     assertEquals(25, tm.getDayOfMonth());
@@ -36,7 +36,7 @@ public class ISO8601Test {
   @Test
   public void shouldParseIso8601WithTimezone() {
     String dateStr = "1896-09-25T04:30:10+0200";
-    LocalDateTime tm = ISO8601.toLocalDateTime(dateStr);
+    LocalDateTime tm = ISO8601.parse(dateStr);
     assertEquals(1896, tm.getYear());
     assertEquals(Month.SEPTEMBER, tm.getMonth());
     assertEquals(25, tm.getDayOfMonth());
@@ -48,7 +48,7 @@ public class ISO8601Test {
   @Test
   public void shouldFailParsingIso8601() {
     String dateStr = "+1896-25T04:30:10Z";
-    assertThrows(DateTimeParseException.class, () -> ISO8601.toLocalDateTime(dateStr));
+    assertThrows(DateTimeParseException.class, () -> ISO8601.parse(dateStr));
   }
 
 }

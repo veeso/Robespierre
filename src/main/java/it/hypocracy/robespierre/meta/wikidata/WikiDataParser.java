@@ -283,7 +283,7 @@ public class WikiDataParser {
       }
       // Parse ISO8601
       try {
-        return ISO8601.toLocalDateTime(value.time).toLocalDate();
+        return ISO8601.parse(value.time).toLocalDate();
       } catch (DateTimeParseException ex) {
         throw new ParserException("Property Birthdate has invalid ISO8601 value");
       }
