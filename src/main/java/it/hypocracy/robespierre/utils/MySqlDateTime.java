@@ -27,7 +27,7 @@ public class MySqlDateTime {
    * @throws DateTimeParseException
    */
 
-  public static LocalDateTime toLocalDateTime(String dateStr) throws DateTimeParseException {
+  public static LocalDateTime parse(String dateStr) throws DateTimeParseException {
     DateTimeFormatter formatter = new DateTimeFormatterBuilder()
         .parseCaseInsensitive()
         .appendPattern("uuuu-MM-dd HH:mm:ss.S")

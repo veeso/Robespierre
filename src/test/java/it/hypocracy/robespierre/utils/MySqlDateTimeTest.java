@@ -24,7 +24,7 @@ public class MySqlDateTimeTest {
   @Test
   public void shouldParseMySqlDateTime() {
     String dateStr = "2020-08-08 15:31:47.0";
-    LocalDateTime tm = MySqlDateTime.toLocalDateTime(dateStr);
+    LocalDateTime tm = MySqlDateTime.parse(dateStr);
     assertEquals(2020, tm.getYear());
     assertEquals(Month.AUGUST, tm.getMonth());
     assertEquals(8, tm.getDayOfMonth());
@@ -36,7 +36,7 @@ public class MySqlDateTimeTest {
   @Test
   public void shouldFailParsingMySqlDateTime() {
     String dateStr = "+1896-25T04:30:10Z";
-    assertThrows(DateTimeParseException.class, () -> ISO8601.toLocalDateTime(dateStr));
+    assertThrows(DateTimeParseException.class, () -> MySqlDateTime.parse(dateStr));
   }
 
 }
