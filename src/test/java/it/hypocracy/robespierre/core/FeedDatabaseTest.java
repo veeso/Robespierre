@@ -88,15 +88,20 @@ public class FeedDatabaseTest {
     // @! Insert article
     // Prepare subjects
     Occupation occupation1 = new Occupation("paleontologo");
-    Subject subject1 = new Subject("alberto angela", LocalDate.of(1962, Month.APRIL, 8), new ISO3166("IT"), "paris", "https://upload.wikimedia.org/wikipedia/commons/1/1e/Alberto_Angela.jpg", "paleontologo italiano", "Q514695", occupation1);
+    Subject subject1 = new Subject("alberto angela", LocalDate.of(1962, Month.APRIL, 8), new ISO3166("IT"), "paris",
+        "https://upload.wikimedia.org/wikipedia/commons/1/1e/Alberto_Angela.jpg", "paleontologo italiano", "Q514695",
+        occupation1);
     Occupation occupation2 = new Occupation("conduttore televisivo");
-    Subject subject2 = new Subject("gerry scotti", LocalDate.of(1956, Month.AUGUST, 7), new ISO3166("IT"), "miradolo terme", "https://upload.wikimedia.org/wikipedia/commons/9/9d/Gerry_Scotti.jpg", "conduttore televisivo, conduttore radiofonico, attore ed ex politico italiano", "Q363498", occupation2);
+    Subject subject2 = new Subject("gerry scotti", LocalDate.of(1956, Month.AUGUST, 7), new ISO3166("IT"),
+        "miradolo terme", "https://upload.wikimedia.org/wikipedia/commons/9/9d/Gerry_Scotti.jpg",
+        "conduttore televisivo, conduttore radiofonico, attore ed ex politico italiano", "Q363498", occupation2);
     // Prepare topic
     Topic topic = new Topic("europeismo", "ideologia politica");
     // Build Article
     LocalDateTime publishDate = LocalDateTime.now();
     publishDate = publishDate.withNano(0);
-    Article article = new Article("titolo articolo", "testo dell'articolo", URI.create("https://giornaletto/alberto%20angela%20europeista"), publishDate, new ISO3166("it"));
+    Article article = new Article("titolo articolo", "testo dell'articolo",
+        URI.create("https://giornaletto/alberto%20angela%20europeista"), publishDate, new ISO3166("it"));
     article.addSubject(subject1);
     article.addSubject(subject2);
     article.addTopic(topic);
@@ -133,7 +138,8 @@ public class FeedDatabaseTest {
 
     // @! Duped article
     LocalDateTime publishDate2 = LocalDateTime.now();
-    Article article2 = new Article("titolo articolo", "testo dell'articolo", URI.create("https://giornaletto/alberto%20angela%20europeista"), publishDate2, new ISO3166("it"));
+    Article article2 = new Article("titolo articolo", "testo dell'articolo",
+        URI.create("https://giornaletto/alberto%20angela%20europeista"), publishDate2, new ISO3166("it"));
     assertThrows(DupedRecordException.class, () -> db.commitArticle(article2));
 
     // @! Search subjects
@@ -150,10 +156,15 @@ public class FeedDatabaseTest {
     cmpTopics(topic, europeismo);
     // @! Update subject and topic
     Occupation occupationUpdated = new Occupation("imperatore di Roma");
-    Subject subject1Updated = new Subject(subject1.getId(), "alberto angela", LocalDate.of(1962, Month.APRIL, 8), new ISO3166("IT"), "paris", "https://upload.wikimedia.org/wikipedia/commons/1/1e/Alberto_Angela_In_Spiaggia.jpg", "paleontologo italiano ed imperatore di Roma", "Q514695", LocalDateTime.now(), occupationUpdated);
-    Topic updatedTopic = new Topic("europeismo", "ideologia politica volta a favorire l'integrazione dei popoli e degli Stati d'Europa in un ordinamento sovranazionale più vasto che si estenda su tutto il continente");
+    Subject subject1Updated = new Subject(subject1.getId(), "alberto angela", LocalDate.of(1962, Month.APRIL, 8),
+        new ISO3166("IT"), "paris",
+        "https://upload.wikimedia.org/wikipedia/commons/1/1e/Alberto_Angela_In_Spiaggia.jpg",
+        "paleontologo italiano ed imperatore di Roma", "Q514695", LocalDateTime.now(), occupationUpdated);
+    Topic updatedTopic = new Topic("europeismo",
+        "ideologia politica volta a favorire l'integrazione dei popoli e degli Stati d'Europa in un ordinamento sovranazionale più vasto che si estenda su tutto il continente");
     publishDate = LocalDateTime.now();
-    Article article3 = new Article("Alberto Angela diventa imperatore di Roma", "testo dell'articolo", URI.create("https://giornaletto/alberto%20angela%20europeista"), publishDate, new ISO3166("it"));
+    Article article3 = new Article("Alberto Angela diventa imperatore di Roma", "testo dell'articolo",
+        URI.create("https://giornaletto/alberto%20angela%20europeista"), publishDate, new ISO3166("it"));
     article3.addSubject(subject1Updated);
     article3.addTopic(updatedTopic);
     // Commit article
@@ -162,7 +173,8 @@ public class FeedDatabaseTest {
     dbFacade.connect();
     try {
       // Verify article itself
-      SelectQuery query = new SelectQuery(new String[]{"*"}, new String[]{"article"}, new Clause("id", escapeString(article3.getId()), ClauseOperator.EQUAL));
+      SelectQuery query = new SelectQuery(new String[] { "*" }, new String[] { "article" },
+          new Clause("id", escapeString(article3.getId()), ClauseOperator.EQUAL));
       ArrayList<Map<String, String>> rows = dbFacade.select(query);
       // There should be one record
       assertEquals(1, rows.size());
@@ -170,7 +182,8 @@ public class FeedDatabaseTest {
       // Verify row
       cmpArticleWithRow(article3, row);
       // Verify subjects
-      query = new SelectQuery(new String[]{"*"}, new String[]{"subject"}, new Clause("id", escapeString(subject1Updated.getId()), ClauseOperator.EQUAL));
+      query = new SelectQuery(new String[] { "*" }, new String[] { "subject" },
+          new Clause("id", escapeString(subject1Updated.getId()), ClauseOperator.EQUAL));
       rows = dbFacade.select(query);
       // There should be once record
       assertEquals(1, rows.size());
@@ -179,7 +192,8 @@ public class FeedDatabaseTest {
       row = rows.get(0);
       cmpSubjectWithRow(dbFacade, subject1Updated, row);
       // Check topic data
-      query = new SelectQuery(new String[]{"*"}, new String[]{"topic_data"}, new Clause("id", escapeString(topic.getDescriptionId()), ClauseOperator.EQUAL));
+      query = new SelectQuery(new String[] { "*" }, new String[] { "topic_data" },
+          new Clause("id", escapeString(topic.getDescriptionId()), ClauseOperator.EQUAL));
       rows = dbFacade.select(query);
       assertEquals(1, rows.size());
       row = rows.get(0);
@@ -197,7 +211,8 @@ public class FeedDatabaseTest {
     assertEquals(lvalue.getTitle(), rvalue.get("title"));
     assertEquals(lvalue.getBrief(), rvalue.get("brief"));
     assertEquals(lvalue.getLink().toString(), rvalue.get("link"));
-    //assertEquals(lvalue.getDate().toString(), MySqlDateTime.parse(rvalue.get("date")).toString());
+    // assertEquals(lvalue.getDate().toString(),
+    // MySqlDateTime.parse(rvalue.get("date")).toString());
     assertEquals("0", rvalue.get("state")); // New
     assertEquals(lvalue.getCountry().toString(), rvalue.get("country"));
   }
@@ -216,7 +231,7 @@ public class FeedDatabaseTest {
     final String occupationId = rvalue.get("occupation");
     // Check bio of first subject
     String[] tables = new String[] { "biography" };
-    String[] fields = new String[] { "it"};
+    String[] fields = new String[] { "it" };
     SelectQuery query = new SelectQuery(fields, tables, new Clause("id", escapeString(bioId), ClauseOperator.EQUAL));
     ArrayList<Map<String, String>> rows = dbFacade.select(query);
     assertEquals(1, rows.size());
@@ -224,7 +239,7 @@ public class FeedDatabaseTest {
     assertEquals(lvalue.biography.getBrief(), row.get("it"));
     // Check occupation of first subject
     tables = new String[] { "occupation" };
-    fields = new String[] { "it"};
+    fields = new String[] { "it" };
     query = new SelectQuery(fields, tables, new Clause("id", escapeString(occupationId), ClauseOperator.EQUAL));
     rows = dbFacade.select(query);
     assertEquals(1, rows.size());
@@ -239,7 +254,7 @@ public class FeedDatabaseTest {
     assertEquals(lvalue.getCitizenship().toString(), rvalue.getCitizenship().toString());
     assertEquals(lvalue.getBirthplace(), rvalue.getBirthplace());
     assertEquals(lvalue.getImageUri(), rvalue.getImageUri());
-    //assertEquallvaluet1.getLastUpdate(), albertoAngela.getLastUpdate());
+    // assertEquallvaluet1.getLastUpdate(), albertoAngela.getLastUpdate());
     assertEquals(lvalue.getRemoteId(), rvalue.getRemoteId());
     assertEquals(lvalue.biography.getId(), rvalue.biography.getId());
     assertEquals(lvalue.biography.getBrief(), rvalue.biography.getBrief());
