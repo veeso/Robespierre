@@ -234,7 +234,7 @@ public class FeedDatabase {
     } else {
       // Insert a new subject...
       // Start with checking if the occupation record already exists
-      if (! occupationExists(language, subject.occupation)) {
+      if (!occupationExists(language, subject.occupation)) {
         // Insert occupation data
         insertOccupation(subject.occupation, language);
       } // NOTE: no need to update occupation here. It's data is already correct for
@@ -248,8 +248,8 @@ public class FeedDatabase {
       String[] values = new String[] { escapeString(subject.getId()), escapeString(subject.getName()),
           escapeString(subject.getBirthdate().toString()), escapeString(subject.getCitizenship().toString()),
           escapeString(subject.getBirthplace()), escapeString(subject.getImageUri()),
-          escapeString(subject.getRemoteId()), escapeString(subject.getLastUpdate().toString()), escapeString(subject.biography.getId()),
-          escapeString(subject.occupation.getId()) };
+          escapeString(subject.getRemoteId()), escapeString(subject.getLastUpdate().toString()),
+          escapeString(subject.biography.getId()), escapeString(subject.occupation.getId()) };
       InsertQuery query = new InsertQuery(subjectTable, columns, values);
       dbFac.insert(query);
     }
@@ -348,7 +348,7 @@ public class FeedDatabase {
         Occupation occupation = new Occupation(row.get(subjectFieldOccupationId), occupationStr);
         subjects[subjIdx] = new Subject(row.get(subjectFieldId), row.get(subjectFieldName),
             LocalDate.parse(row.get(subjectFieldBirthdate)), new ISO3166(row.get(subjectFieldCitizenship)),
-            row.get(subjectFieldBirthplace), row.get(subjectFieldImage), biography, row.get(subjectFieldRemoteId),
+            row.get(subjectFieldBirthplace), row.get(subjectFieldImage), new SubjectBio(row.get(subjectFieldBioId), biography), row.get(subjectFieldRemoteId),
             MySqlDateTime.parse(row.get(subjectFieldLastUpdate)), occupation);
         subjIdx++; // Increment subject index
       }

@@ -48,13 +48,35 @@ public class Subject {
 
   public Subject(String id, String name, LocalDate birthdate, ISO3166 citizenship, String birthplace, String imageUri,
       String bio, String remoteId, LocalDateTime lastUpdate, Occupation occupation) {
+    this(id, name, birthdate, citizenship, birthplace, imageUri, new SubjectBio(bio), remoteId, lastUpdate, occupation);
+  }
+
+  /**
+   * <p>
+   * Instantiates a new Subject
+   * </p>
+   * 
+   * @param id
+   * @param name
+   * @param birthdate
+   * @param citizenship
+   * @param birthplace
+   * @param imageUri
+   * @param bio
+   * @param remoteId
+   * @param lastUpdate
+   * @param occupation
+   */
+
+  public Subject(String id, String name, LocalDate birthdate, ISO3166 citizenship, String birthplace, String imageUri,
+      SubjectBio bio, String remoteId, LocalDateTime lastUpdate, Occupation occupation) {
     this.id = id;
     this.name = name;
     this.birthdate = birthdate;
     this.citizenship = citizenship;
     this.birthplace = birthplace;
     this.imageUri = imageUri;
-    this.biography = new SubjectBio(bio);
+    this.biography = bio;
     this.remoteId = remoteId;
     this.lastUpdate = lastUpdate;
     this.occupation = occupation;
