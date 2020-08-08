@@ -196,7 +196,7 @@ public class FeedDatabase {
     values[3] = escapeString(article.getLink().toString());
     values[4] = escapeString(article.getDate().toString());
     values[5] = "0";
-    values[6] = article.getCountry().toString();
+    values[6] = escapeString(article.getCountry().toString());
     InsertQuery query = new InsertQuery(articleTable, columns, values);
     // Perform
     dbFac.insert(query);
@@ -536,7 +536,7 @@ public class FeedDatabase {
 
   private void commitTopic(Topic topic, String articleId, String language) throws SQLException {
     // Check if topic exists
-    if (topicExists(topic)) {
+    if (topicExists(topic, language)) {
       // Update topic data
       updateTopicData(topic.getDescriptionId(), topic.getName(), topic.getDescription(), language);
     } else {
@@ -568,19 +568,22 @@ public class FeedDatabase {
    * @return boolean
    */
 
-  private boolean topicExists(Topic topic) throws SQLException {
+  private boolean topicExists(Topic topic, String language) throws SQLException {
     // Prepare query (select same name)
-    String[] fields = new String[] { topicFieldId, topicFieldDataId };
-    String[] tables = new String[] { topicTable };
-    Clause where = new Clause(subjectFieldName, escapeString(topic.getName()), ClauseOperator.EQUAL);
-    ;
+    final String nameColumn = topicDataFieldName + "_" + language;
+    final String topicIdCol = topicTable + "." + topicFieldId;
+    final String topicDataIdCol = topicDataTable + "." + topicDataFieldId;
+    String[] fields = new String[] { topicIdCol, topicDataIdCol };
+    String[] tables = new String[] { topicTable, topicDataTable };
+    Clause where = new Clause(nameColumn, escapeString(topic.getName()), ClauseOperator.EQUAL);
+    where.setNext(new Clause(topicFieldDataId, topicDataIdCol, ClauseOperator.EQUAL), ClauseRelation.AND);
     SelectQuery query = new SelectQuery(fields, tables, where);
     // Perform query
     ArrayList<Map<String, String>> result = this.dbFac.select(query);
     if (result.size() > 0) { // At least one result, duped.
       // Set ids
-      topic.setId(result.get(0).get(topicFieldId));
-      topic.setDescriptionId(result.get(0).get(topicFieldId));
+      topic.setId(result.get(0).get(topicIdCol));
+      topic.setDescriptionId(result.get(0).get(topicDataIdCol));
       return true;
     }
     return false;
