@@ -486,15 +486,15 @@ public class WikiDataParser {
     WbEntity occupationQuery = this.apiClient.getWebEntity(datavalue.value.id, country);
     Entity occupationEntity = occupationQuery.entities.get(datavalue.value.id);
     if (occupationEntity == null) {
-      throw new ParserException("City query returned bad object");
+      throw new ParserException("Occupation query returned bad object");
     }
     // Get label
     Label occupationLabel = occupationEntity.labels.get(country.toString().toLowerCase());
     if (occupationLabel == null) {
-      throw new ParserException("City query has no label");
+      throw new ParserException("Occupation query has no label");
     }
     if (occupationLabel.value == null) {
-      throw new ParserException("City query has no label value");
+      throw new ParserException("Occupation query has no label value");
     }
     return new Occupation(occupationLabel.value.toLowerCase());
   }
