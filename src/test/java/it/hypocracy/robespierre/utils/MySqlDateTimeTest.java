@@ -23,7 +23,7 @@ public class MySqlDateTimeTest {
   
   @Test
   public void shouldParseMySqlDateTime() {
-    String dateStr = "2020-08-08 15:31:47.0";
+    String dateStr = "2020-08-08 15:31:47";
     LocalDateTime tm = MySqlDateTime.parse(dateStr);
     assertEquals(2020, tm.getYear());
     assertEquals(Month.AUGUST, tm.getMonth());
@@ -31,6 +31,19 @@ public class MySqlDateTimeTest {
     assertEquals(15, tm.getHour());
     assertEquals(31, tm.getMinute());
     assertEquals(47, tm.getSecond());
+  }
+
+  @Test
+  public void shouldParseMySqlDateTimeWithMillis() {
+    String dateStr = "2020-08-08 15:31:47.321767";
+    LocalDateTime tm = MySqlDateTime.parse(dateStr);
+    assertEquals(2020, tm.getYear());
+    assertEquals(Month.AUGUST, tm.getMonth());
+    assertEquals(8, tm.getDayOfMonth());
+    assertEquals(15, tm.getHour());
+    assertEquals(31, tm.getMinute());
+    assertEquals(47, tm.getSecond());
+    assertEquals(321767000, tm.getNano());
   }
 
   @Test

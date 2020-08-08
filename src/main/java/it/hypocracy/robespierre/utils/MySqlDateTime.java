@@ -30,7 +30,8 @@ public class MySqlDateTime {
   public static LocalDateTime parse(String dateStr) throws DateTimeParseException {
     DateTimeFormatter formatter = new DateTimeFormatterBuilder()
         .parseCaseInsensitive()
-        .appendPattern("uuuu-MM-dd HH:mm:ss.S")
+        .appendPattern("uuuu-MM-dd HH:mm:ss")
+        .appendPattern("[.SSSSSSSSS][.SSSSSS][.SSS]")
         // create formatter
         .toFormatter();
     return LocalDateTime.parse(dateStr, formatter);
