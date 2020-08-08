@@ -8,7 +8,7 @@
  * Written by Christian Visintin <christian.visintin1997@gmail.com>, 2020
  */
 
-package it.hypocracy.robespierre.meta;
+package it.hypocracy.robespierre.meta.cache;
 
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.meta.exceptions.CacheException;

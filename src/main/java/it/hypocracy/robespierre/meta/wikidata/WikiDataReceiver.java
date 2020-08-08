@@ -13,7 +13,7 @@ package it.hypocracy.robespierre.meta.wikidata;
 import java.util.Iterator;
 
 import it.hypocracy.robespierre.article.Article;
-import it.hypocracy.robespierre.meta.CacheProvider;
+import it.hypocracy.robespierre.meta.cache.CacheProvider;
 import it.hypocracy.robespierre.meta.MetadataReceiver;
 import it.hypocracy.robespierre.meta.exceptions.CacheException;
 import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
