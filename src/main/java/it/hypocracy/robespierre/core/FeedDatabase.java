@@ -22,6 +22,7 @@ import java.util.Map;
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.article.Occupation;
 import it.hypocracy.robespierre.article.Subject;
+import it.hypocracy.robespierre.article.SubjectBio;
 import it.hypocracy.robespierre.article.Topic;
 import it.hypocracy.robespierre.core.errors.DupedRecordException;
 import it.hypocracy.robespierre.database.driver.DatabaseFacade;
@@ -229,20 +230,17 @@ public class FeedDatabase {
       // Update bio record
       updateBiography(subject.biography.getId(), subject.biography.getBrief(), language);
       // Update occupation id
-      updateOccupation(subject.occupation.getId(), subject.occupation.getName(), language);
+      updateOccupation(subject.occupation, language);
     } else {
       // Insert a new subject...
       // Start with checking if the occupation record already exists
-      String occupationId = occupationExists(language, subject.occupation.getName());
-      if (occupationId == null) {
-        // Generate a new UUID
-        occupationId = genUUID();
+      if (! occupationExists(language, subject.occupation)) {
         // Insert occupation data
-        insertOccupation(occupationId, subject.occupation.getName(), language);
+        insertOccupation(subject.occupation, language);
       } // NOTE: no need to update occupation here. It's data is already correct for
         // sure (in occupationExists, we searched it by text)
       // insert bio
-      final String bioId = insertBiography(subject.biography.getBrief(), language);
+      insertBiography(subject.biography, language);
       // Insert subject
       String[] columns = new String[] { subjectFieldId, subjectFieldName, subjectFieldBirthdate,
           subjectFieldCitizenship, subjectFieldBirthplace, subjectFieldImage, subjectFieldRemoteId,
@@ -250,8 +248,8 @@ public class FeedDatabase {
       String[] values = new String[] { escapeString(subject.getId()), escapeString(subject.getName()),
           escapeString(subject.getBirthdate().toString()), escapeString(subject.getCitizenship().toString()),
           escapeString(subject.getBirthplace()), escapeString(subject.getImageUri()),
-          escapeString(subject.getRemoteId()), escapeString(subject.getLastUpdate().toString()), escapeString(bioId),
-          escapeString(occupationId) };
+          escapeString(subject.getRemoteId()), escapeString(subject.getLastUpdate().toString()), escapeString(subject.biography.getId()),
+          escapeString(subject.occupation.getId()) };
       InsertQuery query = new InsertQuery(subjectTable, columns, values);
       dbFac.insert(query);
     }
@@ -326,7 +324,7 @@ public class FeedDatabase {
       }
       // Where subject name likes match and expiration date is in the future
       Clause where = new Clause(subjectFieldName, escapeString(matchBuilder.toString()), ClauseOperator.LIKE);
-      where.setNext(new Clause(subjectFieldLastUpdate, expiration.toString(), ClauseOperator.LESS_THAN),
+      where.setNext(new Clause(subjectFieldLastUpdate, escapeString(expiration.toString()), ClauseOperator.LESS_THAN),
           ClauseRelation.AND);
       // Prepare Columns
       String[] columns = new String[] { subjectFieldId, subjectFieldName, subjectFieldBirthdate, subjectFieldBirthplace,
@@ -364,28 +362,27 @@ public class FeedDatabase {
 
   /**
    * <p>
-   * Checks whether the occupation already exists. If exists return its uuid,
-   * otherwise null
+   * Checks whether the occupation already exists.
    * </p>
    * 
    * @param occupation
-   * @return string
+   * @return boolean
    * @throws SQLException
    */
 
-  private String occupationExists(String language, String occupation) throws SQLException {
+  private boolean occupationExists(String language, Occupation occupation) throws SQLException {
     String[] fields = new String[] { occupationFieldId };
     String[] tables = new String[] { occupationTable };
     // Check if `language` is equal to occupation name
-    Clause where = new Clause(language, escapeString(occupation), ClauseOperator.EQUAL);
+    Clause where = new Clause(language, escapeString(occupation.getName()), ClauseOperator.EQUAL);
     SelectQuery query = new SelectQuery(fields, tables, where);
     ArrayList<Map<String, String>> result = this.dbFac.select(query);
     if (result.size() > 0) { // At least one result, duped.
       // Return occcupation id
-      return result.get(0).get(occupationFieldId);
+      return true;
     }
-    // Occupation doesn't exist, return null
-    return null;
+    // Occupation doesn't exist, return false
+    return false;
   }
 
   /**
@@ -400,9 +397,9 @@ public class FeedDatabase {
    * @throws SQLException
    */
 
-  private void insertOccupation(String uuid, String occupation, String language) throws SQLException {
+  private void insertOccupation(Occupation occupation, String language) throws SQLException {
     String[] columns = new String[] { occupationFieldId, language };
-    String[] values = new String[] { escapeString(uuid), escapeString(occupation) };
+    String[] values = new String[] { escapeString(occupation.getId()), escapeString(occupation.getName()) };
     InsertQuery query = new InsertQuery(occupationTable, columns, values);
     dbFac.insert(query);
   }
@@ -419,10 +416,10 @@ public class FeedDatabase {
    * @throws SQLException
    */
 
-  private void updateOccupation(String uuid, String occupation, String language) throws SQLException {
+  private void updateOccupation(Occupation occupation, String language) throws SQLException {
     HashMap<String, String> fields = new HashMap<>();
-    fields.put(language, escapeString(occupation));
-    Clause where = new Clause(occupationFieldId, escapeString(uuid), ClauseOperator.EQUAL);
+    fields.put(language, escapeString(occupation.getName()));
+    Clause where = new Clause(occupationFieldId, escapeString(occupation.getId()), ClauseOperator.EQUAL);
     UpdateQuery query = new UpdateQuery(occupationTable, fields, where);
     dbFac.update(query);
   }
@@ -456,24 +453,20 @@ public class FeedDatabase {
 
   /**
    * <p>
-   * Insert a new biography in the database. Returns the UUID of the generated
-   * biography
+   * Insert a new biography in the database
    * </p>
    * 
+   * @param uuid
    * @param biography
    * @param language
    * @throws SQLException
-   * @return biography uuid
    */
 
-  private String insertBiography(String biography, String language) throws SQLException {
-    // Generate UUID
-    final String uuid = genUUID();
+  private void insertBiography(SubjectBio biography, String language) throws SQLException {
     String[] columns = new String[] { biographyFieldId, language };
-    String[] values = new String[] { escapeString(uuid), escapeString(biography) };
+    String[] values = new String[] { escapeString(biography.getId()), escapeString(biography.getBrief()) };
     InsertQuery query = new InsertQuery(biographyTable, columns, values);
     dbFac.insert(query);
-    return uuid;
   }
 
   /**

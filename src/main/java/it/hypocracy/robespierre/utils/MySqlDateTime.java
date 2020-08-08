@@ -31,7 +31,7 @@ public class MySqlDateTime {
     DateTimeFormatter formatter = new DateTimeFormatterBuilder()
         .parseCaseInsensitive()
         .appendPattern("uuuu-MM-dd HH:mm:ss")
-        .appendPattern("[.SSSSSSSSS][.SSSSSS][.SSS]")
+        .appendPattern("[.SSSSSSSSS][.SSSSSS][.SSS][.SS][.S]")
         // create formatter
         .toFormatter();
     return LocalDateTime.parse(dateStr, formatter);
