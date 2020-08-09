@@ -12,6 +12,7 @@ package it.hypocracy.robespierre.meta.cache;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Iterator;
 
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.article.Subject;
@@ -66,7 +67,9 @@ public class MariaCacheProvider implements CacheProvider {
         }
         // Add subjects to article
         for (Subject s : matchingSubjects) {
-          article.addSubject(s);
+          if (!isSubjectDuped(article.iterSubjects(), s)) {
+            article.addSubject(s);
+          } // Else continue
         }
         // Return true if matchingSubjects length is > 0
         return matchingSubjects.length > 0;
@@ -81,10 +84,52 @@ public class MariaCacheProvider implements CacheProvider {
         }
         // Add topics to article
         for (Topic t : topics) {
-          article.addTopic(t);
+          if (!isTopicDuped(article.iterTopics(), t)) {
+            article.addTopic(t);
+          } // Else continue
         }
         // Return true if topics length is > 0
         return topics.length > 0;
+    }
+    return false;
+  }
+
+  /**
+   * <p>
+   * Check if subject is duped
+   * </p>
+   * 
+   * @param subjects
+   * @param check
+   * @return boolean
+   */
+
+  private boolean isSubjectDuped(Iterator<Subject> subjects, Subject check) {
+    while (subjects.hasNext()) {
+      Subject lval = subjects.next();
+      if (lval.getName().equals(check.getName()) && lval.getBirthdate() == check.getBirthdate()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * <p>
+   * Check if topic is duped
+   * </p>
+   * 
+   * @param topics
+   * @param check
+   * @return boolean
+   */
+
+  private boolean isTopicDuped(Iterator<Topic> topics, Topic check) {
+    while (topics.hasNext()) {
+      Topic lval = topics.next();
+      if (lval.getName().equals(check.getName())) {
+        return true;
+      }
     }
     return false;
   }
