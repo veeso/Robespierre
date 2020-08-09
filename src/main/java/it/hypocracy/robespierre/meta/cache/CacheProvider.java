@@ -10,7 +10,11 @@
 
 package it.hypocracy.robespierre.meta.cache;
 
+import java.util.Iterator;
+
 import it.hypocracy.robespierre.article.Article;
+import it.hypocracy.robespierre.article.Subject;
+import it.hypocracy.robespierre.article.Topic;
 import it.hypocracy.robespierre.meta.exceptions.CacheException;
 import it.hypocracy.robespierre.meta.search.SearchEntity;
 
@@ -20,16 +24,57 @@ import it.hypocracy.robespierre.meta.search.SearchEntity;
  * </p>
  */
 
-public interface CacheProvider {
-  
+public abstract class CacheProvider {
+
   /**
    * <p>
    * Fetch cached values and fill article if possible
    * </p>
+   * 
    * @param article
    * @return true if what was matched
    * @throws CacheException
    */
-  public boolean fetchCachedValues(Article article, SearchEntity what) throws CacheException;
+  public abstract boolean fetchCachedValues(Article article, SearchEntity what) throws CacheException;
+
+  /**
+   * <p>
+   * Check if subject is duped
+   * </p>
+   * 
+   * @param subjects
+   * @param check
+   * @return boolean
+   */
+
+  protected boolean isSubjectDuped(Iterator<Subject> subjects, Subject check) {
+    while (subjects.hasNext()) {
+      Subject lval = subjects.next();
+      if (lval.getName().equals(check.getName()) && lval.getBirthdate() == check.getBirthdate()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * <p>
+   * Check if topic is duped
+   * </p>
+   * 
+   * @param topics
+   * @param check
+   * @return boolean
+   */
+
+  protected boolean isTopicDuped(Iterator<Topic> topics, Topic check) {
+    while (topics.hasNext()) {
+      Topic lval = topics.next();
+      if (lval.getName().equals(check.getName())) {
+        return true;
+      }
+    }
+    return false;
+  }
 
 }

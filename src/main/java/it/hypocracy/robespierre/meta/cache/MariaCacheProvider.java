@@ -12,7 +12,6 @@ package it.hypocracy.robespierre.meta.cache;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Iterator;
 
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.article.Subject;
@@ -22,7 +21,7 @@ import it.hypocracy.robespierre.database.driver.MariaFacade;
 import it.hypocracy.robespierre.meta.exceptions.CacheException;
 import it.hypocracy.robespierre.meta.search.SearchEntity;
 
-public class MariaCacheProvider implements CacheProvider {
+public class MariaCacheProvider extends CacheProvider {
 
   private FeedDatabase database;
   private int cacheExpiration;
@@ -90,46 +89,6 @@ public class MariaCacheProvider implements CacheProvider {
         }
         // Return true if topics length is > 0
         return topics.length > 0;
-    }
-    return false;
-  }
-
-  /**
-   * <p>
-   * Check if subject is duped
-   * </p>
-   * 
-   * @param subjects
-   * @param check
-   * @return boolean
-   */
-
-  private boolean isSubjectDuped(Iterator<Subject> subjects, Subject check) {
-    while (subjects.hasNext()) {
-      Subject lval = subjects.next();
-      if (lval.getName().equals(check.getName()) && lval.getBirthdate() == check.getBirthdate()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * <p>
-   * Check if topic is duped
-   * </p>
-   * 
-   * @param topics
-   * @param check
-   * @return boolean
-   */
-
-  private boolean isTopicDuped(Iterator<Topic> topics, Topic check) {
-    while (topics.hasNext()) {
-      Topic lval = topics.next();
-      if (lval.getName().equals(check.getName())) {
-        return true;
-      }
     }
     return false;
   }
