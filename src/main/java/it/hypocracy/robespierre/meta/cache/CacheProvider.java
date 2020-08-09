@@ -10,6 +10,7 @@
 
 package it.hypocracy.robespierre.meta.cache;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
 
 import it.hypocracy.robespierre.article.Article;
@@ -26,6 +27,8 @@ import it.hypocracy.robespierre.meta.search.SearchEntity;
 
 public abstract class CacheProvider {
 
+  protected int cacheExpiration;
+
   /**
    * <p>
    * Fetch cached values and fill article if possible
@@ -35,7 +38,66 @@ public abstract class CacheProvider {
    * @return true if what was matched
    * @throws CacheException
    */
-  public abstract boolean fetchCachedValues(Article article, SearchEntity what) throws CacheException;
+  public boolean fetchCachedValues(Article article, SearchEntity what) throws CacheException {
+    final String language = article.getCountry().toISO639().toString();
+    switch (what.getTarget()) {
+      case SUBJECT:
+        // Calculate expiration date
+        LocalDateTime expirationDate = LocalDateTime.now().plusDays(cacheExpiration);
+        // Search subjects
+        Subject[] matchingSubjects = null;
+        matchingSubjects = this.searchSubjects(what.getSearch().toLowerCase(), expirationDate, language);
+        // Add subjects to article
+        for (Subject s : matchingSubjects) {
+          if (!isSubjectDuped(article.iterSubjects(), s)) {
+            article.addSubject(s);
+          } // Else continue
+        }
+        // Return true if matchingSubjects length is > 0
+        return matchingSubjects.length > 0;
+
+      case TOPIC:
+        // Search topics
+        Topic[] topics = null;
+        topics = this.searchTopics(what.getSearch().toLowerCase(), language);
+        // Add topics to article
+        for (Topic t : topics) {
+          if (!isTopicDuped(article.iterTopics(), t)) {
+            article.addTopic(t);
+          } // Else continue
+        }
+        // Return true if topics length is > 0
+        return topics.length > 0;
+    }
+    return false;
+  }
+
+  /**
+   * <p>
+   * Search subject by name
+   * </p>
+   * 
+   * @param match
+   * @param language
+   * @return Subjects
+   * @throws CacheException
+   */
+
+  public abstract Subject[] searchSubjects(String match, LocalDateTime expiration, String language)
+      throws CacheException;
+
+  /**
+   * <p>
+   * Search topic by name
+   * </p>
+   * 
+   * @param match
+   * @param language
+   * @return Topics
+   * @throws CacheException
+   */
+
+  public abstract Topic[] searchTopics(String match, String language) throws CacheException;
 
   /**
    * <p>
