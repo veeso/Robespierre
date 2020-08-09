@@ -10,7 +10,10 @@
 
 package it.hypocracy.robespierre.feedreceiver;
 
-public interface FeedReceiver<T, Z> {
+import it.hypocracy.robespierre.feed.Feed;
+import it.hypocracy.robespierre.feed.FeedSource;
+
+public interface FeedReceiver {
   
   /**
    * <p>
@@ -21,6 +24,6 @@ public interface FeedReceiver<T, Z> {
    * @return Feed
    * @throws Exception
    */
-  public Z[] fetchFeed(T source) throws Exception;
+  public Feed[] fetchFeed(FeedSource source) throws Exception;
 
 }

@@ -14,13 +14,13 @@ import java.io.IOException;
 
 import com.rometools.rome.io.FeedException;
 
-import it.hypocracy.robespierre.feed.RSSFeed;
-import it.hypocracy.robespierre.feed.RSSFeedSource;
+import it.hypocracy.robespierre.feed.Feed;
+import it.hypocracy.robespierre.feed.FeedSource;
 import it.hypocracy.robespierre.feedparser.RSSFeedParser;
 import it.hypocracy.robespierre.http.HTTPFacade;
 import it.hypocracy.robespierre.http.HTTPResponse;
 
-public class RSSFeedReceiver implements FeedReceiver<RSSFeedSource, RSSFeed> {
+public class RSSFeedReceiver implements FeedReceiver {
 
   private HTTPFacade httpFac;
   private RSSFeedParser parser;
@@ -44,7 +44,7 @@ public class RSSFeedReceiver implements FeedReceiver<RSSFeedSource, RSSFeed> {
    */
 
   @Override
-  public RSSFeed[] fetchFeed(RSSFeedSource source) throws IOException, FeedException {
+  public Feed[] fetchFeed(FeedSource source) throws IOException, FeedException {
     HTTPResponse response = this.httpFac.get(source.getURI());
     return this.parser.parse(response.getStringBody(), source.getCountry());
   }

@@ -21,7 +21,7 @@ import com.rometools.rome.io.FeedException;
 
 import org.junit.Test;
 
-import it.hypocracy.robespierre.feed.RSSFeed;
+import it.hypocracy.robespierre.feed.Feed;
 import it.hypocracy.robespierre.feed.RSSFeedSource;
 import it.hypocracy.robespierre.utils.ISO3166;
 
@@ -34,12 +34,12 @@ public class RSSFeedReceiverTest {
     RSSFeedReceiver receiver = new RSSFeedReceiver();
     RSSFeedSource testSource = new RSSFeedSource(URI.create(testRssSource), new ISO3166("IT"));
     // Receive
-    RSSFeed[] feeds = receiver.fetchFeed(testSource);
+    Feed[] feeds = receiver.fetchFeed(testSource);
     // Should have 10 entries
     assertEquals(10, feeds.length);
     // Iterate over feeds
     LocalDateTime now = LocalDateTime.now();
-    for (RSSFeed feed : feeds) {
+    for (Feed feed : feeds) {
       // Verify that title begins with 'Lorem ipsum'
       assertTrue(feed.getTitle().startsWith("Lorem ipsum"));
       assertTrue(feed.getBrief().length() > 0);
