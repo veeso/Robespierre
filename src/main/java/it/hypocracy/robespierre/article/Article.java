@@ -25,7 +25,7 @@ public class Article {
   protected String brief;
   protected URI link;
   protected LocalDateTime date;
-  protected ArticleState state;
+  //protected ArticleState state;
   protected ISO3166 country;
 
   protected ArrayList<Subject> subjects; // Involved subjects
