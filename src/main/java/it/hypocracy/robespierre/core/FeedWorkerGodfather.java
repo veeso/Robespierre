@@ -62,6 +62,10 @@ public class FeedWorkerGodfather {
       addName("Systemd");
       addName("Qwerty");
       addName("Regex");
+      addName("Manjaro");
+      addName("apt-get");
+      addName("sudo");
+      addName("-fpedantic");
       // Geek stuff
       // Sonic
       addName("Amy Rose");
@@ -156,6 +160,7 @@ public class FeedWorkerGodfather {
       addName("Long Island");
       addName("Midori");
       addName("Pina Colada");
+      addName("P.Y.T.");
       // It's me
       addName("Veeso");
     }
