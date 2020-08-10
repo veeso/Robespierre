@@ -169,6 +169,17 @@ public class FeedWorker implements Runnable {
     }
   }
 
+  /**
+   * <p>
+   * Return worker's name
+   * </p>
+   * @return name
+   */
+
+  public String getName() {
+    return this.name;
+  }
+
   // @! Private stuff
 
   /**
