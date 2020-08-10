@@ -124,8 +124,10 @@ public class FeedWorker implements Runnable {
    */
 
   public void stop() {
-    stopWorker = true;
-    this.worker.notifyAll();
+    if (hasStarted()) {
+      stopWorker = true;
+      this.worker.notifyAll();
+    }
   }
 
   /**
@@ -160,11 +162,13 @@ public class FeedWorker implements Runnable {
    */
 
   public void join() {
-    try {
-      this.worker.join();
-    } catch (InterruptedException e) {
-      logger.error("FeedWorker join throwned exception 'InterruptedException': " + e.getMessage());
-      this.logger.trace(e);
+    if (hasStarted()) {
+      try {
+        this.worker.join();
+      } catch (InterruptedException e) {
+        logger.error("FeedWorker join throwned exception 'InterruptedException': " + e.getMessage());
+        this.logger.trace(e);
+      }
     }
     started = false;
   }
