@@ -49,6 +49,7 @@ public class FeedWorker implements Runnable {
   private final Logger logger;
   private FeedDatabase database;
   private boolean running; // Is the worker doing something?
+  private boolean started; // Has the worker started?
   private boolean stopWorker = false; // Flag to terminate workers
   ArticleAssembler articleAssembler;
 
@@ -122,7 +123,7 @@ public class FeedWorker implements Runnable {
    * </p>
    */
 
-  public void stopWorker() {
+  public void stop() {
     stopWorker = true;
     this.worker.notifyAll();
   }
@@ -141,6 +142,18 @@ public class FeedWorker implements Runnable {
 
   /**
    * <p>
+   * Returns whether the worker thread has already started
+   * </p>
+   * 
+   * @return bool
+   */
+
+  public boolean hasStarted() {
+    return this.started;
+  }
+
+  /**
+   * <p>
    * Join FeedWorker thread
    * </p>
    * 
@@ -153,6 +166,7 @@ public class FeedWorker implements Runnable {
       logger.error("FeedWorker join throwned exception 'InterruptedException': " + e.getMessage());
       this.logger.trace(e);
     }
+    started = false;
   }
 
   /**
@@ -170,6 +184,7 @@ public class FeedWorker implements Runnable {
   @Override
   public void run() {
     logger.info("A new feed worker started...");
+    started = true;
     while (!stopWorker) { // Until stopWorkers becomes true...
       // If there is a job...
       if (this.workingSource != null) {
