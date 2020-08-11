@@ -38,6 +38,8 @@ public class FeedJob extends Job<FeedWorker> {
       case "rss":
         this.source = new RSSFeedSource(URI.create(sourceConfig.uri), new ISO3166(sourceConfig.country));
         break;
+      default:
+        throw new IllegalArgumentException("Unsupported engine " + sourceConfig.engine);
     }
   }
 
