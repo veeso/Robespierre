@@ -10,6 +10,7 @@
 
 package it.hypocracy.robespierre.core;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ import it.hypocracy.robespierre.config.Config;
 import it.hypocracy.robespierre.config.DatabaseConfig;
 import it.hypocracy.robespierre.config.FeedSourceConfig;
 import it.hypocracy.robespierre.config.MetadataConfig;
+import it.hypocracy.robespierre.core.errors.BusyWorkerException;
 import it.hypocracy.robespierre.core.jobs.FeedJob;
 
 /**
@@ -62,7 +64,49 @@ public class JobDispatcher {
     logger.info("Job dispatcher started!");
   }
 
-  // TODO: process
+  /**
+   * <p>
+   * Process jobs; assign all jobs to execute to the first available work
+   * </p>
+   */
+
+  public void process() {
+    logger.info("Processing jobs...");
+    LocalDateTime now = LocalDateTime.now();
+    // Iterate over jobs
+    for (FeedJob job : feedJobs) {
+      final String jobName = job.getUri();
+      logger.debug("Checking if job '" + jobName + "' has to be run");
+      LocalDateTime nextExecTime = job.getNextExecutionTime();
+      if (nextExecTime.isBefore(now)) {
+        logger.info("Time to run job '" + jobName + "' has come; looking for a candidate worker...");
+        // Check if there's an available worker
+        boolean workerFound = false;
+        for (FeedWorker worker : workers) {
+          if (worker.isAvailable()) {
+            // Assign to worker the job
+            logger.info("Assigned  '" + jobName + "' to worker '" + worker.getName() + "'");
+            try {
+              job.runJob(worker);
+            } catch (BusyWorkerException e) { // NOTE: this should never happen
+              logger.error("Could not assign job '" + jobName + "' to worker '" + worker.getName()
+                  + "'; was available one instant ago... trying with another one");
+              logger.trace(e);
+              continue;
+            }
+          } else {
+            logger.debug("Worker '" + worker.getName() + "' is currently busy");
+          }
+        }
+        if (!workerFound) {
+          logger.info("It wasn't possible to assign a worker to job '" + jobName + "'; try later");
+        }
+      } else {
+        logger.debug("It's not time to run job '" + jobName + "' yet; next execution time: " + nextExecTime.toString());
+      }
+    }
+    logger.info("Jobs processed");
+  }
 
   /**
    * <p>
