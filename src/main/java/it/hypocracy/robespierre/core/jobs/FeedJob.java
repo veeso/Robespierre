@@ -58,4 +58,16 @@ public class FeedJob extends Job<FeedWorker> {
     this.rescheduleJob();
   }
 
+  /**
+   * <p>
+   * Get uri
+   * </p>
+   * 
+   * @return uri
+   */
+
+  public String getUri() {
+    return this.source.getURI().toString();
+  }
+
 }
