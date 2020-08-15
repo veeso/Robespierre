@@ -39,8 +39,9 @@ import it.hypocracy.robespierre.utils.MySqlDateTime;
 import it.hypocracy.robespierre.utils.Uuidv4;
 
 /**
- * The FeedDatabase is the Hypocracy facade for the database. It provides methods to
- * operate on the database entity related to Hypocracy and to manage data in a safe way
+ * The FeedDatabase is the Hypocracy facade for the database. It provides
+ * methods to operate on the database entity related to Hypocracy and to manage
+ * data in a safe way
  */
 
 public class FeedDatabase {
@@ -268,20 +269,26 @@ public class FeedDatabase {
         // Insert occupation data
         logger.debug("Occupation doesn't exist; creating a new one");
         insertOccupation(subject.occupation, language);
-      } // NOTE: no need to update occupation here. Its data (occupation ID) is already correct for
+      } // NOTE: no need to update occupation here. Its data (occupation ID) is already
+        // correct for
         // sure (in occupationExists, we searched it by text)
       // insert bio
       logger.debug("Inserting biography");
       insertBiography(subject.biography, language);
-      // Insert subject
+      // Insert subject (some data might be null)
       String[] columns = new String[] { subjectFieldId, subjectFieldName, subjectFieldBirthdate,
           subjectFieldCitizenship, subjectFieldBirthplace, subjectFieldImage, subjectFieldRemoteId,
           subjectFieldLastUpdate, subjectFieldBioId, subjectFieldOccupationId };
-      String[] values = new String[] { escapeString(subject.getId()), escapeString(subject.getName()),
-          escapeString(subject.getBirthdate().toString()), escapeString(subject.getCitizenship().toString()),
-          escapeString(subject.getBirthplace()), escapeString(subject.getImageUri()),
-          escapeString(subject.getRemoteId()), escapeString(subject.getLastUpdate().toString()),
-          escapeString(subject.biography.getId()), escapeString(subject.occupation.getId()) };
+      // Prevent null pointer exception
+      final String birthdate = subject.getBirthdate() == null ? null : escapeString(subject.getBirthdate().toString());
+      final String birthplace = subject.getBirthplace() == null ? null
+          : escapeString(subject.getBirthplace().toString());
+      final String imageUri = subject.getImageUri() == null ? null : escapeString(subject.getImageUri());
+      final String citizenship = subject.getCitizenship() == null ? null
+          : escapeString(subject.getCitizenship().toString());
+      String[] values = new String[] { escapeString(subject.getId()), escapeString(subject.getName()), birthdate,
+          escapeString(subject.getCitizenship().toString()), birthplace, imageUri, escapeString(subject.getRemoteId()),
+          citizenship, escapeString(subject.biography.getId()), escapeString(subject.occupation.getId()) };
       InsertQuery query = new InsertQuery(subjectTable, columns, values);
       dbFac.insert(query);
       logger.debug("Subject inserted (" + subject.getId() + ")");
@@ -318,8 +325,7 @@ public class FeedDatabase {
           new Clause(subjectFieldBirthdate, escapeString(subject.getBirthdate().toString()), ClauseOperator.EQUAL),
           ClauseRelation.AND);
     } else if (subject.getBirthplace() != null) { // Try with birthplace maybe
-      where.setNext(
-          new Clause(subjectFieldBirthplace, escapeString(subject.getBirthplace()), ClauseOperator.EQUAL),
+      where.setNext(new Clause(subjectFieldBirthplace, escapeString(subject.getBirthplace()), ClauseOperator.EQUAL),
           ClauseRelation.AND);
     } else if (subject.getCitizenship() != null) { // Last try: citizenship
       where.setNext(
@@ -415,8 +421,8 @@ public class FeedDatabase {
 
   /**
    * <p>
-   * Checks whether the occupation already exists.
-   * If exists, set found occupation ID to occupation
+   * Checks whether the occupation already exists. If exists, set found occupation
+   * ID to occupation
    * </p>
    * 
    * @param occupation
