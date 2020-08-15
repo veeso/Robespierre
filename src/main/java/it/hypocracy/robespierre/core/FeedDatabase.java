@@ -126,7 +126,7 @@ public class FeedDatabase {
    * @throws DupedRecordException
    */
 
-  public void commitArticle(Article article) throws SQLException, DupedRecordException {
+  public synchronized void commitArticle(Article article) throws SQLException, DupedRecordException {
     // Connect to database
     dbFac.connect();
     logger.info("Commiting article '" + article.getTitle() + "'");
