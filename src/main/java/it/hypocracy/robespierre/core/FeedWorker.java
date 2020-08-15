@@ -209,6 +209,9 @@ public class FeedWorker implements Runnable {
         this.workingSource = null;
         this.available = true;
       }
+      if (stopWorker) { // Prevent sleeping after terminating
+        continue;
+      }
       // Wait next task
       try {
         this.logger.info("Waiting for a new job...");
