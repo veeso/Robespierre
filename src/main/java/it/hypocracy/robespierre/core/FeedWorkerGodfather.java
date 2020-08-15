@@ -67,7 +67,7 @@ public class FeedWorkerGodfather {
       // Sonic
       addName("Amy Rose");
       addName("Sonic");
-      addName("Mr. Eggman");
+      addName("Mr Eggman");
       // TF2
       addName("Pootis Spencer");
       addName("The G-Man");
@@ -104,10 +104,10 @@ public class FeedWorkerGodfather {
       addName("Poppy");
       addName("Aimbot");
       addName("Wallhack");
-      addName("Paint.exe");
+      addName("Paintexe");
       addName("Animoji");
       addName("Nyan Cat");
-      addName("Mr. Sandman");
+      addName("Mr Sandman");
       // minecraft
       addName("Steve");
       addName("Herobrine");
@@ -116,12 +116,12 @@ public class FeedWorkerGodfather {
       // TV Series
       addName("Bojack");
       addName("Diane Nguyen");
-      addName("Mr. Peanutbutter");
+      addName("Mr Peanutbutter");
       addName("Princess Carolyn");
       addName("Piper Chapman");
       addName("Rick");
       addName("Morty");
-      addName("Mr. Meeseeks");
+      addName("Mr Meeseeks");
       addName("Abed Nadir");
       // Pokemon
       addName("Ditto");
@@ -136,7 +136,7 @@ public class FeedWorkerGodfather {
       addName("Tom Nook");
       addName("Isabelle");
       addName("Tortimer");
-      addName("K.K. Slider");
+      addName("KK Slider");
       // Subnautica
       addName("Reaper Leviathan");
       addName("Mesmer");
@@ -144,7 +144,7 @@ public class FeedWorkerGodfather {
       addName("Peeper");
       // Overwatch
       addName("Winston");
-      addName("D.Va");
+      addName("DVa");
       addName("Tracer");
       addName("Genji");
       // Other stuff
@@ -158,7 +158,7 @@ public class FeedWorkerGodfather {
       addName("Long Island");
       addName("Midori");
       addName("Pina Colada");
-      addName("P.Y.T.");
+      addName("PYT");
       // It's me
       addName("Veeso");
     }
