@@ -54,7 +54,7 @@ public class FeedWorker implements Runnable {
   private String name;
   private final Logger logger;
   private FeedDatabase database;
-  private boolean running; // Is the worker doing something?
+  private boolean available; // Is the worker doing something?
   private boolean started; // Has the worker started?
   private boolean stopWorker = false; // Flag to terminate workers
   ArticleAssembler articleAssembler;
@@ -85,7 +85,7 @@ public class FeedWorker implements Runnable {
     // Prepare metadata engine
     initMetadataReceiver(dbConfig, metadataConfig);
     // Initialize other parameters
-    this.running = false;
+    this.available = true;
     this.workingSource = null;
     this.stopWorker = false;
     // Start thread
@@ -117,7 +117,9 @@ public class FeedWorker implements Runnable {
       // Set working source
       this.workingSource = source;
       // Notify thread
-      this.worker.notify();
+      synchronized (this) {
+        notify();
+      }
     } else {
       throw new BusyWorkerException("Worker '" + name + "' is busy");
     }
@@ -132,7 +134,9 @@ public class FeedWorker implements Runnable {
   public void stop() {
     if (hasStarted()) {
       stopWorker = true;
-      this.worker.notifyAll();
+      synchronized (this) {
+        notifyAll();
+      }
     }
   }
 
@@ -145,7 +149,7 @@ public class FeedWorker implements Runnable {
    */
 
   public boolean isAvailable() {
-    return this.running;
+    return this.available;
   }
 
   /**
@@ -198,6 +202,7 @@ public class FeedWorker implements Runnable {
     while (!stopWorker) { // Until stopWorkers becomes true...
       // If there is a job...
       if (this.workingSource != null) {
+        this.available = false;
         // Process source
         Instant jobStartedTime = Instant.now();
         logger.info("A new job started: '" + this.workingSource.getURI().toString() + "'");
@@ -205,12 +210,14 @@ public class FeedWorker implements Runnable {
         logger.info("Job finished; took " + Duration.between(jobStartedTime, Instant.now()).toMinutes() + " minutes");
         // Set source to null and set itself as available
         this.workingSource = null;
-        this.running = false;
+        this.available = true;
       }
       // Wait next task
       try {
         this.logger.info("Waiting for a new job...");
-        this.worker.wait();
+        synchronized (this) {
+          wait();
+        }
         logger.debug("FeedWorker awaked");
       } catch (InterruptedException e) {
         logger.error("FeedWorker wait throwned exception 'InterruptedException': " + e.getMessage());
