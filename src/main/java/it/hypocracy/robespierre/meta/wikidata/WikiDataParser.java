@@ -216,20 +216,20 @@ public class WikiDataParser {
     // Collect name from labels
     Label label = entity.labels.get(language);
     if (label == null) {
-      throw new ParserException("Label is null");
+      throw new ParserException("Label is null for " + entity.title);
     }
     String name = label.value.toLowerCase();
     if (name == null) {
-      throw new ParserException("Label value is null");
+      throw new ParserException("Label value is null for" + entity.title);
     }
     // Get brief
     Description description = entity.descriptions.get(language);
     if (description == null) {
-      throw new ParserException("Description is null");
+      throw new ParserException("Description is null for" + entity.title);
     }
     String brief = description.value.toLowerCase();
     if (brief == null) {
-      throw new ParserException("Description value is null");
+      throw new ParserException("Description value is null for" + entity.title);
     }
     // Get birthdate
     LocalDate birthdate = getBirthdate(entity);
