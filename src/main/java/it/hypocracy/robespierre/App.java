@@ -38,6 +38,7 @@ import it.hypocracy.robespierre.utils.FileUtils;
 public class App {
 
   private final static Logger logger = Logger.getLogger("Main");
+  private static boolean sigtermCalled = false;
 
   public static void main(final String[] args) {
     // Parse CLI options
@@ -100,6 +101,7 @@ public class App {
     Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
       @Override
       public void run() {
+        sigtermCalled = true;
         logger.info("Shutting down JVM; terminating Robespierre...");
         jobDispatcher.stop();
         logger.info("Job dispatcher stopped!");
@@ -107,7 +109,7 @@ public class App {
     }));
     logger.debug("Entering main loop");
     // Main loop
-    while (true) {
+    while (!sigtermCalled) {
       // Processing job dispatcher
       logger.debug("Processing job dispatcher...");
       jobDispatcher.process();
