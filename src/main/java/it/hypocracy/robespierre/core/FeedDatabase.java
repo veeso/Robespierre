@@ -383,6 +383,7 @@ public class FeedDatabase {
   /**
    * <p>
    * Checks whether the occupation already exists.
+   * If exists, set found occupation ID to occupation
    * </p>
    * 
    * @param occupation
@@ -398,7 +399,8 @@ public class FeedDatabase {
     SelectQuery query = new SelectQuery(fields, tables, where);
     ArrayList<Map<String, String>> result = this.dbFac.select(query);
     if (result.size() > 0) { // At least one result, duped.
-      // Return occcupation id
+      // Set occcupation id
+      occupation.setId(result.get(0).get(occupationFieldId));
       return true;
     }
     // Occupation doesn't exist, return false
