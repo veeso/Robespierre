@@ -10,6 +10,10 @@
 
 package it.hypocracy.robespierre.meta.search;
 
+/**
+ * SearchTarget describes the search target type
+ */
+
 public enum SearchTarget {
   SUBJECT, TOPIC
 }

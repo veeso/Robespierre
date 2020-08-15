@@ -19,6 +19,12 @@ import it.hypocracy.robespierre.database.query.InsertQuery;
 import it.hypocracy.robespierre.database.query.SelectQuery;
 import it.hypocracy.robespierre.database.query.UpdateQuery;
 
+/**
+ * The DatabaseFacade is an interface which must be implemented to implement a database
+ * driver. The DatabaseFacade must implement a method to connect and disconnect to the database,
+ * a method to commit data, and finally to select, insert and update data
+ */
+
 public interface DatabaseFacade {
 
   /**
@@ -109,6 +115,7 @@ public interface DatabaseFacade {
   /**
    * <p>
    * Perform a free form query. This method is unsafe.
+   * WARNING: don't use this method in production!
    * </p>
    * 
    * @param query

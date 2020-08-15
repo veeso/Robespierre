@@ -39,6 +39,12 @@ import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
 import it.hypocracy.robespierre.meta.exceptions.ParserException;
 import it.hypocracy.robespierre.meta.wikidata.WikiDataReceiver;
 
+/**
+ * FeedWorker is the class which takes care of fetching a certain source and getting
+ * articles from it, then it saves them into the database.
+ * The Worker is a thread which waits for incoming jobs.
+ */
+
 public class FeedWorker implements Runnable {
 
   // Static

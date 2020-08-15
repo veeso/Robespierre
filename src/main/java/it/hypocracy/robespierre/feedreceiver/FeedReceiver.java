@@ -13,6 +13,11 @@ package it.hypocracy.robespierre.feedreceiver;
 import it.hypocracy.robespierre.feed.Feed;
 import it.hypocracy.robespierre.feed.FeedSource;
 
+/**
+ * FeedReceiver represents the entity which takes care of fetching the source and
+ * receiving feeds from it
+ */
+
 public interface FeedReceiver {
   
   /**

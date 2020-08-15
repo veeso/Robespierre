@@ -23,9 +23,7 @@ import it.hypocracy.robespierre.core.errors.BusyWorkerException;
 import it.hypocracy.robespierre.core.jobs.FeedJob;
 
 /**
- * <p>
  * JobDispatcher takes care of dispatching and managing the feed jobs
- * </p>
  */
 
 public class JobDispatcher {

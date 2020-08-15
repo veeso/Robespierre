@@ -18,6 +18,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/**
+ * The HTTPFacade is a façade which makes easier receiving data through HTTP
+ */
+
 public class HTTPFacade {
 
   public HTTPFacade() {

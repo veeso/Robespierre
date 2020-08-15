@@ -13,10 +13,23 @@ package it.hypocracy.robespierre.meta.search;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+/**
+ * SearchBuilder build starting from text searches to make against the MetadataProvider.
+ * The rules for SearchBuilder are defined as:
+ * - 0. Is the last word
+ * - 1. Any punctuation marks in ['!', '?', ',', ';', '.', ':', '(', ')', '[',
+ * ']', '{', '}', '¿', '¡'] represents a QE terminator 
+ * - 2. If a word begins with
+ * capital letter, the terminator for the QE is the first following word which
+ * starts with lowercase letter or according to rule 1 
+ * - 3. If a word begins with a lowercase letter, QE will be the word itself
+ * - 4. Quoted texts are QE itself
+ */
+
 public class SearchBuilder {
 
   private final static String[] punctuationMarks = { "!", "?", ".", ",", ";", ":", "(", ")", "[", "]", "{", "}", "¿",
-      "¡" };
+      "¡", "«", "»" };
 
   public SearchBuilder() {
 
@@ -24,17 +37,7 @@ public class SearchBuilder {
 
   /**
    * <p>
-   * Build search entity starting from text following these rules:
-   * 
-   * - 0. Is the last word
-   * - 1. Any punctuation marks in ['!', '?', ',', ';', '.', ':', '(', ')', '[',
-   * ']', '{', '}', '¿', '¡'] represents a QE terminator 
-   * - 2. If a word begins with
-   * capital letter, the terminator for the QE is the first following word which
-   * starts with lowercase letter or according to rule 1 
-   * - 3. If a word begins with a lowercase letter, QE will be the word itself
-   * - 4. Quoted texts are QE itself
-   * 
+   * Build search entity starting from text following the class rules defined before
    * </p>
    * 
    * @param text

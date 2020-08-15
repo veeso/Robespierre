@@ -21,6 +21,10 @@ import com.google.gson.JsonSyntaxException;
 
 import it.hypocracy.robespierre.config.exceptions.BadConfigException;
 
+/**
+ * ConfigParser is the object which takes care of parsing the configuration file
+ */
+
 public class ConfigParser {
 
   /**

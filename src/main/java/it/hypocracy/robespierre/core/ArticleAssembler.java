@@ -17,6 +17,11 @@ import it.hypocracy.robespierre.meta.exceptions.CacheException;
 import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
 import it.hypocracy.robespierre.meta.exceptions.ParserException;
 
+/**
+ * The ArticleAssembler is the entity which takes care of Wrapping an 
+ * article starting from a received feed and to get the metadata for it
+ */
+
 public class ArticleAssembler {
 
   private MetadataReceiver metadataReceiver;

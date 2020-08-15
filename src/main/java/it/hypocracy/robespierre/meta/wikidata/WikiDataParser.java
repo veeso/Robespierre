@@ -35,6 +35,11 @@ import it.hypocracy.robespierre.meta.wikidata.wbentity.WbEntity;
 import it.hypocracy.robespierre.utils.ISO3166;
 import it.hypocracy.robespierre.utils.ISO8601;
 
+/**
+ * The WikiDataParser is the class which takes care of parsing the data web entity received
+ * from WikiData and to collect its metadata to build up Article's subjects and topics
+ */
+
 public class WikiDataParser {
 
   private WikiDataApiClient apiClient;

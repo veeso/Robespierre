@@ -15,6 +15,10 @@ import java.util.Map;
 
 import it.hypocracy.robespierre.database.query.syntax.Clause;
 
+/**
+ * UpdateQuery in SQL databases
+ */
+
 public class UpdateQuery implements Query {
 
   private String table;

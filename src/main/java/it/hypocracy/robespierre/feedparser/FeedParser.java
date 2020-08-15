@@ -10,9 +10,15 @@
 
 package it.hypocracy.robespierre.feedparser;
 
+import it.hypocracy.robespierre.feed.Feed;
 import it.hypocracy.robespierre.utils.ISO3166;
 
-public interface FeedParser<T> {
+/**
+ * The FeedParser is the entity which takes care, after receiving the data stream of the feed
+ * to parse it and to convert it into a list of Feed
+ */
+
+public interface FeedParser {
 
   /**
    * <p>
@@ -25,6 +31,6 @@ public interface FeedParser<T> {
    * @throws Exception
    */
 
-  public T[] parse(String body, ISO3166 country) throws Exception;
+  public Feed[] parse(String body, ISO3166 country) throws Exception;
 
 }

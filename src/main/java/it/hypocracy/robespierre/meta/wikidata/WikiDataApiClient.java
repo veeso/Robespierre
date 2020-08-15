@@ -29,6 +29,11 @@ import it.hypocracy.robespierre.meta.wikidata.wbentity.DatavalueDeserializer;
 import it.hypocracy.robespierre.meta.wikidata.wbentity.WbEntity;
 import it.hypocracy.robespierre.utils.ISO3166;
 
+/**
+ * WikiDataApiClient is the class which takes care of 
+ * querying and receiving data through wikidata API
+ */
+
 public class WikiDataApiClient {
 
   private HTTPFacade httpcli;

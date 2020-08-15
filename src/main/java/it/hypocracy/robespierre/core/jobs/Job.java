@@ -12,6 +12,12 @@ package it.hypocracy.robespierre.core.jobs;
 
 import java.time.LocalDateTime;
 
+/**
+ * Job is an interface which represents a Job the JobDispatcher will manage to dispatch to workers.
+ * It can be anything, but the important thing about a job is that it can be scheduled
+ * @param <T>
+ */
+
 public abstract class Job<T> {
 
   protected int interval; // Seconds

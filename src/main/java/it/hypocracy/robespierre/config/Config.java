@@ -12,6 +12,10 @@ package it.hypocracy.robespierre.config;
 
 import it.hypocracy.robespierre.config.exceptions.BadConfigException;
 
+/**
+ * Config is the root config object
+ */
+
 public class Config implements BaseConfig {
 
   public DatabaseConfig database = null;

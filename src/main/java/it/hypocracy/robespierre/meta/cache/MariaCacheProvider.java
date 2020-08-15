@@ -18,6 +18,10 @@ import it.hypocracy.robespierre.core.FeedDatabase;
 import it.hypocracy.robespierre.database.driver.MariaFacade;
 import it.hypocracy.robespierre.meta.exceptions.CacheException;
 
+/**
+ * MariaCacheProvider is the implementation of a CacheProvider using the MariaDB façade
+ */
+
 public class MariaCacheProvider extends CacheProvider {
 
   private FeedDatabase database;

@@ -10,6 +10,10 @@
 
 package it.hypocracy.robespierre.database.query.syntax;
 
+/**
+ * This enum describes the relation between more where clauses
+ */
+
 public enum ClauseRelation {
   AND, OR;
 

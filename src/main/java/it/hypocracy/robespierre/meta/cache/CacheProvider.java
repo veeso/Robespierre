@@ -19,9 +19,10 @@ import it.hypocracy.robespierre.meta.exceptions.CacheException;
 import it.hypocracy.robespierre.meta.search.SearchEntity;
 
 /**
- * <p>
- * Cache Provider for metadata (e.g. a database)
- * </p>
+ * Cache Provider is an entity which takes care of caching metadata and to blacklist
+ * garbage search in order to speed up searches.
+ * This class provides common routines for providers to provide cache, but "platform" specifics
+ * must be implemented in subclasses
  */
 
 public abstract class CacheProvider {

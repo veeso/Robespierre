@@ -12,6 +12,10 @@ package it.hypocracy.robespierre.article;
 
 import it.hypocracy.robespierre.utils.Uuidv4;
 
+/**
+ * Subject Bio represents a Subject biography
+ */
+
 public class SubjectBio {
 
   private String id;

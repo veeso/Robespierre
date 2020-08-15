@@ -10,6 +10,10 @@
 
 package it.hypocracy.robespierre.database.query.syntax;
 
+/**
+ * This enum describes the operators for where statements
+ */
+
 public enum ClauseOperator {
 
   EQUAL, NOT_EQUAL, LIKE, BIGGER_THAN, BIGGER_EQUAL, LESS_THAN, LESS_EQUAL;

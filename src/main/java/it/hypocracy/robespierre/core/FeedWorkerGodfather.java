@@ -16,10 +16,7 @@ import java.util.Collections;
 import it.hypocracy.robespierre.utils.Uuidv4;
 
 /**
- * <p>
  * This class gives name to Feed Workers. Yes.
- * </p>
- * 
  */
 
 public class FeedWorkerGodfather {
@@ -71,7 +68,7 @@ public class FeedWorkerGodfather {
       addName("Amy Rose");
       addName("Sonic");
       addName("Mr. Eggman");
-      // TF"
+      // TF2
       addName("Pootis Spencer");
       addName("The G-Man");
       addName("Red Engineer");
@@ -110,6 +107,7 @@ public class FeedWorkerGodfather {
       addName("Paint.exe");
       addName("Animoji");
       addName("Nyan Cat");
+      addName("Mr. Sandman");
       // minecraft
       addName("Steve");
       addName("Herobrine");

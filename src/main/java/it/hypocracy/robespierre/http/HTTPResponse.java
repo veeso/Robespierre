@@ -15,6 +15,10 @@ import java.io.IOException;
 
 import okhttp3.ResponseBody;
 
+/**
+ * HTTPResponse is the wrapper for HTTP responses
+ */
+
 public class HTTPResponse {
   
   private int status;

@@ -19,6 +19,10 @@ import it.hypocracy.robespierre.feed.FeedSource;
 import it.hypocracy.robespierre.feed.RSSFeedSource;
 import it.hypocracy.robespierre.utils.ISO3166;
 
+/**
+ * FeedJob is a Job which must fetch the remote feed and store the articles into the database
+ */
+
 public class FeedJob extends Job<FeedWorker> {
 
   FeedSource source;

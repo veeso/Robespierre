@@ -20,6 +20,11 @@ import it.hypocracy.robespierre.feedparser.RSSFeedParser;
 import it.hypocracy.robespierre.http.HTTPFacade;
 import it.hypocracy.robespierre.http.HTTPResponse;
 
+/**
+ * The RSSFeedReceiver is the class which takes care of receiving feeds through http and then
+ * parse them using the `RSSFeedParser`
+ */
+
 public class RSSFeedReceiver implements FeedReceiver {
 
   private HTTPFacade httpFac;

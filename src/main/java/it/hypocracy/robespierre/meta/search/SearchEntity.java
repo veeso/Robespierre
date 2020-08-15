@@ -10,6 +10,10 @@
 
 package it.hypocracy.robespierre.meta.search;
 
+/**
+ * SearchEntity describes a single search to make, its target and the search type
+ */
+
 public class SearchEntity {
 
   private String search;

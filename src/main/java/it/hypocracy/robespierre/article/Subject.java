@@ -16,6 +16,11 @@ import it.hypocracy.robespierre.utils.Uuidv4;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * A subjects represents a human associated to an article. It contains all the information
+ * described in the Hypocracy database.
+ */
+
 public class Subject {
 
   private String id; // UUIDv4

@@ -11,6 +11,10 @@
 
 package it.hypocracy.robespierre.database.query;
 
+/**
+ * InsertQuery describes a Insert query in SQL database
+ */
+
 public class InsertQuery implements Query {
 
   private String table;

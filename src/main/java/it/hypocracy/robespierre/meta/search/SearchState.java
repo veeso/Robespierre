@@ -10,6 +10,10 @@
 
 package it.hypocracy.robespierre.meta.search;
 
+/**
+ * SearchState is the machine state used by the SearchBuilder to find targets
+ */
+
 public class SearchState {
 
   public boolean lastWordCapital; // Last word began with capital letter

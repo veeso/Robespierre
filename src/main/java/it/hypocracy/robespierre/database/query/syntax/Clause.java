@@ -10,6 +10,10 @@
 
 package it.hypocracy.robespierre.database.query.syntax;
 
+/**
+ * This class describes a clause (where statement) for select and update operation
+ */
+
 public class Clause {
   
   private String lvalue; //Left value

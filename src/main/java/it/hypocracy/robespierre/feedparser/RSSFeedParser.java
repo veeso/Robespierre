@@ -24,7 +24,7 @@ import it.hypocracy.robespierre.feed.RSSFeed;
 import it.hypocracy.robespierre.utils.DateUtils;
 import it.hypocracy.robespierre.utils.ISO3166;
 
-public class RSSFeedParser implements FeedParser<RSSFeed> {
+public class RSSFeedParser implements FeedParser {
 
   public RSSFeedParser() {
     super();

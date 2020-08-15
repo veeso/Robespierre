@@ -13,6 +13,10 @@ package it.hypocracy.robespierre.database.query;
 import it.hypocracy.robespierre.database.query.syntax.Clause;
 import it.hypocracy.robespierre.database.query.syntax.Order;
 
+/**
+ * SelectQuery describes the Select Query in SQL databases
+ */
+
 public class SelectQuery implements Query {
 
   private String[] columns;

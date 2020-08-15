@@ -14,7 +14,36 @@ Its documentation can be found in the Hypocracy repository: <https://github.com/
 
 ## Configuration
 
-A configuration sample can be found [HERE](./config/default.json).
+Robespierre uses a JSON configuration:
+
+```json
+{
+  "database": {
+    "engine": "mariadb",
+    "uri": "jdbc:mariadb://localhost:3306/robespierre",
+    "user": "root",
+    "password": null
+  },
+  "feed": {
+    "maxWorkers": 16,
+    "sources": [
+      {
+        "uri": "http://example.com/rss",
+        "country": "IT",
+        "interval": 360,
+        "engine": "rss"
+      }
+    ]
+  },
+  "metadata": {
+    "engine": "wikidata",
+    "cache": {
+      "duration": 180,
+      "withBlacklist": true
+    }
+  }
+}
+```
 
 Here follows the key description:
 
@@ -32,6 +61,8 @@ Here follows the key description:
     - interval: interval in minutes for fetching source
 - metadata: contains the metadata configuration
   - engine: the engine to be used (e.g. wikidata)
+
+A configuration sample can be found [HERE](./config/default.json).
 
 ## Authors
 

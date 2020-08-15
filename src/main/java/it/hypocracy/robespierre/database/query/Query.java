@@ -10,6 +10,11 @@
 
 package it.hypocracy.robespierre.database.query;
 
+/**
+ * Query is an interface which must be implemented by all the SQL query classes
+ * and provides the method `toSQL` which returns the SQL query from the instance
+ */
+
 public interface Query {
   
   /**

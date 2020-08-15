@@ -12,6 +12,10 @@ package it.hypocracy.robespierre.article;
 
 import it.hypocracy.robespierre.utils.Uuidv4;
 
+/**
+ * Occupation describes a subject (human) occupation
+ */
+
 public class Occupation {
   
   private String id;

@@ -10,6 +10,10 @@
 
 package it.hypocracy.robespierre.database.query.syntax;
 
+/**
+ * This enum describes the order type
+ */
+
 public enum OrderType {
   ASC, DESC;
 

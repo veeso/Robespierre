@@ -36,6 +36,11 @@ import it.hypocracy.robespierre.utils.ISO3166;
 import it.hypocracy.robespierre.utils.MySqlDateTime;
 import it.hypocracy.robespierre.utils.Uuidv4;
 
+/**
+ * The FeedDatabase is the Hypocracy facade for the database. It provides methods to
+ * operate on the database entity related to Hypocracy and to manage data in a safe way
+ */
+
 public class FeedDatabase {
 
   private DatabaseFacade dbFac;

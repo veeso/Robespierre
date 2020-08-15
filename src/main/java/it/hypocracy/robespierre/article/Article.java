@@ -18,6 +18,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Article represents the Article entity as described in the Hypocracy Database.
+ * It is a wrapper for all the properties of a newspaper article (received from flows)
+ * in addition includes the associated topics and subjects
+ */
+
 public class Article {
 
   private String id; // UUIDv4

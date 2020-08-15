@@ -10,6 +10,10 @@
 
 package it.hypocracy.robespierre.database.query.syntax;
 
+/**
+ * This class describes an Order statement for select
+ */
+
 public class Order {
   
   private String[] what;

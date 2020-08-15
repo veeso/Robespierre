@@ -13,6 +13,10 @@ package it.hypocracy.robespierre.database.query;
 
 import it.hypocracy.robespierre.database.query.syntax.Clause;
 
+/**
+ * This class describes the object representing a Delete Query
+ */
+
 public class DeleteQuery implements Query {
 
   private String table;

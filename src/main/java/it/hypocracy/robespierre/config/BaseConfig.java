@@ -12,6 +12,11 @@ package it.hypocracy.robespierre.config;
 
 import it.hypocracy.robespierre.config.exceptions.BadConfigException;
 
+/**
+ * BaseConfig is the Basic configuration entry.
+ * All configuration objects must implement this interface
+ */
+
 public interface BaseConfig {
 
   public void check() throws BadConfigException;
