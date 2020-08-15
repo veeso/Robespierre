@@ -211,6 +211,9 @@ public class SearchBuilder {
    */
 
   private boolean hasCapitalLetter(String word) {
+    if (word.length() < 1) {
+      return false;
+    }
     String first = word.substring(0, 1);
     return first.toUpperCase().equals(first);
   }
