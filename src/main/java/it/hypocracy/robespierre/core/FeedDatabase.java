@@ -178,9 +178,9 @@ public class FeedDatabase {
 
   private boolean isArticleDuped(Article article) throws SQLException {
     // Check if an article with the same title exists and has been published in the
-    // last week
+    // last 2 weeks
     LocalDateTime lastWeekDate = article.getDate();
-    lastWeekDate = lastWeekDate.minus(7, ChronoUnit.DAYS);
+    lastWeekDate = lastWeekDate.minus(14, ChronoUnit.DAYS);
     // Prepare query
     Clause where = new Clause(articleFieldTitle, escapeString(article.getTitle()), ClauseOperator.EQUAL);
     where.setNext(new Clause(articleFieldDate, escapeString(lastWeekDate.toString()), ClauseOperator.BIGGER_EQUAL),
