@@ -15,6 +15,7 @@ import it.hypocracy.robespierre.config.exceptions.BadConfigException;
 public class MetadataCacheConfig implements BaseConfig {
 
   public int duration = 0; // Days
+  public boolean withBlacklist = false;
 
   @Override
   public void check() throws BadConfigException {

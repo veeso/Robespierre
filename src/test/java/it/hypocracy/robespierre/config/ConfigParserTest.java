@@ -25,9 +25,9 @@ import it.hypocracy.robespierre.config.exceptions.BadConfigException;
 
 public class ConfigParserTest {
 
-  public static String configTest = "{\"database\":{\"engine\":\"mariadb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"maxWorkers\":16,\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\",\"engine\":\"rss\",\"interval\":360},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\",\"engine\":\"rss\",\"interval\":240}]},\"metadata\":{\"engine\":\"wikidata\",\"cache\":{\"duration\":180}}}";
+  public static String configTest = "{\"database\":{\"engine\":\"mariadb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"maxWorkers\":16,\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\",\"engine\":\"rss\",\"interval\":360},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\",\"engine\":\"rss\",\"interval\":240}]},\"metadata\":{\"engine\":\"wikidata\",\"cache\":{\"duration\":180,\"withBlacklist\":true}}}";
   public static String filePath = null;
-  public static String badConfigTest = "{\"database\":{\"engine\":\"nodb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\",\"engine\":\"rss\",\"interval\":360},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\",\"engine\":\"rss\",\"interval\":240}]},\"metadata\":{\"engine\":\"wikidata\",\"cache\":{\"duration\":180}}}";
+  public static String badConfigTest = "{\"database\":{\"engine\":\"nodb\",\"uri\":\"jdbc:mariadb://localhost:3306/robespierre\",\"user\":\"root\",\"password\":null},\"feed\":{\"sources\":[{\"uri\":\"http://example.com/rss\",\"country\":\"IT\",\"engine\":\"rss\",\"interval\":360},{\"uri\":\"http://news.com/rss\",\"country\":\"EN\",\"engine\":\"rss\",\"interval\":240}]},\"metadata\":{\"engine\":\"wikidata\",\"cache\":{\"duration\":180,\"withBlacklist\":true}}}";
   public static String badFilePath = null;
 
   @BeforeClass
@@ -80,6 +80,7 @@ public class ConfigParserTest {
     // Metadata
     assertEquals("wikidata", config.metadata.engine);
     assertEquals(180, config.metadata.cache.duration);
+    assertEquals(true, config.metadata.cache.withBlacklist);
   }
 
   @Test
