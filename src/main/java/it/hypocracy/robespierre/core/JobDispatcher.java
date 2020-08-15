@@ -86,6 +86,7 @@ public class JobDispatcher {
             logger.info("Assigned  '" + jobName + "' to worker '" + worker.getName() + "'");
             try {
               job.runJob(worker);
+              workerFound = true;
               break; // Break => go to next job
             } catch (BusyWorkerException e) { // NOTE: this should never happen
               logger.error("Could not assign job '" + jobName + "' to worker '" + worker.getName()

@@ -113,15 +113,15 @@ public class FeedWorker implements Runnable {
    */
 
   public void assignNewJob(FeedSource source) throws BusyWorkerException {
+    synchronized (this) {
     if (this.isAvailable() && this.workingSource == null) {
       // Set working source
       this.workingSource = source;
       // Notify thread
-      synchronized (this) {
         notify();
+      } else {
+        throw new BusyWorkerException("Worker '" + name + "' is busy");
       }
-    } else {
-      throw new BusyWorkerException("Worker '" + name + "' is busy");
     }
   }
 
