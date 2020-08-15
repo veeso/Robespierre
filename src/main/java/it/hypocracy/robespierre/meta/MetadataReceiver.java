@@ -91,6 +91,7 @@ public abstract class MetadataReceiver {
         // Check if search is blacklisted
         if (this.cache.isBlacklistEnabled()) {
           if (this.cache.isWordBlacklisted(search.getSearch(), article.getCountry().toISO639().toString())) {
+            logger.debug(search.getSearch() + " is blacklisted (" + article.getCountry().toISO639().toString() + ")");
             return false; // Word is blacklisted
           }
         }
