@@ -28,7 +28,7 @@ import it.hypocracy.robespierre.database.driver.DatabaseFacade;
 import it.hypocracy.robespierre.database.driver.MariaFacade;
 import it.hypocracy.robespierre.feed.Feed;
 import it.hypocracy.robespierre.feed.FeedSource;
-import it.hypocracy.robespierre.feed.RSSFeed;
+import it.hypocracy.robespierre.feed.RSSFeedSource;
 import it.hypocracy.robespierre.feedreceiver.FeedReceiver;
 import it.hypocracy.robespierre.feedreceiver.RSSFeedReceiver;
 import it.hypocracy.robespierre.meta.MetadataReceiver;
@@ -286,7 +286,7 @@ public class FeedWorker implements Runnable {
   private void processSource() {
     // Prepare feed receiver and feed parser based on feed source type
     FeedReceiver feedReceiver = null;
-    if (this.workingSource.getClass().getName() == RSSFeed.class.getName()) {
+    if (this.workingSource.getClass().getName() == RSSFeedSource.class.getName()) {
       feedReceiver = new RSSFeedReceiver();
       logger.info("Feed engine: RSS; source: '" + workingSource.getURI().toString() + "'; country: "
           + workingSource.getCountry().toString());
