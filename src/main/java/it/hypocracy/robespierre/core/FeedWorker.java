@@ -247,7 +247,7 @@ public class FeedWorker implements Runnable {
     CacheProvider cacheProvider = null;
     if (dbConfig.engine.equals("mariadb")) {
       cacheProvider = new MariaCacheProvider(dbConfig.uri, dbConfig.user, dbConfig.password,
-          metadataConfig.cache.duration);
+          metadataConfig.cache.duration, metadataConfig.cache.withBlacklist);
       this.logger.debug("Using MariaDB as metadata cache provider");
     } else {
       this.logger.error("Uknown database engine: " + dbConfig.engine);

@@ -49,6 +49,7 @@ public class FeedDatabase {
   private final static String subjectTable = "subject";
   private final static String biographyTable = "biography";
   private final static String occupationTable = "occupation";
+  private final static String metadataBlacklistTable = "metadata_blacklist";
 
   // Fields
   // Article
@@ -88,6 +89,11 @@ public class FeedDatabase {
   private final static String biographyFieldId = "id";
   // Occupation
   private final static String occupationFieldId = "id";
+  // Metadata blacklist
+  private final static String metadataBlacklistFieldId = "id";
+  private final static String metadataBlacklistFieldWord = "word";
+  private final static String metadataBlacklistFieldLanguage = "language";
+  private final static String metadataBlacklistFieldCommitDate = "commit_date";
 
   /**
    * 
@@ -351,7 +357,8 @@ public class FeedDatabase {
           Occupation occupation = new Occupation(row.get(subjectFieldOccupationId), occupationStr);
           subjectsList.add(new Subject(row.get(subjectFieldId), row.get(subjectFieldName),
               LocalDate.parse(row.get(subjectFieldBirthdate)), new ISO3166(row.get(subjectFieldCitizenship)),
-              row.get(subjectFieldBirthplace), row.get(subjectFieldImage), new SubjectBio(row.get(subjectFieldBioId), biography), row.get(subjectFieldRemoteId),
+              row.get(subjectFieldBirthplace), row.get(subjectFieldImage),
+              new SubjectBio(row.get(subjectFieldBioId), biography), row.get(subjectFieldRemoteId),
               MySqlDateTime.parse(row.get(subjectFieldLastUpdate)), occupation));
         }
       }
@@ -626,7 +633,8 @@ public class FeedDatabase {
       int topIdx = 0;
       while (topicIt.hasNext()) {
         Map<String, String> row = topicIt.next();
-        topics[topIdx] = new Topic(row.get(topicFieldId), row.get(nameColumn), row.get(descColumn), row.get(topicFieldDataId));
+        topics[topIdx] = new Topic(row.get(topicFieldId), row.get(nameColumn), row.get(descColumn),
+            row.get(topicFieldDataId));
         topIdx++; // Increment topic index
       }
     } finally { // Disconnect in finally statement is mandatory
@@ -639,8 +647,7 @@ public class FeedDatabase {
 
   /**
    * <p>
-   * Insert a new topic data in the database
-   * topic data
+   * Insert a new topic data in the database topic data
    * </p>
    * 
    * @param description
@@ -679,6 +686,149 @@ public class FeedDatabase {
     Clause where = new Clause(topicDataFieldId, escapeString(id), ClauseOperator.EQUAL);
     UpdateQuery query = new UpdateQuery(topicDataTable, fields, where);
     dbFac.update(query);
+  }
+
+  // @! Metadata blacklist
+
+  /**
+   * <p>
+   * Search for match inside of metadata blacklist.
+   * </p>
+   * 
+   * @param match
+   * @param expiration
+   * @param language
+   * @return boolean
+   * @throws SQLException
+   * @throws IllegalArgumentException
+   */
+
+  public boolean searchBlacklist(String match, int expiration, String language)
+      throws SQLException, IllegalArgumentException {
+    dbFac.connect();
+    try {
+      // Prepare query
+      final String[] tables = new String[] { metadataBlacklistTable };
+      final String[] columns = new String[] { metadataBlacklistFieldCommitDate };
+      Clause where = new Clause(metadataBlacklistFieldWord, escapeString(match), ClauseOperator.EQUAL);
+      where.setNext(new Clause(metadataBlacklistFieldLanguage, escapeString(language), ClauseOperator.EQUAL),
+          ClauseRelation.AND);
+      SelectQuery query = new SelectQuery(columns, tables, where);
+      ArrayList<Map<String, String>> rows = dbFac.select(query);
+      // Iterate over rows
+      Iterator<Map<String, String>> it = rows.iterator();
+      while (it.hasNext()) {
+        // Get occupation
+        Map<String, String> row = it.next();
+        // Check expiration date
+        final LocalDateTime commitDate = MySqlDateTime.parse(row.get(metadataBlacklistFieldCommitDate));
+        final LocalDateTime expirationDate = commitDate.plusDays(expiration);
+        final LocalDateTime timeNow = LocalDateTime.now();
+        // If not expired, return true
+        if (expirationDate.isAfter(timeNow)) {
+          return true;
+        }
+      }
+    } finally {
+      dbFac.disconnect();
+    }
+    return false;
+  }
+
+  /**
+   * <p>
+   * Commit blacklist word
+   * </p>
+   * 
+   * @param word
+   * @param language
+   * @throws SQLException
+   */
+
+  public void commitBlacklistWord(String word, String language) throws SQLException {
+    // Open database
+    dbFac.connect();
+    try {
+      // Check if blacklist word exists
+      final int blacklistId = blacklistWordExists(word, language);
+      if (blacklistId == -1) {
+        // Insert new record
+        insertBlacklistRecord(word, language);
+      } else {
+        // Update commit date of blacklisted word
+        updateBlacklistRecord(blacklistId);
+      }
+      dbFac.commit();
+    } finally {
+      dbFac.disconnect();
+    }
+  }
+
+  /**
+   * <p>
+   * Checks whether a certain blacklist word exists in the database
+   * </p>
+   * 
+   * @param word
+   * @param language
+   * @return record id (or -1)
+   * @throws SQLException
+   */
+
+  private int blacklistWordExists(String word, String language) throws SQLException {
+    // Prepare query
+    final String[] tables = new String[] { metadataBlacklistTable };
+    final String[] columns = new String[] { metadataBlacklistFieldId };
+    Clause where = new Clause(metadataBlacklistFieldWord, escapeString(word), ClauseOperator.EQUAL);
+    where.setNext(new Clause(metadataBlacklistFieldLanguage, escapeString(language), ClauseOperator.EQUAL),
+        ClauseRelation.AND);
+    SelectQuery query = new SelectQuery(columns, tables, where);
+    ArrayList<Map<String, String>> rows = dbFac.select(query);
+    // Iterate over rows
+    Iterator<Map<String, String>> it = rows.iterator();
+    while (it.hasNext()) {
+      // Get occupation
+      Map<String, String> row = it.next();
+      return Integer.parseInt(row.get(metadataBlacklistFieldId));
+    }
+    return -1;
+  }
+
+  /**
+   * <p>
+   * Update blacklist commit_date record
+   * </p>
+   * 
+   * @param id
+   * @throws SQLException
+   */
+
+  private void updateBlacklistRecord(int id) throws SQLException {
+    HashMap<String, String> values = new HashMap<>();
+    LocalDateTime now = LocalDateTime.now();
+    values.put(metadataBlacklistFieldCommitDate, escapeString(now.toString()));
+    Clause where = new Clause(metadataBlacklistFieldId, String.valueOf(id), ClauseOperator.EQUAL);
+    UpdateQuery query = new UpdateQuery(metadataBlacklistTable, values, where);
+    dbFac.update(query);
+  }
+
+  /**
+   * <p>
+   * Insert a new record into the blacklist
+   * </p>
+   * 
+   * @param word
+   * @param language
+   * @throws SQLException
+   */
+
+  private void insertBlacklistRecord(String word, String language) throws SQLException {
+    LocalDateTime now = LocalDateTime.now();
+    String[] columns = new String[] { metadataBlacklistFieldWord, metadataBlacklistFieldLanguage,
+        metadataBlacklistFieldCommitDate };
+    String[] values = new String[] { escapeString(word), escapeString(language), escapeString(now.toString()) };
+    InsertQuery query = new InsertQuery(metadataBlacklistTable, columns, values);
+    dbFac.insert(query);
   }
 
   // @! SQL

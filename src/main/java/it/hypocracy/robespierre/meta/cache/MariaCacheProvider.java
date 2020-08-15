@@ -11,7 +11,6 @@
 package it.hypocracy.robespierre.meta.cache;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 
 import it.hypocracy.robespierre.article.Subject;
 import it.hypocracy.robespierre.article.Topic;
@@ -32,10 +31,12 @@ public class MariaCacheProvider extends CacheProvider {
    * @param user
    * @param password
    * @param expiration (days)
+   * @param withBlacklist
    */
-  public MariaCacheProvider(String uri, String user, String password, int expiration) {
+  public MariaCacheProvider(String uri, String user, String password, int expiration, boolean withBlacklist) {
     this.database = new FeedDatabase(new MariaFacade(uri, user, password));
     this.cacheExpiration = expiration;
+    this.withBlacklist = withBlacklist;
   }
 
   @Override
@@ -51,6 +52,24 @@ public class MariaCacheProvider extends CacheProvider {
   public Topic[] searchTopics(String match, String language) throws CacheException {
     try {
       return this.database.searchTopic(match, language);
+    } catch (IllegalArgumentException | SQLException e) {
+      throw new CacheException(e.getMessage());
+    }
+  }
+
+  @Override
+  public boolean isWordBlacklisted(String word, String language) throws CacheException {
+    try {
+      return this.database.searchBlacklist(word.toLowerCase(), this.cacheExpiration, language);
+    } catch (IllegalArgumentException | SQLException e) {
+      throw new CacheException(e.getMessage());
+    }
+  }
+
+  @Override
+  public void blacklistWord(String word, String language) throws CacheException {
+    try {
+      this.database.commitBlacklistWord(word.toLowerCase(), language);
     } catch (IllegalArgumentException | SQLException e) {
       throw new CacheException(e.getMessage());
     }

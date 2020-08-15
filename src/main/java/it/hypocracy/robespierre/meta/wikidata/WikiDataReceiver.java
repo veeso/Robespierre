@@ -104,7 +104,13 @@ public class WikiDataReceiver implements MetadataReceiver {
 
   private boolean fetchMetadataFromText(Article article, SearchEntity search) throws MetadataReceiverException, CacheException, ParserException {
     if (this.cache != null) {
-      // Search through cache
+      // Check if search is blacklisted
+      if (this.cache.isBlacklistEnabled()) {
+        if (this.cache.isWordBlacklisted(search.getSearch(), article.getCountry().toISO639().toString())) {
+          return false; // Word is blacklisted
+        }
+      }
+      // Search through cache values
       if (this.cache.fetchCachedValues(article, search)) {
         return true;
       }
@@ -125,15 +131,19 @@ public class WikiDataReceiver implements MetadataReceiver {
    * @return true if text matched
    * @throws MetadataReceiverException
    * @throws ParserException
+   * @throws CacheException
    */
 
-  private boolean processWikiDataQuery(Article article, SearchEntity search) throws MetadataReceiverException, ParserException {
+  private boolean processWikiDataQuery(Article article, SearchEntity search)
+      throws MetadataReceiverException, ParserException, CacheException {
     // First search query argument
     WikiDataApiClient apiClient = new WikiDataApiClient();
+    final String language = article.getCountry().toISO639().toString();
     // Get max resulte from target
     final int maxResults = search.getTarget() == SearchTarget.SUBJECT ? 4 : 1;
     Search searchResult = apiClient.search(search.getSearch(), maxResults);
     if (searchResult.query == null) {
+      blacklistSearch(search, language);
       return false;
     }
     // Iterate over query result
@@ -153,7 +163,28 @@ public class WikiDataReceiver implements MetadataReceiver {
         continue;
       }
     }
+    // Doesn't return anything important; blacklist search
+    blacklistSearch(search, language);
     return false;
+  }
+
+  /**
+   * <p>
+   * Blacklist search entity
+   * </p>
+   * 
+   * @param search
+   * @param language
+   * @throws CacheException
+   */
+
+  private void blacklistSearch(SearchEntity search, String language) throws CacheException {
+    // Check if search is blacklisted
+    if (this.cache != null) {
+      if (this.cache.isBlacklistEnabled()) {
+        this.cache.blacklistWord(search.getSearch(), language);
+      }
+    }
   }
 
 }

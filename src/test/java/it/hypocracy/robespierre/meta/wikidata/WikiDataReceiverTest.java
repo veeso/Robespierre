@@ -19,7 +19,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -31,6 +33,7 @@ import it.hypocracy.robespierre.article.Subject;
 import it.hypocracy.robespierre.article.Topic;
 import it.hypocracy.robespierre.database.driver.MariaFacade;
 import it.hypocracy.robespierre.database.query.InsertQuery;
+import it.hypocracy.robespierre.database.query.SelectQuery;
 import it.hypocracy.robespierre.meta.cache.MariaCacheProvider;
 import it.hypocracy.robespierre.meta.exceptions.CacheException;
 import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
@@ -52,6 +55,7 @@ public class WikiDataReceiverTest {
   private static String createSubjectQuery = "CREATE TABLE IF NOT EXISTS subject (id CHAR(36) NOT NULL PRIMARY KEY,name VARCHAR(128) NOT NULL,birthdate DATE,citizenship VARCHAR(2),birthplace VARCHAR(64),image VARCHAR(512),remote_id VARCHAR(256),last_update DATETIME NOT NULL,bio CHAR(36) NOT NULL,occupation CHAR(36) NOT NULL,CONSTRAINT `subject_bio_fk` FOREIGN KEY (bio) REFERENCES biography (id),CONSTRAINT `subject_occupation_fk` FOREIGN KEY (occupation) REFERENCES occupation (id));";
   private static String createTopicDataQuery = "CREATE TABLE IF NOT EXISTS topic_data (id CHAR(36) NOT NULL PRIMARY KEY,name_it CHAR(64),desc_it MEDIUMTEXT,name_en CHAR(64),desc_en MEDIUMTEXT,name_fr CHAR(64),desc_fr MEDIUMTEXT);";
   private static String createTopicQuery = "CREATE TABLE IF NOT EXISTS topic (id CHAR(36) NOT NULL PRIMARY KEY,topic_data_id CHAR(36) NOT NULL,CONSTRAINT `topic_data_fk` FOREIGN KEY (topic_data_id) REFERENCES topic_data (id));";
+  private static String createMetadataBlacklistQuery = "CREATE TABLE IF NOT EXISTS metadata_blacklist (id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,word MEDIUMTEXT NOT NULL,language VARCHAR(2) NOT NULL,commit_date DATETIME NOT NULL);";
 
   private static String dropDatabaseQuery = "DROP DATABASE metadata_database_test;";
 
@@ -83,6 +87,7 @@ public class WikiDataReceiverTest {
     db.performFreeform(createSubjectQuery);
     db.performFreeform(createTopicDataQuery);
     db.performFreeform(createTopicQuery);
+    db.performFreeform(createMetadataBlacklistQuery);
     // Commit
     db.commit();
     db.disconnect();
@@ -164,9 +169,9 @@ public class WikiDataReceiverTest {
   }
 
   @Test
-  public void shouldReceiveMetadataWithCache() throws MetadataReceiverException, CacheException, ParserException {
+  public void shouldReceiveMetadataWithCache() throws MetadataReceiverException, CacheException, ParserException, SQLException {
     // Create cache
-    WikiDataReceiver recv = new WikiDataReceiver(new MariaCacheProvider(dbUrl, "root", null, 180));
+    WikiDataReceiver recv = new WikiDataReceiver(new MariaCacheProvider(dbUrl, "root", null, 180, true));
     // Get metadta
     recv.fetchMetadata(testArticleWithCache);
     // Verify article subjects
@@ -203,6 +208,39 @@ public class WikiDataReceiverTest {
     assertEquals("stile di vita che tende ad escludere ogni forma di sfruttamento animale", topic.getDescription());
     // There shouldn't be any other topic
     assertFalse(topics.hasNext());
+    // Verify metadata blacklist
+    MariaFacade db = new MariaFacade(dbUrl, "root", null);
+    // Get all blacklist words
+    SelectQuery query = new SelectQuery("metadata_blacklist");
+    db.connect();
+    try {
+      // TITLE:  "Alberto Angela e Gerry Scotti sono amici dei vegani"
+      // DESC: "I due conduttori hanno detto di essere pro veganismo"
+      ArrayList<Map<String, String>> rows = db.select(query);
+      // Get list of records
+      ArrayList<String> blacklist = new ArrayList<>(rows.size());
+      Iterator<Map<String, String>> rIt = rows.iterator();
+      while (rIt.hasNext()) {
+        Map<String, String> row = rIt.next();
+        blacklist.add(row.get("word"));
+      }
+      // Blacklist length should be ... 12
+      assertEquals(12, blacklist.size());
+      assertEquals("e", blacklist.get(0));
+      assertEquals("sono", blacklist.get(1));
+      assertEquals("amici", blacklist.get(2));
+      assertEquals("dei", blacklist.get(3));
+      assertEquals("i", blacklist.get(4));
+      assertEquals("due", blacklist.get(5));
+      assertEquals("conduttori", blacklist.get(6));
+      assertEquals("hanno", blacklist.get(7));
+      assertEquals("detto", blacklist.get(8));
+      assertEquals("di", blacklist.get(9));
+      assertEquals("essere", blacklist.get(10));
+      assertEquals("pro", blacklist.get(11));
+    } finally {
+      db.disconnect();
+    }
   }
 
   @AfterClass

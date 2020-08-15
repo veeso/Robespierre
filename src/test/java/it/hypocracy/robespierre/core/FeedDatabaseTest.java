@@ -11,7 +11,9 @@
 package it.hypocracy.robespierre.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
 import java.sql.SQLException;
@@ -50,6 +52,7 @@ public class FeedDatabaseTest {
   private static String createArticleQuery = "CREATE TABLE IF NOT EXISTS article (id CHAR(36) NOT NULL PRIMARY KEY,title VARCHAR(128) NOT NULL,brief MEDIUMTEXT NOT NULL,link VARCHAR(128) NOT NULL,date DATETIME NOT NULL,state INTEGER NOT NULL,country VARCHAR(2) NOT NULL);";
   private static String createArticleTopicQuery = "CREATE TABLE IF NOT EXISTS article_topic (id CHAR(36) NOT NULL PRIMARY KEY,article_id CHAR(36) NOT NULL,topic_id CHAR(36) NOT NULL,CONSTRAINT `article_topic_fk` FOREIGN KEY (article_id) REFERENCES article (id),CONSTRAINT `topic_fk` FOREIGN KEY (topic_id) REFERENCES topic (id));";
   private static String createArticleSubjectQuery = "CREATE TABLE IF NOT EXISTS article_subject (id CHAR(36) NOT NULL PRIMARY KEY,article_id CHAR(36) NOT NULL,subject_id CHAR(36) NOT NULL,CONSTRAINT `article_subject_fk` FOREIGN KEY (article_id) REFERENCES article (id),CONSTRAINT `subject_fk` FOREIGN KEY (subject_id) REFERENCES subject (id));";
+  private static String createMetadataBlacklistQuery = "CREATE TABLE IF NOT EXISTS metadata_blacklist (id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,word MEDIUMTEXT NOT NULL,language VARCHAR(2) NOT NULL,commit_date DATETIME NOT NULL);";
 
   private static String dropDatabaseQuery = "DROP DATABASE feed_database_test;";
 
@@ -74,6 +77,7 @@ public class FeedDatabaseTest {
     db.performFreeform(createArticleQuery);
     db.performFreeform(createArticleTopicQuery);
     db.performFreeform(createArticleSubjectQuery);
+    db.performFreeform(createMetadataBlacklistQuery);
     // Commit
     db.commit();
     db.disconnect();
@@ -143,8 +147,7 @@ public class FeedDatabaseTest {
     assertThrows(DupedRecordException.class, () -> db.commitArticle(article2));
 
     // @! Search subjects
-    LocalDateTime expirationDate = publishDate2.plusDays(180);
-    Subject[] subjects = db.searchSubject("angela", expirationDate, "it");
+    Subject[] subjects = db.searchSubject("angela", 180, "it");
     // Verify subject
     assertEquals(1, subjects.length);
     Subject albertoAngela = subjects[0];
@@ -202,6 +205,18 @@ public class FeedDatabaseTest {
     } finally {
       dbFacade.disconnect();
     }
+
+    // @! Blacklist
+    // Check if 'cane' doesn't exist
+    assertFalse(db.searchBlacklist("cane", 180, "it"));
+    // insert a word
+    db.commitBlacklistWord("cane", "it");
+    // Verify cane exists
+    assertTrue(db.searchBlacklist("cane", 180, "it"));
+    // That's fine, but cane mustn't be true for french for example
+    assertFalse(db.searchBlacklist("cane", 180, "fr"));
+    // Update word
+    db.commitBlacklistWord("cane", "it");
   }
 
   // @! Test methods

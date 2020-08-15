@@ -27,6 +27,7 @@ import it.hypocracy.robespierre.meta.search.SearchEntity;
 public abstract class CacheProvider {
 
   protected int cacheExpiration;
+  protected boolean withBlacklist;
 
   /**
    * <p>
@@ -95,6 +96,39 @@ public abstract class CacheProvider {
    */
 
   public abstract Topic[] searchTopics(String match, String language) throws CacheException;
+
+  // Blacklist
+
+  public boolean isBlacklistEnabled() {
+    return this.withBlacklist;
+  }
+
+  /**
+   * <p>
+   * Checks if provided word is meta blacklisted
+   * </p>
+   * 
+   * @param word
+   * @param language
+   * @return boolean
+   * @throws CacheException
+   */
+
+  public abstract boolean isWordBlacklisted(String word, String language) throws CacheException;
+
+  /**
+   * <p>
+   * Blacklist a word
+   * </p>
+   * 
+   * @param word
+   * @param language
+   * @throws CacheException
+   */
+
+  public abstract void blacklistWord(String word, String language) throws CacheException;
+
+  // @! Privates
 
   /**
    * <p>
