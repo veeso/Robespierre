@@ -313,9 +313,19 @@ public class FeedDatabase {
     String[] fields = new String[] { subjectFieldId, subjectFieldBioId, subjectFieldOccupationId };
     String[] tables = new String[] { subjectTable };
     Clause where = new Clause(subjectFieldName, escapeString(subject.getName()), ClauseOperator.EQUAL);
-    where.setNext(
-        new Clause(subjectFieldBirthdate, escapeString(subject.getBirthdate().toString()), ClauseOperator.EQUAL),
-        ClauseRelation.AND);
+    if (subject.getBirthdate() != null) { // Check birthdate if set
+      where.setNext(
+          new Clause(subjectFieldBirthdate, escapeString(subject.getBirthdate().toString()), ClauseOperator.EQUAL),
+          ClauseRelation.AND);
+    } else if (subject.getBirthplace() != null) { // Try with birthplace maybe
+      where.setNext(
+          new Clause(subjectFieldBirthplace, escapeString(subject.getBirthplace()), ClauseOperator.EQUAL),
+          ClauseRelation.AND);
+    } else if (subject.getCitizenship() != null) { // Last try: citizenship
+      where.setNext(
+          new Clause(subjectFieldCitizenship, escapeString(subject.getCitizenship().toString()), ClauseOperator.EQUAL),
+          ClauseRelation.AND);
+    }
     SelectQuery query = new SelectQuery(fields, tables, where);
     // Perform query
     ArrayList<Map<String, String>> result = this.dbFac.select(query);
