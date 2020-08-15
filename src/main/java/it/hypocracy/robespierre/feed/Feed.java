@@ -15,7 +15,56 @@ import java.time.LocalDateTime;
 
 import it.hypocracy.robespierre.utils.ISO3166;
 
-public interface Feed {
+/**
+ * Feed is the base class for news feeds (atom, rss)
+ */
+
+public class Feed {
+
+  protected String title;
+  protected String brief;
+  protected URI link;
+  protected LocalDateTime publicationDate;
+  protected ISO3166 country;
+
+  /**
+   * <p>
+   * Instantiate a new RSS Feed. Date is set with now
+   * </p>
+   * 
+   * @param title
+   * @param brief
+   * @param link
+   * @param country
+   */
+
+  public Feed(String title, String brief, URI link, ISO3166 country) {
+    this.title = title;
+    this.brief = brief;
+    this.link = link;
+    this.publicationDate = LocalDateTime.now();
+    this.country = country;
+  }
+
+  /**
+   * <p>
+   * Instantiate a new Feed. Publication time is provided
+   * </p>
+   * 
+   * @param title
+   * @param brief
+   * @param link
+   * @param publicationTime
+   * @param country
+   */
+
+  public Feed(String title, String brief, URI link, LocalDateTime pTime, ISO3166 country) {
+    this.title = title;
+    this.brief = brief;
+    this.link = link;
+    this.publicationDate = pTime;
+    this.country = country;
+  }
 
   /**
    * <p>
@@ -25,7 +74,9 @@ public interface Feed {
    * @return title
    */
 
-  public String getTitle();
+  public String getTitle() {
+    return this.title;
+  }
 
   /**
    * <p>
@@ -35,7 +86,9 @@ public interface Feed {
    * @return brief
    */
 
-  public String getBrief();
+  public String getBrief() {
+    return this.brief;
+  }
 
   /**
    * <p>
@@ -45,7 +98,9 @@ public interface Feed {
    * @return link
    */
 
-  public URI getLink();
+  public URI getLink() {
+    return this.link;
+  }
 
   /**
    * <p>
@@ -55,7 +110,9 @@ public interface Feed {
    * @return LocalDateTime
    */
 
-  public LocalDateTime getPublicationDatetime();
+  public LocalDateTime getPublicationDatetime() {
+    return this.publicationDate;
+  }
 
   /**
    * <p>
@@ -65,6 +122,8 @@ public interface Feed {
    * @return ISO3166
    */
 
-  public ISO3166 getCountry();
+  public ISO3166 getCountry() {
+    return this.country;
+  }
 
 }

@@ -14,8 +14,20 @@ import java.net.URI;
 
 import it.hypocracy.robespierre.utils.ISO3166;
 
-public interface FeedSource {
-  
+/**
+ * FeedSource is the base class which represents a FeedSource
+ */
+
+public class FeedSource {
+
+  protected URI uri;
+  protected ISO3166 country;
+
+  public FeedSource(URI uri, ISO3166 country) {
+    this.uri = uri;
+    this.country = country;
+  }
+
   /**
    * <p>
    * Returns the URI to access the Feed
@@ -24,15 +36,20 @@ public interface FeedSource {
    * @return URI
    */
 
-  public URI getURI();
+  public URI getURI() {
+    return this.uri;
+  }
 
   /**
    * <p>
    * Returns the feed source country code (ISO3166)
    * </p>
+   * 
    * @return
    */
 
-  public ISO3166 getCountry();
+  public ISO3166 getCountry() {
+    return this.country;
+  }
 
 }

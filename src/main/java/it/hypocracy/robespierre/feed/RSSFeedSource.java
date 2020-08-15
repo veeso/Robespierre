@@ -14,24 +14,9 @@ import java.net.URI;
 
 import it.hypocracy.robespierre.utils.ISO3166;
 
-public class RSSFeedSource implements FeedSource {
-  
-  private URI uri;
-  private ISO3166 country;
+public class RSSFeedSource extends FeedSource {
 
   public RSSFeedSource(URI uri, ISO3166 country) {
-    this.uri = uri;
-    this.country = country;
+    super(uri, country);
   }
-
-  @Override
-  public URI getURI() {
-    return this.uri;
-  }
-
-  @Override
-  public ISO3166 getCountry() {
-    return this.country;
-  }
-
 }
