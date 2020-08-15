@@ -301,13 +301,14 @@ public class FeedDatabase {
    * </p>
    * 
    * @param match
+   * @param expiration
    * @param language
    * @return Subjects
    * @throws SQLException
    * @throws IllegalArgumentException
    */
 
-  public Subject[] searchSubject(String match, LocalDateTime expiration, String language)
+  public Subject[] searchSubject(String match, int expiration, String language)
       throws SQLException, IllegalArgumentException {
     // Connect to database
     Subject[] subjects = null;
@@ -324,8 +325,6 @@ public class FeedDatabase {
       }
       // Where subject name likes match and expiration date is in the future
       Clause where = new Clause(subjectFieldName, escapeString(matchBuilder.toString()), ClauseOperator.LIKE);
-      where.setNext(new Clause(subjectFieldLastUpdate, escapeString(expiration.toString()), ClauseOperator.LESS_THAN),
-          ClauseRelation.AND);
       // Prepare Columns
       String[] columns = new String[] { subjectFieldId, subjectFieldName, subjectFieldBirthdate, subjectFieldBirthplace,
           subjectFieldCitizenship, subjectFieldImage, subjectFieldRemoteId, subjectFieldLastUpdate,
@@ -334,23 +333,32 @@ public class FeedDatabase {
       // Select
       SelectQuery query = new SelectQuery(columns, tables, where);
       ArrayList<Map<String, String>> rows = dbFac.select(query);
-      // Prepare subjects
-      subjects = new Subject[rows.size()];
       // Iterate over rows
       Iterator<Map<String, String>> subjectIt = rows.iterator();
-      int subjIdx = 0;
+      ArrayList<Subject> subjectsList = new ArrayList<>();
       while (subjectIt.hasNext()) {
         // Get occupation
         Map<String, String> row = subjectIt.next();
-        String occupationStr = getOccupation(row.get(subjectFieldOccupationId), language);
-        String biography = getBiography(row.get(subjectFieldBioId), language);
-        // Instantiate subject
-        Occupation occupation = new Occupation(row.get(subjectFieldOccupationId), occupationStr);
-        subjects[subjIdx] = new Subject(row.get(subjectFieldId), row.get(subjectFieldName),
-            LocalDate.parse(row.get(subjectFieldBirthdate)), new ISO3166(row.get(subjectFieldCitizenship)),
-            row.get(subjectFieldBirthplace), row.get(subjectFieldImage), new SubjectBio(row.get(subjectFieldBioId), biography), row.get(subjectFieldRemoteId),
-            MySqlDateTime.parse(row.get(subjectFieldLastUpdate)), occupation);
-        subjIdx++; // Increment subject index
+        // Check expiration date
+        LocalDateTime lastUpdate = MySqlDateTime.parse(row.get(subjectFieldLastUpdate));
+        LocalDateTime expirationDate = lastUpdate.plusDays(expiration);
+        LocalDateTime timeNow = LocalDateTime.now();
+        // If not expired, add subject
+        if (expirationDate.isAfter(timeNow)) {
+          String occupationStr = getOccupation(row.get(subjectFieldOccupationId), language);
+          String biography = getBiography(row.get(subjectFieldBioId), language);
+          // Instantiate subject
+          Occupation occupation = new Occupation(row.get(subjectFieldOccupationId), occupationStr);
+          subjectsList.add(new Subject(row.get(subjectFieldId), row.get(subjectFieldName),
+              LocalDate.parse(row.get(subjectFieldBirthdate)), new ISO3166(row.get(subjectFieldCitizenship)),
+              row.get(subjectFieldBirthplace), row.get(subjectFieldImage), new SubjectBio(row.get(subjectFieldBioId), biography), row.get(subjectFieldRemoteId),
+              MySqlDateTime.parse(row.get(subjectFieldLastUpdate)), occupation));
+        }
+      }
+      // Prepare subjects
+      subjects = new Subject[subjectsList.size()];
+      for (int i = 0; i < subjectsList.size(); i++) {
+        subjects[i] = subjectsList.get(i);
       }
     } finally { // Disconnect in finally statement is mandatory
       dbFac.disconnect();

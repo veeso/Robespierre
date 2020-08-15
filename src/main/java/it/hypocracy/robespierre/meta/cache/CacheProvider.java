@@ -10,7 +10,6 @@
 
 package it.hypocracy.robespierre.meta.cache;
 
-import java.time.LocalDateTime;
 import java.util.Iterator;
 
 import it.hypocracy.robespierre.article.Article;
@@ -42,11 +41,9 @@ public abstract class CacheProvider {
     final String language = article.getCountry().toISO639().toString();
     switch (what.getTarget()) {
       case SUBJECT:
-        // Calculate expiration date
-        LocalDateTime expirationDate = LocalDateTime.now().plusDays(cacheExpiration);
         // Search subjects
         Subject[] matchingSubjects = null;
-        matchingSubjects = this.searchSubjects(what.getSearch().toLowerCase(), expirationDate, language);
+        matchingSubjects = this.searchSubjects(what.getSearch().toLowerCase(), language);
         // Add subjects to article
         for (Subject s : matchingSubjects) {
           if (!isSubjectDuped(article.iterSubjects(), s)) {
@@ -83,7 +80,7 @@ public abstract class CacheProvider {
    * @throws CacheException
    */
 
-  public abstract Subject[] searchSubjects(String match, LocalDateTime expiration, String language)
+  public abstract Subject[] searchSubjects(String match, String language)
       throws CacheException;
 
   /**

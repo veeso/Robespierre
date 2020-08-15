@@ -39,9 +39,9 @@ public class MariaCacheProvider extends CacheProvider {
   }
 
   @Override
-  public Subject[] searchSubjects(String match, LocalDateTime expiration, String language) throws CacheException {
+  public Subject[] searchSubjects(String match, String language) throws CacheException {
     try {
-      return this.database.searchSubject(match, expiration, language);
+      return this.database.searchSubject(match, this.cacheExpiration, language);
     } catch (IllegalArgumentException | SQLException e) {
       throw new CacheException(e.getMessage());
     }
