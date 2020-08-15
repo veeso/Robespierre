@@ -249,13 +249,19 @@ public class WikiDataParser {
     logger.debug(entity.title + " has brief: " + brief);
     // Get birthdate
     LocalDate birthdate = getBirthdate(entity);
-    logger.debug(entity.title + " has birthdate: " + birthdate.toString());
+    if (birthdate != null) {
+      logger.debug(entity.title + " has birthdate: " + birthdate.toString());
+    }
     // Get citizenship
     ISO3166 citizenship = getCitizenship(entity, country);
-    logger.debug(entity.title + " has citizenship: " + citizenship.toString());
+    if (citizenship != null) {
+      logger.debug(entity.title + " has citizenship: " + citizenship.toString());
+    }
     // Get birthplace
     ISO3166 cityCountry = (citizenship != null) ? citizenship : country;
-    logger.debug(entity.title + " has cityCountry: " + cityCountry.toString());
+    if (cityCountry != null) {
+      logger.debug(entity.title + " has cityCountry: " + cityCountry.toString());
+    }
     String birthplace = getBirthplace(entity, cityCountry);
     logger.debug(entity.title + " has birthplace: " + birthplace);
     // Get image
@@ -263,7 +269,9 @@ public class WikiDataParser {
     logger.debug(entity.title + " has imageUri: " + imageUri);
     // occupation
     Occupation occupation = getOccupation(entity, country);
-    logger.debug(entity.title + " has occupation: " + occupation);
+    if (occupation != null) {
+      logger.debug(entity.title + " has occupation: " + occupation.getName());
+    }
     // Set remoteid
     String remoteId = entity.title;
     // Return subject
