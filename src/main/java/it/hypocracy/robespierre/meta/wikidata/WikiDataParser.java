@@ -15,6 +15,8 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.article.Occupation;
 import it.hypocracy.robespierre.article.Subject;
@@ -36,11 +38,14 @@ import it.hypocracy.robespierre.utils.ISO3166;
 import it.hypocracy.robespierre.utils.ISO8601;
 
 /**
- * The WikiDataParser is the class which takes care of parsing the data web entity received
- * from WikiData and to collect its metadata to build up Article's subjects and topics
+ * The WikiDataParser is the class which takes care of parsing the data web
+ * entity received from WikiData and to collect its metadata to build up
+ * Article's subjects and topics
  */
 
 public class WikiDataParser {
+
+  protected final static Logger logger = Logger.getLogger(WikiDataParser.class.getName());
 
   private WikiDataApiClient apiClient;
   private static ArrayList<String> topicsTable = null;
@@ -101,40 +106,48 @@ public class WikiDataParser {
   public boolean parseWbEntity(WbEntity wbEntity, String id, Article article)
       throws ParserException, MetadataReceiverException {
     // Verify web entity
+    logger.debug("Parsing entity " + id);
     Entity entity = wbEntity.entities.get(id);
     if (entity == null) {
       return false;
     }
     // Check if it is human
     if (isWbEntityHuman(entity)) {
+      logger.debug("Entity " + id + " is a human");
       // Instantiate a subject from Human
       Subject articleSubject = wbEntityToSubject(entity, article.getCountry());
       // If subject is null, return false
       if (articleSubject == null) {
+        logger.debug("Entity " + id + " didn't return a subject candidate");
         return false;
       }
       // Check if subject is duplicated
       Iterator<Subject> subjects = article.iterSubjects();
       if (!isSubjectDuped(subjects, articleSubject)) {
         // If not duped, add to article subjects
+        logger.debug("Added to article " + article.getId() + " a new subject: " + articleSubject.getName());
         article.addSubject(articleSubject);
       }
       return true; // Return true anyway
     } else if (isWbEntityTopic(entity)) {
+      logger.debug("Entity " + id + " is a topic");
       // Retrieve topic parameters
       Topic articleTopic = wbEntityToTopic(entity, article.getCountry());
       // If topic is null, return false
       if (articleTopic == null) {
+        logger.debug("Entity " + id + " didn't return a topic candidate");
         return false;
       }
       // Check if topic is duplicated
       Iterator<Topic> topics = article.iterTopics();
       if (!isTopicDuped(topics, articleTopic)) {
         // If not duped, add to article topics
+        logger.debug("Added to article " + article.getId() + " a new topic: " + articleTopic.getName());
         article.addTopic(articleTopic);
       }
       return true; // Return true anyway
     } else {
+      logger.debug("Entity " + id + " is nothing");
       return false;
     }
   }
@@ -209,6 +222,7 @@ public class WikiDataParser {
 
     // First, check if human entity is dead, because if it is, ignore it...
     if (isHumanDead(entity)) {
+      logger.debug(entity.title + " is dead... R.I.P.");
       return null;
     }
     // Okay it's alive, let's parse it...
@@ -222,6 +236,7 @@ public class WikiDataParser {
     if (name == null) {
       throw new ParserException("Label value is null for" + entity.title);
     }
+    logger.debug(entity.title + " has name: " + name);
     // Get brief
     Description description = entity.descriptions.get(language);
     if (description == null) {
@@ -231,17 +246,24 @@ public class WikiDataParser {
     if (brief == null) {
       throw new ParserException("Description value is null for" + entity.title);
     }
+    logger.debug(entity.title + " has brief: " + brief);
     // Get birthdate
     LocalDate birthdate = getBirthdate(entity);
+    logger.debug(entity.title + " has birthdate: " + birthdate.toString());
     // Get citizenship
     ISO3166 citizenship = getCitizenship(entity, country);
+    logger.debug(entity.title + " has citizenship: " + citizenship.toString());
     // Get birthplace
     ISO3166 cityCountry = (citizenship != null) ? citizenship : country;
+    logger.debug(entity.title + " has cityCountry: " + cityCountry.toString());
     String birthplace = getBirthplace(entity, cityCountry);
+    logger.debug(entity.title + " has birthplace: " + birthplace);
     // Get image
     String imageUri = getImage(entity);
+    logger.debug(entity.title + " has imageUri: " + imageUri);
     // occupation
     Occupation occupation = getOccupation(entity, country);
+    logger.debug(entity.title + " has occupation: " + occupation);
     // Set remoteid
     String remoteId = entity.title;
     // Return subject
@@ -252,6 +274,7 @@ public class WikiDataParser {
    * <p>
    * Checks whether a certain human is dead
    * </p>
+   * 
    * @param entity
    * @return boolean
    */
@@ -594,6 +617,7 @@ public class WikiDataParser {
     if (name == null) {
       throw new ParserException("Label value is null");
     }
+    logger.debug(entity.title + " has name: " + name);
     // Get brief
     Description description = entity.descriptions.get(language);
     if (description == null) {
@@ -603,6 +627,7 @@ public class WikiDataParser {
     if (brief == null) {
       throw new ParserException("Description value is null");
     }
+    logger.debug(entity.title + " has brief: " + brief);
     // Instantiate topic
     return new Topic(name, brief);
   }

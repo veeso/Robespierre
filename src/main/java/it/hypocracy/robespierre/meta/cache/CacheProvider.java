@@ -12,6 +12,8 @@ package it.hypocracy.robespierre.meta.cache;
 
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.article.Subject;
 import it.hypocracy.robespierre.article.Topic;
@@ -19,13 +21,15 @@ import it.hypocracy.robespierre.meta.exceptions.CacheException;
 import it.hypocracy.robespierre.meta.search.SearchEntity;
 
 /**
- * Cache Provider is an entity which takes care of caching metadata and to blacklist
- * garbage search in order to speed up searches.
- * This class provides common routines for providers to provide cache, but "platform" specifics
- * must be implemented in subclasses
+ * Cache Provider is an entity which takes care of caching metadata and to
+ * blacklist garbage search in order to speed up searches. This class provides
+ * common routines for providers to provide cache, but "platform" specifics must
+ * be implemented in subclasses
  */
 
 public abstract class CacheProvider {
+
+  protected final static Logger logger = Logger.getLogger(CacheProvider.class.getName());
 
   protected int cacheExpiration;
   protected boolean withBlacklist;
@@ -44,26 +48,36 @@ public abstract class CacheProvider {
     switch (what.getTarget()) {
       case SUBJECT:
         // Search subjects
+        logger.debug("Searching for subject: " + what.getSearch());
         Subject[] matchingSubjects = null;
         matchingSubjects = this.searchSubjects(what.getSearch().toLowerCase(), language);
         // Add subjects to article
         for (Subject s : matchingSubjects) {
+          logger.debug("Found a subject in cache: " + s.getName());
           if (!isSubjectDuped(article.iterSubjects(), s)) {
             article.addSubject(s);
-          } // Else continue
+          } // Continue
+        }
+        if (matchingSubjects.length == 0) {
+          logger.debug("No subject matches in cache.");
         }
         // Return true if matchingSubjects length is > 0
         return matchingSubjects.length > 0;
 
       case TOPIC:
         // Search topics
+        logger.debug("Searching for topic: " + what.getSearch());
         Topic[] topics = null;
         topics = this.searchTopics(what.getSearch().toLowerCase(), language);
         // Add topics to article
         for (Topic t : topics) {
+          logger.debug("Found topic " + t.getName() + " in cache");
           if (!isTopicDuped(article.iterTopics(), t)) {
             article.addTopic(t);
           } // Else continue
+        }
+        if (topics.length == 0) {
+          logger.debug("No topic matches in cache.");
         }
         // Return true if topics length is > 0
         return topics.length > 0;
@@ -82,8 +96,7 @@ public abstract class CacheProvider {
    * @throws CacheException
    */
 
-  public abstract Subject[] searchSubjects(String match, String language)
-      throws CacheException;
+  public abstract Subject[] searchSubjects(String match, String language) throws CacheException;
 
   /**
    * <p>

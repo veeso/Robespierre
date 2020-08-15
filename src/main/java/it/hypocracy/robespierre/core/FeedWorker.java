@@ -34,9 +34,6 @@ import it.hypocracy.robespierre.feedreceiver.RSSFeedReceiver;
 import it.hypocracy.robespierre.meta.MetadataReceiver;
 import it.hypocracy.robespierre.meta.cache.CacheProvider;
 import it.hypocracy.robespierre.meta.cache.MariaCacheProvider;
-import it.hypocracy.robespierre.meta.exceptions.CacheException;
-import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
-import it.hypocracy.robespierre.meta.exceptions.ParserException;
 import it.hypocracy.robespierre.meta.wikidata.WikiDataReceiver;
 
 /**
@@ -310,21 +307,7 @@ public class FeedWorker implements Runnable {
       tStarted = Instant.now();
       this.logger.info("Assembling article with title: '" + entry.getTitle() + "'");
       Article article = null;
-      try {
-        article = this.articleAssembler.assemble(entry);
-      } catch (MetadataReceiverException e) {
-        this.logger.error("Metadata Receiver Error: " + e.getMessage());
-        this.logger.trace(e);
-        continue;
-      } catch (CacheException e) {
-        this.logger.error("Cache Provider Error: " + e.getMessage());
-        this.logger.trace(e);
-        continue;
-      } catch (ParserException e) {
-        this.logger.error("Metadata Parser Error: " + e.getMessage());
-        this.logger.trace(e);
-        continue;
-      }
+      article = this.articleAssembler.assemble(entry);
       // Print information for debug
       this.logger.debug("Assembled article > title: " + article.getTitle() + "; Brief: " + article.getBrief()
           + "; URI: " + article.getLink().toString());

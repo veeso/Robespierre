@@ -20,12 +20,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import it.hypocracy.robespierre.database.query.DeleteQuery;
 import it.hypocracy.robespierre.database.query.InsertQuery;
 import it.hypocracy.robespierre.database.query.SelectQuery;
 import it.hypocracy.robespierre.database.query.UpdateQuery;
 
 public class MariaFacade implements DatabaseFacade {
+
+  private final static Logger logger = Logger.getLogger(MariaFacade.class.getName());
 
   // Configuration
   private String url;
@@ -53,6 +57,7 @@ public class MariaFacade implements DatabaseFacade {
     if (conn == null) {
       conn = DriverManager.getConnection(url, username, password);
       conn.setAutoCommit(false); // Disable auto commit
+      logger.info("Established connection with database " + username + ":" + url);
     } else {
       throw new SQLException("Connection with database already established");
     }
@@ -63,6 +68,7 @@ public class MariaFacade implements DatabaseFacade {
     if (conn != null) {
       if (!conn.isClosed()) {
         conn.close();
+        logger.info("Closed connection with database");
       } else {
         conn = null;
         throw new SQLException("Connection with database already closed");
@@ -79,6 +85,7 @@ public class MariaFacade implements DatabaseFacade {
       throw new SQLException("Could not commit: no statement to commit");
     }
     conn.commit();
+    logger.info("Changes commited");
   }
 
   @Override
@@ -87,11 +94,13 @@ public class MariaFacade implements DatabaseFacade {
       throw new SQLException("Could not rollback: no statement to commit");
     }
     conn.rollback();
+    logger.warn("Changes rolled back");
   }
 
   @Override
   public void delete(DeleteQuery query) throws SQLException {
     Statement stmt = createStatement();
+    logger.debug(query.toSQL());
     stmt.execute(query.toSQL());
     stmt.close();
   }
@@ -99,6 +108,7 @@ public class MariaFacade implements DatabaseFacade {
   @Override
   public void insert(InsertQuery query) throws SQLException {
     Statement stmt = createStatement();
+    logger.debug(query.toSQL());
     stmt.execute(query.toSQL());
     stmt.close();
   }
@@ -107,6 +117,7 @@ public class MariaFacade implements DatabaseFacade {
   public ArrayList<Map<String, String>> select(SelectQuery query) throws SQLException {
     Statement stmt = createStatement();
     // Perform select
+    logger.debug(query.toSQL());
     ResultSet set = stmt.executeQuery(query.toSQL());
     // Prepare result hashmap
     ArrayList<Map<String, String>> rows = new ArrayList<Map<String, String>>();
@@ -129,6 +140,7 @@ public class MariaFacade implements DatabaseFacade {
   @Override
   public void update(UpdateQuery query) throws SQLException {
     Statement stmt = createStatement();
+    logger.debug(query.toSQL());
     stmt.execute(query.toSQL());
     stmt.close();
   }
@@ -136,6 +148,7 @@ public class MariaFacade implements DatabaseFacade {
   @Override
   public void performFreeform(String query) throws SQLException {
     Statement stmt = createStatement();
+    logger.debug(query);
     stmt.execute(query);
     stmt.close();
   }

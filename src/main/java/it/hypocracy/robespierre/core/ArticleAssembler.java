@@ -10,12 +10,12 @@
 
 package it.hypocracy.robespierre.core;
 
+import org.apache.log4j.Logger;
+
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.feed.Feed;
 import it.hypocracy.robespierre.meta.MetadataReceiver;
-import it.hypocracy.robespierre.meta.exceptions.CacheException;
 import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
-import it.hypocracy.robespierre.meta.exceptions.ParserException;
 
 /**
  * The ArticleAssembler is the entity which takes care of Wrapping an 
@@ -23,6 +23,8 @@ import it.hypocracy.robespierre.meta.exceptions.ParserException;
  */
 
 public class ArticleAssembler {
+
+  private final static Logger logger = Logger.getLogger(ArticleAssembler.class.getName());
 
   private MetadataReceiver metadataReceiver;
 
@@ -43,16 +45,22 @@ public class ArticleAssembler {
    * @param feed
    * @return Article
    * @throws ParserException
-   * @throws CacheException
-   * @throws MetadataReceiverException
    */
 
-  public Article assemble(Feed feed) throws MetadataReceiverException, CacheException, ParserException {
+  public Article assemble(Feed feed) {
     // Create article
     Article article = new Article(feed.getTitle(), feed.getBrief(), feed.getLink(), feed.getPublicationDatetime(),
         feed.getCountry());
     // Use metadata receiver to fetch for subjects and topics
-    metadataReceiver.fetchMetadata(article);
+    logger.debug("Fetiching metadata");
+    try {
+      metadataReceiver.fetchMetadata(article);
+    } catch (MetadataReceiverException e) {
+      logger.error("Metadata Receiver error: " + e.getMessage());
+      logger.error("Article will be saved anyway, but without metadata...");
+      logger.trace(e);
+    }
+    logger.debug("Metadata fetched");
     return article;
   }
 

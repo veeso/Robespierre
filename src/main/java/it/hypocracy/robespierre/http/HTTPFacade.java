@@ -13,6 +13,8 @@ package it.hypocracy.robespierre.http;
 import java.io.IOException;
 import java.net.URI;
 
+import org.apache.log4j.Logger;
+
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,6 +25,8 @@ import okhttp3.Response;
  */
 
 public class HTTPFacade {
+
+  private final static Logger logger = Logger.getLogger(HTTPFacade.class.getName());
 
   public HTTPFacade() {
     super();
@@ -41,7 +45,9 @@ public class HTTPFacade {
   public HTTPResponse get(URI uri) throws IOException{
     Request request = new Request.Builder().url(HttpUrl.get(uri)).build();
     OkHttpClient httpCli = new OkHttpClient();
+    logger.trace("GET " + uri);
     Response response = httpCli.newCall(request).execute();
+    logger.debug("GET " + uri + " => " + response.code());
     return new HTTPResponse(response.code(), response.body());
   }
 

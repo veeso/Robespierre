@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.article.Occupation;
 import it.hypocracy.robespierre.article.Subject;
@@ -42,6 +44,8 @@ import it.hypocracy.robespierre.utils.Uuidv4;
  */
 
 public class FeedDatabase {
+
+  private final static Logger logger = Logger.getLogger(FeedDatabase.class.getName());
 
   private DatabaseFacade dbFac;
 
@@ -125,27 +129,36 @@ public class FeedDatabase {
   public void commitArticle(Article article) throws SQLException, DupedRecordException {
     // Connect to database
     dbFac.connect();
+    logger.info("Commiting article '" + article.getTitle() + "'");
     try {
       // Start with article entity
       // Verify if article is duped
+      logger.debug("Checking if article is duped");
       if (isArticleDuped(article)) {
+        logger.debug("Article duped");
         throw new DupedRecordException("Article already exists in the database");
       }
+      logger.debug("Article is not duped");
       final String language = article.getCountry().toISO639().toString();
       // Ok, it is now safe to insert article
       insertArticle(article);
       // Insert subjects
       Iterator<Subject> sIt = article.iterSubjects();
       while (sIt.hasNext()) {
-        commitSubject(sIt.next(), article.getId(), language);
+        Subject s = sIt.next();
+        logger.debug("Inserting subject " + s.getName());
+        commitSubject(s, article.getId(), language);
       }
       // Insert topics
       Iterator<Topic> tIt = article.iterTopics();
       while (tIt.hasNext()) {
-        commitTopic(tIt.next(), article.getId(), language);
+        Topic t = tIt.next();
+        logger.debug("Inserting topic " + t.getName());
+        commitTopic(t, article.getId(), language);
       }
       // Commit changes
       dbFac.commit();
+      logger.debug("Article commited");
     } finally { // Disconnect in finally statement is mandatory
       dbFac.disconnect();
     }
@@ -230,7 +243,9 @@ public class FeedDatabase {
 
   private void commitSubject(Subject subject, String articleId, String language) throws SQLException {
     // Check if subject already exists
+    logger.debug("Committing subject " + subject.getName());
     if (subjectExists(subject)) {
+      logger.debug("Subject exists: updating subject...");
       // Update subject (update: image, last_update)
       HashMap<String, String> fields = new HashMap<>();
       fields.put(subjectFieldImage, escapeString(subject.getImageUri()));
@@ -238,19 +253,25 @@ public class FeedDatabase {
       Clause where = new Clause(subjectFieldId, escapeString(subject.getId()), ClauseOperator.EQUAL);
       UpdateQuery query = new UpdateQuery(subjectTable, fields, where);
       dbFac.update(query);
+      logger.debug("Subject updated (" + subject.getId() + ")");
       // Update bio record
       updateBiography(subject.biography.getId(), subject.biography.getBrief(), language);
+      logger.debug("Biography updated: " + subject.biography.getId());
       // Update occupation id
       updateOccupation(subject.occupation, language);
+      logger.debug("Occupation updated: " + subject.occupation.getId());
     } else {
       // Insert a new subject...
+      logger.debug("Inserting new subject");
       // Start with checking if the occupation record already exists
       if (!occupationExists(language, subject.occupation)) {
         // Insert occupation data
+        logger.debug("Occupation doesn't exist; creating a new one");
         insertOccupation(subject.occupation, language);
-      } // NOTE: no need to update occupation here. It's data is already correct for
+      } // NOTE: no need to update occupation here. Its data (occupation ID) is already correct for
         // sure (in occupationExists, we searched it by text)
       // insert bio
+      logger.debug("Inserting biography");
       insertBiography(subject.biography, language);
       // Insert subject
       String[] columns = new String[] { subjectFieldId, subjectFieldName, subjectFieldBirthdate,
@@ -263,6 +284,7 @@ public class FeedDatabase {
           escapeString(subject.biography.getId()), escapeString(subject.occupation.getId()) };
       InsertQuery query = new InsertQuery(subjectTable, columns, values);
       dbFac.insert(query);
+      logger.debug("Subject inserted (" + subject.getId() + ")");
     }
     // Add association between subject and article
     final String assocId = genUUID();
@@ -271,6 +293,7 @@ public class FeedDatabase {
     String[] values = new String[] { escapeString(assocId), escapeString(articleId), escapeString(subject.getId()) };
     InsertQuery query = new InsertQuery(articleSubjectTable, columns, values);
     dbFac.insert(query);
+    logger.debug("Added subject/article assoc (" + assocId + ")");
   }
 
   /**
@@ -551,11 +574,14 @@ public class FeedDatabase {
 
   private void commitTopic(Topic topic, String articleId, String language) throws SQLException {
     // Check if topic exists
+    logger.debug("Committing topic " + topic.getName());
     if (topicExists(topic, language)) {
+      logger.debug("topic " + topic.getName() + " (" + topic.getId() + ") already exists; updating it...");
       // Update topic data
       updateTopicData(topic.getDescriptionId(), topic.getName(), topic.getDescription(), language);
     } else {
       // Create topic data
+      logger.debug("topic " + topic.getName() + "(" + topic.getId() + ") doesn't exist yet; creating it");
       insertTopicData(topic.getDescriptionId(), topic.getName(), topic.getDescription(), language);
       // Insert topic
       String[] columns = new String[] { topicFieldId, topicFieldDataId };
@@ -569,6 +595,7 @@ public class FeedDatabase {
     String[] values = new String[] { escapeString(assocId), escapeString(articleId), escapeString(topic.getId()) };
     InsertQuery query = new InsertQuery(articleTopicTable, columns, values);
     dbFac.insert(query);
+    logger.debug("Added relation between topic and article: " + assocId);
   }
 
   /**
@@ -766,6 +793,7 @@ public class FeedDatabase {
         updateBlacklistRecord(blacklistId);
       }
       dbFac.commit();
+      logger.debug("Blacklisted metadata word: '" + word + "' for " + language);
     } finally {
       dbFac.disconnect();
     }

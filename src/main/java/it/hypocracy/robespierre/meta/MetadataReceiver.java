@@ -10,11 +10,12 @@
 
 package it.hypocracy.robespierre.meta;
 
+import org.apache.log4j.Logger;
+
 import it.hypocracy.robespierre.article.Article;
 import it.hypocracy.robespierre.meta.cache.CacheProvider;
 import it.hypocracy.robespierre.meta.exceptions.CacheException;
 import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
-import it.hypocracy.robespierre.meta.exceptions.ParserException;
 import it.hypocracy.robespierre.meta.search.SearchBuilder;
 import it.hypocracy.robespierre.meta.search.SearchEntity;
 
@@ -26,6 +27,8 @@ import it.hypocracy.robespierre.meta.search.SearchEntity;
 
 public abstract class MetadataReceiver {
 
+  protected final static Logger logger = Logger.getLogger(MetadataReceiver.class.getName());
+
   protected CacheProvider cache;
   protected SearchBuilder searchBuilder;
 
@@ -36,14 +39,13 @@ public abstract class MetadataReceiver {
    * 
    * @param article
    * @throws MetadataReceiverException
-   * @throws CacheException
-   * @throws ParserException
    */
 
-  public void fetchMetadata(Article article) throws MetadataReceiverException, CacheException, ParserException {
+  public void fetchMetadata(Article article) throws MetadataReceiverException {
     // Keep only letters, all to lowercase and split by spaces
     String[] titleWords = article.getTitle().split("\\s+");
     String[] briefWords = article.getBrief().split("\\s+");
+    logger.debug("Getting metadata for article " + article.getId());
     // Fetch words collections
     fetchMetadataFromWords(article, titleWords);
     fetchMetadataFromWords(article, briefWords);
@@ -59,16 +61,14 @@ public abstract class MetadataReceiver {
    * @param article
    * @param words
    * @throws MetadataReceiverException
-   * @throws CacheException
-   * @throws ParserException
    */
 
-  private void fetchMetadataFromWords(Article article, String[] words)
-      throws MetadataReceiverException, CacheException, ParserException {
+  private void fetchMetadataFromWords(Article article, String[] words) throws MetadataReceiverException {
     // Build Search Entity
     SearchEntity[] searchEntities = searchBuilder.buildSearchForSubjectsAndTopics(words);
     // Iterate over words
     for (SearchEntity search : searchEntities) {
+      logger.debug("Getting metadata for search target: '" + search.getSearch() + "'");
       fetchMetadataFromText(article, search);
     }
   }
@@ -83,22 +83,24 @@ public abstract class MetadataReceiver {
    * @param text
    * @return true if text matched
    * @throws MetadataReceiverException
-   * @throws CacheException
-   * @throws ParserException
    */
 
-  private boolean fetchMetadataFromText(Article article, SearchEntity search)
-      throws MetadataReceiverException, CacheException, ParserException {
+  private boolean fetchMetadataFromText(Article article, SearchEntity search) throws MetadataReceiverException {
     if (this.cache != null) {
-      // Check if search is blacklisted
-      if (this.cache.isBlacklistEnabled()) {
-        if (this.cache.isWordBlacklisted(search.getSearch(), article.getCountry().toISO639().toString())) {
-          return false; // Word is blacklisted
+      try {
+        // Check if search is blacklisted
+        if (this.cache.isBlacklistEnabled()) {
+          if (this.cache.isWordBlacklisted(search.getSearch(), article.getCountry().toISO639().toString())) {
+            return false; // Word is blacklisted
+          }
         }
-      }
-      // Search through cache values
-      if (this.cache.fetchCachedValues(article, search)) {
-        return true;
+        // Search through cache values
+        if (this.cache.fetchCachedValues(article, search)) {
+          return true;
+        }
+      } catch (CacheException e) {
+        logger.error("Failed to check cached values: " + e.getMessage());
+        logger.trace(e);
       }
     }
     // Search
@@ -112,14 +114,19 @@ public abstract class MetadataReceiver {
    * 
    * @param search
    * @param language
-   * @throws CacheException
    */
 
-  final protected void blacklistSearch(SearchEntity search, String language) throws CacheException {
+  final protected void blacklistSearch(SearchEntity search, String language) {
     // Check if search is blacklisted
     if (this.cache != null) {
       if (this.cache.isBlacklistEnabled()) {
-        this.cache.blacklistWord(search.getSearch(), language);
+        try {
+          this.cache.blacklistWord(search.getSearch(), language);
+        } catch (CacheException e) {
+          logger.error(
+              "Could not check if search '" + search.getSearch() + "' is blacklisted: " + e.getLocalizedMessage());
+          logger.trace(e);
+        }
       }
     }
   }
@@ -127,6 +134,6 @@ public abstract class MetadataReceiver {
   // @! Abstract
 
   protected abstract boolean queryMetadataProvider(Article article, SearchEntity search)
-      throws MetadataReceiverException, ParserException, CacheException;
+      throws MetadataReceiverException;
 
 }
