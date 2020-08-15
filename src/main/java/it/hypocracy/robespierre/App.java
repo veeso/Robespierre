@@ -112,9 +112,9 @@ public class App {
       logger.debug("Processing job dispatcher...");
       jobDispatcher.process();
 
-      // Sleep for 3 seconds
+      // Sleep for 10 seconds
       try {
-        Thread.sleep(3000, 0);
+        Thread.sleep(10000, 0);
       } catch (InterruptedException e) {
         logger.error("Sleep interrupted: " + e.getMessage());
         logger.trace(e);
