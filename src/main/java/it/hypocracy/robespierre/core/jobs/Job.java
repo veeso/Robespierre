@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 
 public abstract class Job<T> {
 
-  protected int interval; // Seconds
+  protected int interval; // Minutes
   // Runtime
   LocalDateTime nextExecution = LocalDateTime.now();
 
@@ -51,11 +51,8 @@ public abstract class Job<T> {
    */
 
   final protected void rescheduleJob() {
-    // Set previous execution
-    LocalDateTime prevExecution = null;
-    prevExecution = LocalDateTime.from(nextExecution);
     // Sum interval to previous execution
-    nextExecution = prevExecution.plusSeconds(interval);
+    nextExecution = nextExecution.plusMinutes(interval);
   }
 
 }
