@@ -259,9 +259,6 @@ public class WikiDataParser {
     }
     // Get birthplace
     ISO3166 cityCountry = (citizenship != null) ? citizenship : country;
-    if (cityCountry != null) {
-      logger.debug(entity.title + " has cityCountry: " + cityCountry.toString());
-    }
     String birthplace = getBirthplace(entity, cityCountry);
     logger.debug(entity.title + " has birthplace: " + birthplace);
     // Get image
