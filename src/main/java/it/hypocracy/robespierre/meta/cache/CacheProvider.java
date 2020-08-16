@@ -56,7 +56,9 @@ public abstract class CacheProvider {
           logger.debug("Found a subject in cache: " + s.getName());
           if (!isSubjectDuped(article.iterSubjects(), s)) {
             article.addSubject(s);
-          } // Continue
+          } else {
+            logger.debug(s.getName() + " is duped for this article");
+          }
         }
         if (matchingSubjects.length == 0) {
           logger.debug("No subject matches in cache.");
@@ -157,7 +159,7 @@ public abstract class CacheProvider {
   protected boolean isSubjectDuped(Iterator<Subject> subjects, Subject check) {
     while (subjects.hasNext()) {
       Subject lval = subjects.next();
-      if (lval.getName().equals(check.getName()) && lval.getBirthdate() == check.getBirthdate()) {
+      if (lval.getName().equals(check.getName())) {
         return true;
       }
     }
