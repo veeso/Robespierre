@@ -23,6 +23,7 @@ import it.hypocracy.robespierre.article.Subject;
 import it.hypocracy.robespierre.article.Topic;
 import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
 import it.hypocracy.robespierre.meta.exceptions.ParserException;
+import it.hypocracy.robespierre.meta.search.SearchTarget;
 import it.hypocracy.robespierre.meta.wikidata.imageinfo.Image;
 import it.hypocracy.robespierre.meta.wikidata.imageinfo.ImageInfoUri;
 import it.hypocracy.robespierre.meta.wikidata.imageinfo.Imageinfo;
@@ -98,12 +99,13 @@ public class WikiDataParser {
    * @param wbEntity
    * @param id
    * @param article
+   * @param targets
    * @return true if data has changed article
    * @throws ParserException
    * @throws MetadataReceiverException
    */
 
-  public boolean parseWbEntity(WbEntity wbEntity, String id, Article article)
+  public boolean parseWbEntity(WbEntity wbEntity, String id, Article article, SearchTarget[] targets)
       throws ParserException, MetadataReceiverException {
     // Verify web entity
     logger.debug("Parsing entity " + id);
@@ -111,45 +113,52 @@ public class WikiDataParser {
     if (entity == null) {
       return false;
     }
-    // Check if it is human
-    if (isWbEntityHuman(entity)) {
-      logger.debug("Entity " + id + " is a human");
-      // Instantiate a subject from Human
-      Subject articleSubject = wbEntityToSubject(entity, article.getCountry());
-      // If subject is null, return false
-      if (articleSubject == null) {
-        logger.debug("Entity " + id + " didn't return a subject candidate");
-        return false;
+    // If in targets there is subject, check if it's human...
+    if (inTargets(targets, SearchTarget.SUBJECT)) {
+      logger.debug("SUBJECT is in targets for " + id);
+      // Check if it is human
+      if (isWbEntityHuman(entity)) {
+        logger.debug("Entity " + id + " is a human");
+        // Instantiate a subject from Human
+        Subject articleSubject = wbEntityToSubject(entity, article.getCountry());
+        // If subject is null, return false
+        if (articleSubject == null) {
+          logger.debug("Entity " + id + " didn't return a subject candidate");
+          return false;
+        }
+        // Check if subject is duplicated
+        Iterator<Subject> subjects = article.iterSubjects();
+        if (!isSubjectDuped(subjects, articleSubject)) {
+          // If not duped, add to article subjects
+          logger.debug("Added to article " + article.getId() + " a new subject: " + articleSubject.getName());
+          article.addSubject(articleSubject);
+        }
+        return true; // Return true anyway
       }
-      // Check if subject is duplicated
-      Iterator<Subject> subjects = article.iterSubjects();
-      if (!isSubjectDuped(subjects, articleSubject)) {
-        // If not duped, add to article subjects
-        logger.debug("Added to article " + article.getId() + " a new subject: " + articleSubject.getName());
-        article.addSubject(articleSubject);
-      }
-      return true; // Return true anyway
-    } else if (isWbEntityTopic(entity)) {
-      logger.debug("Entity " + id + " is a topic");
-      // Retrieve topic parameters
-      Topic articleTopic = wbEntityToTopic(entity, article.getCountry());
-      // If topic is null, return false
-      if (articleTopic == null) {
-        logger.debug("Entity " + id + " didn't return a topic candidate");
-        return false;
-      }
-      // Check if topic is duplicated
-      Iterator<Topic> topics = article.iterTopics();
-      if (!isTopicDuped(topics, articleTopic)) {
-        // If not duped, add to article topics
-        logger.debug("Added to article " + article.getId() + " a new topic: " + articleTopic.getName());
-        article.addTopic(articleTopic);
-      }
-      return true; // Return true anyway
-    } else {
-      logger.debug("Entity " + id + " is nothing");
-      return false;
     }
+    if (inTargets(targets, SearchTarget.TOPIC)) {
+      logger.debug("TOPIC is in targets for " + id);
+      if (isWbEntityTopic(entity)) {
+        logger.debug("Entity " + id + " is a topic");
+        // Retrieve topic parameters
+        Topic articleTopic = wbEntityToTopic(entity, article.getCountry());
+        // If topic is null, return false
+        if (articleTopic == null) {
+          logger.debug("Entity " + id + " didn't return a topic candidate");
+          return false;
+        }
+        // Check if topic is duplicated
+        Iterator<Topic> topics = article.iterTopics();
+        if (!isTopicDuped(topics, articleTopic)) {
+          // If not duped, add to article topics
+          logger.debug("Added to article " + article.getId() + " a new topic: " + articleTopic.getName());
+          article.addTopic(articleTopic);
+        }
+        return true; // Return true anyway
+      } 
+   }
+    logger.debug("Entity " + id + " is nothing");
+    return false;
   }
 
   // @! Humans
@@ -732,6 +741,25 @@ public class WikiDataParser {
       return null;
     }
     return mainsnak.datavalue;
+  }
+
+  /**
+   * <p>
+   * Check if `what` is in targets
+   * </p>
+   * 
+   * @param targets
+   * @param what
+   * @returns boolean
+   */
+
+  private boolean inTargets(SearchTarget[] targets, SearchTarget what) {
+    for (SearchTarget t : targets) {
+      if (t == what) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

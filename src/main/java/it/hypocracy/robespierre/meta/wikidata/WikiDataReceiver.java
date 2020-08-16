@@ -96,7 +96,8 @@ public class WikiDataReceiver extends MetadataReceiver {
       WbEntity wbEntity = apiClient.getWebEntity(wikimediaId, article.getCountry());
       try {
         logger.debug("Parsing entity " + wikimediaId);
-        if (parser.parseWbEntity(wbEntity, wikimediaId, article)) {
+        SearchTarget[] targets = new SearchTarget[] { search.getTarget() };
+        if (parser.parseWbEntity(wbEntity, wikimediaId, article, targets)) {
           logger.debug("Entity " + wikimediaId + " returned a valid metadata");
           return true;
         } else {
