@@ -896,6 +896,8 @@ public class FeedDatabase {
   private String escapeString(String val) {
     StringBuilder escaped = new StringBuilder();
     escaped.append("\"");
+    // Escape val
+    val = val.replace("\\", "\\\\").replace("\"", "\\\"");
     escaped.append(val);
     escaped.append("\"");
     return escaped.toString();
