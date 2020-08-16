@@ -9,7 +9,7 @@
   - [Checklist](#checklist)
   - [License](#license)
 
-Current Version [0.1.0](CHANGELOG.md#010)
+Current Version [0.1.0-rc1](CHANGELOG.md#010-rc1)
 
 Robespierre is the Data Processor Daemon for Hypocracy.
 Its documentation can be found in the Hypocracy repository: <https://github.com/ChristianVisintin/Hypocracy>

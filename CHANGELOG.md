@@ -1,10 +1,10 @@
 # Changelog
 
 - [Changelog](#changelog)
-  - [0.1.0](#010)
+  - [0.1.0-rc1](#010-rc1)
 
-## 0.1.0
+## 0.1.0-rc1
 
-Released on ??
+Released on 16/08/2020
 
 - First release
