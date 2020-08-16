@@ -2,6 +2,8 @@
 
 - [Robespierre](#robespierre)
   - [Configuration](#configuration)
+  - [Debugging](#debugging)
+    - [Clean database up](#clean-database-up)
   - [Authors](#authors)
   - [Changelog](#changelog)
   - [Checklist](#checklist)
@@ -63,6 +65,21 @@ Here follows the key description:
   - engine: the engine to be used (e.g. wikidata)
 
 A configuration sample can be found [HERE](./config/default.json).
+
+## Debugging
+
+### Clean database up
+
+```sql
+DELETE FROM article_topic;
+DELETE FROM article_subject;
+DELETE FROM article;
+DELETE FROM subject;
+DELETE FROM biography;
+DELETE FROM occupation;
+DELETE FROM topic;
+DELETE FROM topic_data;
+```
 
 ## Authors
 

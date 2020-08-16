@@ -37,9 +37,9 @@ import it.hypocracy.robespierre.meta.cache.MariaCacheProvider;
 import it.hypocracy.robespierre.meta.wikidata.WikiDataReceiver;
 
 /**
- * FeedWorker is the class which takes care of fetching a certain source and getting
- * articles from it, then it saves them into the database.
- * The Worker is a thread which waits for incoming jobs.
+ * FeedWorker is the class which takes care of fetching a certain source and
+ * getting articles from it, then it saves them into the database. The Worker is
+ * a thread which waits for incoming jobs.
  */
 
 public class FeedWorker implements Runnable {
@@ -111,10 +111,10 @@ public class FeedWorker implements Runnable {
 
   public void assignNewJob(FeedSource source) throws BusyWorkerException {
     synchronized (this) {
-    if (this.isAvailable() && this.workingSource == null) {
-      // Set working source
-      this.workingSource = source;
-      // Notify thread
+      if (this.isAvailable() && this.workingSource == null) {
+        // Set working source
+        this.workingSource = source;
+        // Notify thread
         notify();
       } else {
         throw new BusyWorkerException("Worker '" + name + "' is busy");
@@ -317,9 +317,9 @@ public class FeedWorker implements Runnable {
       Iterator<Subject> subjects = article.iterSubjects();
       while (subjects.hasNext()) {
         Subject s = subjects.next();
-        this.logger.debug("Found article subject > name: " + s.getName() + "; citizenship: "
-            + s.getCitizenship().toString() + "; birthdate: " + s.getBirthdate() + "; Birthplace: " + s.getBirthplace()
-            + "; Brief: " + s.biography.getBrief() + "; Occupation: " + s.occupation.getName());
+        this.logger.debug(
+            "Found article subject > name: " + s.getName() + "; birthdate: " + s.getBirthdate() + "; Birthplace: "
+                + s.getBirthplace() + "; Brief: " + s.biography.getBrief() + "; Occupation: " + s.occupation.getName());
       }
       Iterator<Topic> topics = article.iterTopics();
       while (topics.hasNext()) {
