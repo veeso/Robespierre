@@ -15,6 +15,12 @@
         "engine": "rss"
       },
       {
+        "uri": "https://www.repubblica.it/rss/politica/rss2.0.xml",
+        "country": "IT",
+        "interval": 240,
+        "engine": "rss"
+      },
+      {
         "uri": "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
         "country": "US",
         "interval": 240,
@@ -23,6 +29,12 @@
       {
         "uri": "https://www.lefigaro.fr/rss/figaro_politique.xml",
         "country": "FR",
+        "interval": 240,
+        "engine": "rss"
+      },
+      {
+        "uri": "https://www.spiegel.de/politik/index.rss",
+        "country": "DE",
         "interval": 240,
         "engine": "rss"
       }

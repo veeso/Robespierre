@@ -6,7 +6,7 @@
     "password": null
   },
   "feed": {
-    "maxWorkers": 4,
+    "maxWorkers": 2,
     "sources": [
       {
         "uri": "http://xml2.corriereobjects.it/rss/politica.xml",
@@ -15,19 +15,7 @@
         "engine": "rss"
       },
       {
-        "uri": "https://www.ilpost.it/politica/feed/",
-        "country": "IT",
-        "interval": 240,
-        "engine": "rss"
-      },
-      {
         "uri": "https://www.repubblica.it/rss/politica/rss2.0.xml",
-        "country": "IT",
-        "interval": 240,
-        "engine": "rss"
-      },
-      {
-        "uri": "http://rss.adnkronos.com/RSS_Politica.xml",
         "country": "IT",
         "interval": 240,
         "engine": "rss"
@@ -47,6 +35,12 @@
       {
         "uri": "https://www.lemonde.fr/politique/rss_full.xml",
         "country": "FR",
+        "interval": 360,
+        "engine": "rss"
+      },
+      {
+        "uri": "https://www.spiegel.de/politik/index.rss",
+        "country": "DE",
         "interval": 240,
         "engine": "rss"
       }
