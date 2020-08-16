@@ -14,16 +14,14 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 /**
- * SearchBuilder build starting from text searches to make against the MetadataProvider.
- * The rules for SearchBuilder are defined as:
- * - 0. Is the last word
- * - 1. Any punctuation marks in ['!', '?', ',', ';', '.', ':', '(', ')', '[',
- * ']', '{', '}', '¿', '¡'] represents a QE terminator 
- * - 2. If a word begins with
- * capital letter, the terminator for the QE is the first following word which
- * starts with lowercase letter or according to rule 1 
- * - 3. If a word begins with a lowercase letter, QE will be the word itself
- * - 4. Quoted texts are QE itself
+ * SearchBuilder build starting from text searches to make against the
+ * MetadataProvider. The rules for SearchBuilder are defined as: - 0. Is the
+ * last word - 1. Any punctuation marks in ['!', '?', ',', ';', '.', ':', '(',
+ * ')', '[', ']', '{', '}', '¿', '¡'] represents a QE terminator - 2. If a word
+ * begins with capital letter, the terminator for the QE is the first following
+ * word which starts with lowercase letter or according to rule 1 - 3. If a word
+ * begins with a lowercase letter, QE will be the word itself - 4. Quoted texts
+ * are QE themselves
  */
 
 public class SearchBuilder {
@@ -37,7 +35,8 @@ public class SearchBuilder {
 
   /**
    * <p>
-   * Build search entity starting from text following the class rules defined before
+   * Build search entity starting from text following the class rules defined
+   * before
    * </p>
    * 
    * @param text
@@ -62,13 +61,13 @@ public class SearchBuilder {
           word = word.substring(1); // Remove quote from word
         }
         states.quoted = true;
-      } 
+      }
       if (word.endsWith("\"")) {
         word = word.substring(0, word.length() - 1); // Remove quote from word
         states.wasQuoted = true;
         states.quoted = false;
       }
-      if (! states.quoted) { // If not quoted
+      if (!states.quoted) { // If not quoted
         // Check punctuation mark
         if (endsWithPunctuationMark(word)) {
           // Remove punctuation mark from word
@@ -88,7 +87,7 @@ public class SearchBuilder {
       // @! Finalize states
 
       // Create QE if...
-      if (! states.wasQuoted && ! states.quoted) {
+      if (!states.wasQuoted && !states.quoted) {
         if (states.lastWordCapital && !states.wordCapital) { // Rule 2 (Subject)
           // First create entitiy
           entities.push(new SearchEntity(bufferToString(buffer), SearchTarget.SUBJECT));
@@ -141,7 +140,7 @@ public class SearchBuilder {
         }
       }
       // Rule 4 (quotes)
-      if (states.wasQuoted && ! states.quoted) {
+      if (states.wasQuoted && !states.quoted) {
         // Create entity
         // Push word to buffer
         buffer.push(word);
@@ -168,6 +167,24 @@ public class SearchBuilder {
       entitiesArray[i] = it.previous();
     }
     return entitiesArray;
+  }
+
+  /**
+   * <p>
+   * Returns whether a certain word starts with a punctuation mark
+   * </p>
+   * 
+   * @param word
+   * @return
+   */
+
+  private boolean startsWithPunctuationMark(String word) {
+    for (String p : punctuationMarks) {
+      if (word.startsWith(p)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -220,7 +237,7 @@ public class SearchBuilder {
 
   /**
    * <p>
-   * Remove punctuation word from end of word
+   * Remove punctuation word from start and end of word
    * </p>
    * 
    * @param word
@@ -230,6 +247,13 @@ public class SearchBuilder {
   private String removePunctuationMarkFromWord(String word) {
     while (endsWithPunctuationMark(word)) {
       word = word.substring(0, word.length() - 1);
+    }
+    if (word.length() > 1 && startsWithPunctuationMark(word)) {
+      while (startsWithPunctuationMark(word)) {
+        word = word.substring(1);
+      }
+    } else if (startsWithPunctuationMark(word)) { // Length is 0 and starts with punctuation nmark
+      word = "";
     }
     return word;
   }
@@ -247,8 +271,8 @@ public class SearchBuilder {
     StringBuilder result = new StringBuilder();
     ListIterator<String> it = buffer.listIterator(buffer.size());
     while (it.hasPrevious()) {
-      // Push w
-      result.append(it.previous());
+      // Push cleared word
+      result.append(removePunctuationMarkFromWord(it.previous()));
       // If has next, append ' '
       if (it.hasPrevious()) {
         result.append(' ');

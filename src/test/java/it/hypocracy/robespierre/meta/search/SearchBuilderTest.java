@@ -19,6 +19,7 @@ public class SearchBuilderTest {
   private final static String text1 = "Elizabeth Woolridge Grant is known by her stage name Lana Del Rey.";
   private final static String text2 = "Violet Bent Backwards Over The Grass is the debut book by Lana Del Rey, including \"13 longer poems\" and several short pieces.";
   private final static String text3 = "\"Happy\" is a poem by Lana Del Rey";
+  private final static String text4 = "Maximilien Robespierre said «the secret of freedom lies in educating people, whereas the secret of tyranny is in keeping them ignorant»";
 
   @Test
   public void shouldBuildSearchEntitiesCase1() {
@@ -90,8 +91,8 @@ public class SearchBuilderTest {
     SearchEntity[] entities = builder.buildSearchForSubjectsAndTopics(words);
     // Check entities expected ["Happy", "is", "a", "poem", "by", "Lana Del Rey"]
     /*
-     * for (SearchEntity e : entities) { System.out.println(e.getSearch()); }
-     */
+    for (SearchEntity e : entities) { System.out.println(e.getSearch()); }
+    */ 
 
     // Check length
     assertEquals(6, entities.length);
@@ -102,6 +103,44 @@ public class SearchBuilderTest {
     assertEquals("poem", entities[3].getSearch());
     assertEquals("by", entities[4].getSearch());
     assertEquals("Lana Del Rey", entities[5].getSearch());
+  }
+  
+  @Test
+  public void shouldBuildSearchEntitiesCase4() {
+    SearchBuilder builder = new SearchBuilder();
+    // Split text by words
+    String[] words = text4.split("\\s+");
+    assertEquals(21, words.length);
+    SearchEntity[] entities = builder.buildSearchForSubjectsAndTopics(words);
+    // Maximilien Robespierre said «the secret of freedom lies in educating people, whereas the secret of tyranny is in keeping them ignorant»
+    // Check entities expected ["Maximilien Robespierre", "said", "the", "secret", "of", "freedom", "lies", "in", "educating", "people", "whereas", "the", "secret", "of", "tyranny", "is", "in", "keeping", "them", "ignorant"]
+    /*
+    for (SearchEntity e : entities) { System.out.println(e.getSearch()); }
+    */ 
+
+    // Check length
+    assertEquals(20, entities.length);
+    // Check search
+    assertEquals("Maximilien Robespierre", entities[0].getSearch());
+    assertEquals("said", entities[1].getSearch());
+    assertEquals("the", entities[2].getSearch());
+    assertEquals("secret", entities[3].getSearch());
+    assertEquals("of", entities[4].getSearch());
+    assertEquals("freedom", entities[5].getSearch());
+    assertEquals("lies", entities[6].getSearch());
+    assertEquals("in", entities[7].getSearch());
+    assertEquals("educating", entities[8].getSearch());
+    assertEquals("people", entities[9].getSearch());
+    assertEquals("whereas", entities[10].getSearch());
+    assertEquals("the", entities[11].getSearch());
+    assertEquals("secret", entities[12].getSearch());
+    assertEquals("of", entities[13].getSearch());
+    assertEquals("tyranny", entities[14].getSearch());
+    assertEquals("is", entities[15].getSearch());
+    assertEquals("in", entities[16].getSearch());
+    assertEquals("keeping", entities[17].getSearch());
+    assertEquals("them", entities[18].getSearch());
+    assertEquals("ignorant", entities[19].getSearch());
   }
 
 }

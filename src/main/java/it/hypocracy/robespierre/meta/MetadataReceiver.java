@@ -68,6 +68,9 @@ public abstract class MetadataReceiver {
     SearchEntity[] searchEntities = searchBuilder.buildSearchForSubjectsAndTopics(words);
     // Iterate over words
     for (SearchEntity search : searchEntities) {
+      if (search.getSearch().length() == 0) { // Ignore empty sets
+        continue;
+      }
       logger.debug("Getting metadata for search target: '" + search.getSearch() + "'");
       fetchMetadataFromText(article, search);
     }
