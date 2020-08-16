@@ -27,6 +27,7 @@ import it.hypocracy.robespierre.article.Subject;
 import it.hypocracy.robespierre.article.Topic;
 import it.hypocracy.robespierre.meta.exceptions.MetadataReceiverException;
 import it.hypocracy.robespierre.meta.exceptions.ParserException;
+import it.hypocracy.robespierre.meta.search.SearchTarget;
 import it.hypocracy.robespierre.meta.wikidata.wbentity.WbEntity;
 import it.hypocracy.robespierre.utils.ISO3166;
 
@@ -70,7 +71,8 @@ public class WikiDataParserTest {
   public void shouldParseSubject() throws ParserException, MetadataReceiverException {
     WikiDataParser parser = new WikiDataParser();
     // Parse subject
-    assertTrue(parser.parseWbEntity(albertoAngela, "Q514695", testArticle));
+    assertTrue(
+        parser.parseWbEntity(albertoAngela, "Q514695", testArticle, new SearchTarget[] { SearchTarget.SUBJECT }));
     // Verify subject
     Iterator<Subject> subjects = testArticle.iterSubjects();
     assertTrue(subjects.hasNext());
@@ -93,7 +95,7 @@ public class WikiDataParserTest {
   public void shouldParseTopic() throws ParserException, MetadataReceiverException {
     WikiDataParser parser = new WikiDataParser();
     // Parse subject
-    assertTrue(parser.parseWbEntity(veganism, "Q181138", testArticle));
+    assertTrue(parser.parseWbEntity(veganism, "Q181138", testArticle, new SearchTarget[] { SearchTarget.TOPIC }));
     // Verify topic
     Iterator<Topic> topics = testArticle.iterTopics();
     assertTrue(topics.hasNext());
@@ -107,7 +109,7 @@ public class WikiDataParserTest {
   @Test
   public void shouldNotReturnAnyChange() throws ParserException, MetadataReceiverException {
     WikiDataParser parser = new WikiDataParser();
-    assertFalse(parser.parseWbEntity(france, "Q142", testArticle));
+    assertFalse(parser.parseWbEntity(france, "Q142", testArticle, new SearchTarget[] { SearchTarget.SUBJECT }));
   }
 
 }

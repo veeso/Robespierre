@@ -155,8 +155,8 @@ public class WikiDataParser {
           article.addTopic(articleTopic);
         }
         return true; // Return true anyway
-      } 
-   }
+      }
+    }
     logger.debug("Entity " + id + " is nothing");
     return false;
   }
