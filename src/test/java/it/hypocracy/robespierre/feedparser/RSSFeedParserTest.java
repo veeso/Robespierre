@@ -36,9 +36,7 @@ public class RSSFeedParserTest {
     RSSFeed firstItem = feeds[0];
     // Verify item parameters
     assertEquals("You've met with a terrible fate", firstItem.getTitle());
-    assertEquals(
-        "<p><a href=\"https://www.badnews.cc/you-ve-met-with-a-terrible-fate-havent-you/?rssimage\"><img src=\"https://www.badnews.cc/thumbnails/171101822-bbb0cc3c-b73d-4583-bbf8-6eb4c94bc6e9.jpg\" width=\"140\" align=\"left\" hspace=\"10\"></a>You've met with a terrible fate, haven't you. Nice quote m8.</p>",
-        firstItem.getBrief());
+    assertEquals("You've met with a terrible fate, haven't you. Nice quote m8.", firstItem.getBrief());
     assertEquals(URI.create("https://www.badnews.cc/politics/you-ve-met-with-a-terrible-fate-havent-you"),
         firstItem.getLink());
     assertEquals(LocalDateTime.of(2020, Month.JUNE, 27, 18, 37, 39), firstItem.getPublicationDatetime());
@@ -46,13 +44,10 @@ public class RSSFeedParserTest {
     RSSFeed secondItem = feeds[1];
     // Verify item parameters
     assertEquals("Vegetables are healthy!", secondItem.getTitle());
-    assertEquals(
-        "<p><a href=\"https://www.badnews.cc/politics/vegetables-are-healthy?rssimage\"><img src=\"https://www.badnews.cc/thumbnails/171101822-bbb0cc3c-b73d-4583-bbf8-6eb4c94bc6e9.jpg\" width=\"140\" align=\"left\" hspace=\"10\"></a>Scientists are shocked!</p>",
-        secondItem.getBrief());
+    assertEquals("Scientists are shocked!", secondItem.getBrief());
     assertEquals(URI.create("https://www.badnews.cc/politics/vegetables-are-healthy"), secondItem.getLink());
     assertEquals(LocalDateTime.of(2020, Month.JUNE, 27, 12, 32, 12), secondItem.getPublicationDatetime());
     assertEquals("IT", secondItem.getCountry().toString());
-
   }
 
 }

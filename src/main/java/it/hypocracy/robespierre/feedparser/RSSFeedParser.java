@@ -20,6 +20,9 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import it.hypocracy.robespierre.feed.RSSFeed;
 import it.hypocracy.robespierre.utils.DateUtils;
 import it.hypocracy.robespierre.utils.ISO3166;
@@ -56,6 +59,9 @@ public class RSSFeedParser implements FeedParser {
       if (title == null || description == null || link == null) {
         continue;
       }
+      title = stripHTML(title);
+      description = stripHTML(description);
+      // Remove html tags
       if (record.getPublishedDate() != null) {
         // Create feed with date
         feeds.add(new RSSFeed(title, description, URI.create(link),
@@ -68,6 +74,20 @@ public class RSSFeedParser implements FeedParser {
     RSSFeed[] result = new RSSFeed[feeds.size()];
     result = feeds.toArray(result);
     return result;
+  }
+
+  /**
+   * <p>
+   * Remove HTML from string
+   * </p>
+   * 
+   * @param str
+   * @return
+   */
+
+  private String stripHTML(String str) {
+    Document doc = Jsoup.parse(str);
+    return doc.text();
   }
 
 }
