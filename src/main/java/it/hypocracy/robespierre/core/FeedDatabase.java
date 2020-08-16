@@ -287,8 +287,8 @@ public class FeedDatabase {
       final String citizenship = subject.getCitizenship() == null ? null
           : escapeString(subject.getCitizenship().toString());
       String[] values = new String[] { escapeString(subject.getId()), escapeString(subject.getName()), birthdate,
-          escapeString(subject.getCitizenship().toString()), birthplace, imageUri, escapeString(subject.getRemoteId()),
-          citizenship, escapeString(subject.getLastUpdate().toString()), escapeString(subject.biography.getId()),
+          citizenship, birthplace, imageUri, escapeString(subject.getRemoteId()),
+          escapeString(subject.getLastUpdate().toString()), escapeString(subject.biography.getId()),
           escapeString(subject.occupation.getId()) };
       InsertQuery query = new InsertQuery(subjectTable, columns, values);
       dbFac.insert(query);
