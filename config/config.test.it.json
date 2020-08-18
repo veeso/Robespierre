@@ -1,0 +1,32 @@
+{
+  "database": {
+    "engine": "mariadb",
+    "uri": "jdbc:mariadb://localhost:3306/hypocracy",
+    "user": "root",
+    "password": null
+  },
+  "feed": {
+    "maxWorkers": 2,
+    "sources": [
+      {
+        "uri": "http://xml2.corriereobjects.it/rss/politica.xml",
+        "country": "IT",
+        "interval": 240,
+        "engine": "rss"
+      },
+      {
+        "uri": "https://www.repubblica.it/rss/politica/rss2.0.xml",
+        "country": "IT",
+        "interval": 240,
+        "engine": "rss"
+      }
+    ]
+  },
+  "metadata": {
+    "engine": "wikidata",
+    "cache": {
+      "duration": 180,
+      "withBlacklist": true
+    }
+  }
+}
