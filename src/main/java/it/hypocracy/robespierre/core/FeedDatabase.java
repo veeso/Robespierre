@@ -894,6 +894,9 @@ public class FeedDatabase {
    * @return string
    */
   private String escapeString(String val) {
+    if (val.length() == 0) { // ignore empty strings
+      return val;
+    }
     StringBuilder escaped = new StringBuilder();
     escaped.append("\"");
     // Escape val
