@@ -159,7 +159,7 @@ def get_subjects(dbconn: tuple, data: list, lang: str):
     result = cursor.fetchall()
     # Iterate over subjects
     for subj in result:
-        subj_data = {"class": "subject", "id": subj[0], "name": subj[1], "birthdate": subj[2].strftime("%Y-%m-%d"), "citizenship": subj[3], "image": subj[4], "biography": subj[5], "occupation": subj[6]}
+        subj_data = {"class": "subject", "id": subj[0], "name": subj[1], "birthdate": subj[2].strftime("%Y-%m-%d"), "citizenship": subj[3], "birthplace": subj[4], "image": subj[5], "biography": subj[6], "occupation": subj[7]}
         print_debug("Found subject %s" % subj_data)
         data.append(subj_data)
 
@@ -198,7 +198,7 @@ def get_articles(dbconn: tuple, data: list, lang: str, country: str):
         result = cursor.fetchall()
         # Iterate over subjects
         for subj in result:
-            subj_data = {"class": "subject", "id": subj[0], "name": subj[1], "birthdate": subj[2].strftime("%Y-%m-%d"), "citizenship": subj[3], "image": subj[4], "biography": subj[5], "occupation": subj[6]}
+            subj_data = {"class": "subject", "id": subj[0], "name": subj[1], "birthdate": subj[2].strftime("%Y-%m-%d"), "citizenship": subj[3], "birthplace": subj[4], "image": subj[5], "biography": subj[6], "occupation": subj[7]}
             subjects.append(subj_data)
         article_obj["topics"] = topics
         article_obj["subjects"] = subjects
