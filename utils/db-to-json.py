@@ -128,7 +128,7 @@ def disconnect(dbtuple: tuple):
 
 def get_topics(dbconn: tuple, data: list, lang: str):
     """
-    Get topics from hypocracy database
+    Get topics from robespierre database
 
     :param dbconn
     :param data
@@ -146,7 +146,7 @@ def get_topics(dbconn: tuple, data: list, lang: str):
 
 def get_subjects(dbconn: tuple, data: list, lang: str):
     """
-    Get subjects from hypocracy database
+    Get subjects from robespierre database
 
     :param dbconn
     :param data
@@ -165,7 +165,7 @@ def get_subjects(dbconn: tuple, data: list, lang: str):
 
 def get_articles(dbconn: tuple, data: list, lang: str, country: str):
     """
-    Get articles from hypocracy
+    Get articles from robespierre
 
     :param dbconn
     :param data
@@ -236,7 +236,7 @@ def main(argc: int, argv: List[str]) -> int:
     global verbose
     country = DEFAULT_COUNTRY
     lang = DEFAULT_LOCALE
-    database_name = "hypocracy"
+    database_name = "robespierre"
     dbhost = "localhost"
     username = "root"
     password = None
