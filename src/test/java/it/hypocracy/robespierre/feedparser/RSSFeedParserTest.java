@@ -2,23 +2,10 @@
  * @author Christian Visintin <christian.visintin1997@gmail.com>
  * @version 0.1.0
  * 
- * Copyright (C) 2020 Christian Visintin - christian.visintin1997@gmail.com
- *
- * This file is part of "Robespierre"
- *
- * Robespierre is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Robespierre is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Robespierre.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * Copyright (C) Christian Visintin - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Christian Visintin <christian.visintin1997@gmail.com>, 2020
  */
 
 package it.hypocracy.robespierre.feedparser;
@@ -27,7 +14,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 
 import com.rometools.rome.io.FeedException;
 
@@ -52,14 +41,14 @@ public class RSSFeedParserTest {
     assertEquals("You've met with a terrible fate, haven't you. Nice quote m8.", firstItem.getBrief());
     assertEquals(URI.create("https://www.badnews.cc/politics/you-ve-met-with-a-terrible-fate-havent-you"),
         firstItem.getLink());
-    assertEquals(LocalDateTime.of(2020, Month.JUNE, 27, 18, 37, 39), firstItem.getPublicationDatetime());
+    assertEquals(ZonedDateTime.of(LocalDateTime.of(2020, Month.JUNE, 27, 18, 37, 39), ZoneId.of("UTC")), ZonedDateTime.of(firstItem.getPublicationDatetime(), ZoneId.of("UTC")));
     assertEquals("IT", firstItem.getCountry().toString());
     RSSFeed secondItem = feeds[1];
     // Verify item parameters
     assertEquals("Vegetables are healthy!", secondItem.getTitle());
     assertEquals("Scientists are shocked!", secondItem.getBrief());
     assertEquals(URI.create("https://www.badnews.cc/politics/vegetables-are-healthy"), secondItem.getLink());
-    assertEquals(LocalDateTime.of(2020, Month.JUNE, 27, 12, 32, 12), secondItem.getPublicationDatetime());
+    assertEquals(ZonedDateTime.of(LocalDateTime.of(2020, Month.JUNE, 27, 12, 32, 12), ZoneId.of("UTC")), ZonedDateTime.of(secondItem.getPublicationDatetime(), ZoneId.of("UTC")));
     assertEquals("IT", secondItem.getCountry().toString());
   }
 
