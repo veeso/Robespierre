@@ -54,14 +54,14 @@ public class RSSFeedParserTest {
     assertEquals("You've met with a terrible fate, haven't you. Nice quote m8.", firstItem.getBrief());
     assertEquals(URI.create("https://www.badnews.cc/politics/you-ve-met-with-a-terrible-fate-havent-you"),
         firstItem.getLink());
-    assertEquals(ZonedDateTime.of(LocalDateTime.of(2020, Month.JUNE, 27, 18, 37, 39), ZoneId.of("UTC")), ZonedDateTime.of(firstItem.getPublicationDatetime(), ZoneId.of("UTC")));
+    assertEquals(ZonedDateTime.of(LocalDateTime.of(2020, Month.JUNE, 27, 16, 37, 39), ZoneId.of("UTC")), ZonedDateTime.of(firstItem.getPublicationDatetime(), ZoneId.of("UTC")));
     assertEquals("IT", firstItem.getCountry().toString());
     RSSFeed secondItem = feeds[1];
     // Verify item parameters
     assertEquals("Vegetables are healthy!", secondItem.getTitle());
     assertEquals("Scientists are shocked!", secondItem.getBrief());
     assertEquals(URI.create("https://www.badnews.cc/politics/vegetables-are-healthy"), secondItem.getLink());
-    assertEquals(ZonedDateTime.of(LocalDateTime.of(2020, Month.JUNE, 27, 12, 32, 12), ZoneId.of("UTC")), ZonedDateTime.of(secondItem.getPublicationDatetime(), ZoneId.of("UTC")));
+    assertEquals(ZonedDateTime.of(LocalDateTime.of(2020, Month.JUNE, 27, 10, 32, 12), ZoneId.of("UTC")), ZonedDateTime.of(secondItem.getPublicationDatetime(), ZoneId.of("UTC")));
     assertEquals("IT", secondItem.getCountry().toString());
   }
 
