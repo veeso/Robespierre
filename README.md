@@ -1,5 +1,13 @@
 # Robespierre
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Robespierre.svg)](https://github.com/ChristianVisintin/Robespierre) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Robespierre.svg)](https://github.com/ChristianVisintin/Robespierre/issues)
+
+[![Build](https://github.com/ChristianVisintin/Robespierre/workflows/Build/badge.svg)](https://github.com/ChristianVisintin/Robespierre/actions)
+
+~ RSS Metadata collector daemon ~  
+Developed by Christian Visintin  
+Current version: 0.1.0 (??/12/2020)
+
 - [Robespierre](#robespierre)
   - [Configuration](#configuration)
   - [Debugging](#debugging)
@@ -8,11 +16,6 @@
   - [Changelog](#changelog)
   - [Checklist](#checklist)
   - [License](#license)
-
-Current Version [0.1.0-rc1](CHANGELOG.md#010-rc1)
-
-Robespierre is the Data Processor Daemon for Hypocracy.
-Its documentation can be found in the Hypocracy repository: <https://github.com/ChristianVisintin/Hypocracy>
 
 ## Configuration
 
