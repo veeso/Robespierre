@@ -2,7 +2,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Robespierre.svg)](https://github.com/ChristianVisintin/Robespierre) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Robespierre.svg)](https://github.com/ChristianVisintin/Robespierre/issues)
 
-[![Build](https://github.com/ChristianVisintin/Robespierre/workflows/Build/badge.svg)](https://github.com/ChristianVisintin/Robespierre/actions)
+[![MvnBuild](https://github.com/ChristianVisintin/Robespierre/workflows/Maven/badge.svg)](https://github.com/ChristianVisintin/Robespierre/actions)
 
 ~ RSS Metadata collector daemon ~  
 Developed by Christian Visintin  
