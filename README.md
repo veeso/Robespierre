@@ -1,6 +1,6 @@
 # Robespierre
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Robespierre.svg)](https://github.com/ChristianVisintin/Robespierre) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Robespierre.svg)](https://github.com/ChristianVisintin/Robespierre/issues)
+[![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](https://opensource.org/licenses/MIT) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Robespierre.svg)](https://github.com/ChristianVisintin/Robespierre) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Robespierre.svg)](https://github.com/ChristianVisintin/Robespierre/issues)
 
 [![MvnBuild](https://github.com/ChristianVisintin/Robespierre/workflows/Maven/badge.svg)](https://github.com/ChristianVisintin/Robespierre/actions)
 
@@ -9,13 +9,19 @@ Developed by Christian Visintin
 Current version: 0.1.0 (??/12/2020)
 
 - [Robespierre](#robespierre)
+  - [Introduction](#introduction)
   - [Configuration](#configuration)
   - [Debugging](#debugging)
     - [Clean database up](#clean-database-up)
-  - [Authors](#authors)
   - [Changelog](#changelog)
-  - [Checklist](#checklist)
   - [License](#license)
+
+---
+
+## Introduction
+
+Robespierre is a daemon written in Java, which purpose is to collect data from RSS feeds. What makes Robespierre special in what it does, is that it is able to collect also the **involved persons** (named "subjects") and **topics** from the articles.
+To do so, Robespierre reads the feed titles and briefes and tokenize words according to a certain logic, then Robespierre will query a **Metadata Provider** to look for persons and topics involved in the provided feed. At the moment Robespierre gathers these metadata from 
 
 ## Configuration
 
@@ -84,18 +90,14 @@ DELETE FROM topic;
 DELETE FROM topic_data;
 ```
 
-## Authors
-
-See [AUTHORS](AUTHORS.md)
-
 ## Changelog
 
-See [CHANGELOG](CHANGELOG.md)
+View [CHANGELOG](CHANGELOG.md)
 
-## Checklist
-
-See Release Checklist [HERE](CHECKLIST.md)
+---
 
 ## License
 
-The entire body of the license can be viewed [HERE](LICENSE.txt)
+Licensed under the MIT license; you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+You can read the entire license [HERE](LICENSE)
