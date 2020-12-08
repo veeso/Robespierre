@@ -86,7 +86,6 @@ public class FeedDatabase {
   private final static String articleFieldBrief = "brief";
   private final static String articleFieldLink = "link";
   private final static String articleFieldDate = "date";
-  private final static String articleFieldState = "state";
   private final static String articleFieldCountry = "country";
   // Article topic
   private final static String articleTopicFieldId = "id";
@@ -231,16 +230,14 @@ public class FeedDatabase {
     columns[2] = articleFieldBrief;
     columns[3] = articleFieldLink;
     columns[4] = articleFieldDate;
-    columns[5] = articleFieldState;
-    columns[6] = articleFieldCountry;
+    columns[5] = articleFieldCountry;
     String[] values = new String[7]; // 7 columns
     values[0] = escapeString(article.getId());
     values[1] = escapeString(article.getTitle());
     values[2] = escapeString(article.getBrief());
     values[3] = escapeString(article.getLink().toString());
     values[4] = escapeString(article.getDate().toString());
-    values[5] = "0";
-    values[6] = escapeString(article.getCountry().toString());
+    values[5] = escapeString(article.getCountry().toString());
     InsertQuery query = new InsertQuery(articleTable, columns, values);
     // Perform
     dbFac.insert(query);
