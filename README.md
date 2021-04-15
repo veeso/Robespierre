@@ -6,7 +6,7 @@
 
 ~ RSS Metadata collector daemon ~  
 Developed by Christian Visintin  
-Current version: 0.1.0 (??/12/2020)
+Current version: 0.1.0 (08/12/2020)
 
 - [Robespierre](#robespierre)
   - [About Robespierre 🎯](#about-robespierre-)
@@ -86,7 +86,6 @@ Let's see in a **step-by-step** guide, how to setup Robespierre.
 
 ### Install Robespierre 📦
 
-TODO: to complete after release
 Download artifact from latest release
 
 Specify also:
@@ -222,20 +221,6 @@ Run Robespierre with these options:
 
 ```-p <pidfile>```: to write pidfile at provided location
 ```-c <config_file>```: specify the JSON configuration file path
-
----
-
-## Contributing 🤝🏻
-
-da completare
-
-## Known Issues 🩹
-
-da completare
-
-## Upcoming Features 🧪
-
-da completare
 
 ---
 
